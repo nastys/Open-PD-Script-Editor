@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/2d">
+        <file>PokeSlow.png</file>
+    </qresource>
+</RCC>
