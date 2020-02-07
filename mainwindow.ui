@@ -19,6 +19,19 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <widget class="QSpinBox" name="spinBox_pv">
+      <property name="minimum">
+       <number>0</number>
+      </property>
+      <property name="maximum">
+       <number>999</number>
+      </property>
+      <property name="value">
+       <number>1</number>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
@@ -31,6 +44,211 @@
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <widget class="QPlainTextEdit" name="plainTextEdit"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_edit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <attribute name="title">
+        <string>Edit</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidget_edit_modules">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_edit_bar">
+           <attribute name="title">
+            <string>Bars</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QTableWidget" name="tableWidget_edit">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_edit_modules">
+           <attribute name="title">
+            <string>Modules</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_11">
+            <item row="0" column="0">
+             <widget class="QListWidget" name="listWidget_edit_modules">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_edit_stages">
+           <attribute name="title">
+            <string>Stages</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="0" column="0">
+             <widget class="QListWidget" name="listWidget_edit_stages">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_edit_motions">
+           <attribute name="title">
+            <string>Motions</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="0" column="0">
+             <widget class="QListWidget" name="listWidget_edit_motions">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_edit_handItems">
+           <attribute name="title">
+            <string>Hand Items</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <item row="0" column="0">
+             <widget class="QListWidget" name="listWidget_edit_handitems">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_edit_effects">
+           <attribute name="title">
+            <string>Effects</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_10">
+            <item row="0" column="0">
+             <widget class="QListWidget" name="listWidget_edit_effects">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_edit_information">
+           <attribute name="title">
+            <string>Information</string>
+           </attribute>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_edit_editname">
+              <property name="text">
+               <string>Edit name:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineEdit_edit_editname">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_edit_songname">
+              <property name="text">
+               <string>Song name:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineEdit_edit_songname">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_edit_starttime">
+              <property name="text">
+               <string>Start time:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="spinBox_edit_starttime">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_edit_end">
+              <property name="text">
+               <string>Song end:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSpinBox" name="spinBox_edit_end"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_edit_buttonsfx">
+              <property name="text">
+               <string>Button SFX:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QSpinBox" name="spinBox_edit_buttonsfx"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_pv_db">
+       <attribute name="title">
+        <string>pv_db</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QPlainTextEdit" name="plainTextEdit_db"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_pv_field">
+       <attribute name="title">
+        <string>pv_field</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QPlainTextEdit" name="plainTextEdit_field"/>
         </item>
        </layout>
       </widget>
@@ -57,7 +275,25 @@
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menu_Convert">
+    <property name="title">
+     <string>&amp;Convert</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionPSP_to_DT"/>
+   </widget>
+   <widget class="QMenu" name="menu_Lyrics">
+    <property name="title">
+     <string>&amp;Lyrics</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionImport_VTT"/>
+    <addaction name="separator"/>
+    <addaction name="actionLip_sync"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_Convert"/>
+   <addaction name="menu_Lyrics"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -78,7 +314,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Enable &amp;Big Endian</string>
+    <string>&amp;Big Endian</string>
    </property>
   </action>
   <action name="actionExit">
@@ -108,6 +344,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionPSP_to_DT">
+   <property name="text">
+    <string>PSP to DT...</string>
+   </property>
+  </action>
+  <action name="actionImport_VTT">
+   <property name="text">
+    <string>Import &amp;WebVTT...</string>
+   </property>
+  </action>
+  <action name="actionLip_sync">
+   <property name="text">
+    <string>Lip &amp;Sync WebVTT...</string>
    </property>
   </action>
  </widget>

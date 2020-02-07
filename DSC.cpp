@@ -1,8 +1,11 @@
 #include <QString>
 #include <QFile>
 #include <QPlainTextEdit>
+#include <QTableWidget>
 #include <QDataStream>
+#include <QTextCodec>
 #include <QDebug>
+#include "mainwindow.h"
 
 class DivaScriptOpcode_F
 {
@@ -277,7 +280,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(4);
@@ -296,6 +299,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -662,7 +667,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(72);
@@ -682,6 +687,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -1059,7 +1066,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(72);
@@ -1079,6 +1086,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -1592,7 +1601,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(72);
@@ -1612,6 +1621,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -1984,7 +1995,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(4);
@@ -2003,6 +2014,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -2372,7 +2385,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         plaintextedit->clear();
@@ -2390,6 +2403,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -2545,7 +2560,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         plaintextedit->clear();
@@ -2563,6 +2578,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -2802,7 +2819,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         plaintextedit->clear();
@@ -2820,6 +2837,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {
@@ -2843,6 +2862,196 @@ public:
             for(int j=0; j<splitparams.length(); j++)
                 datastream << splitparams.at(j).toInt();
         }
+    }
+};
+
+class DivaScriptOpcode_DIVA2Edit:DivaScriptOpcode_DIVA2
+{
+public:
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    {
+        QTextCodec *codec = QTextCodec::codecForName("Shift_JIS");
+        if(codec==nullptr) return;
+
+        const int DIVA_SCRIPT_OFFSET = 0xE108;
+        const int LYRICS_OFFSET = 0x2C2AC;
+        const int BPM_OFFSET = 0x337DC;
+        const int SONGEND_OFFSET = 0x353FC;
+        const int STAGE_OFFSET = 0x35408;
+        const int BAR_COUNT = 600;
+        const int LYRICS_LENGTH = 0x29;
+        const short max = 32767;
+
+        // Initialize table
+        for(int i=0; i < BAR_COUNT; i++)
+            editWidgets.bartable->insertRow(0);
+        for(int i=0; i < 4; i++)
+            editWidgets.bartable->insertColumn(0);
+
+        int dtoffset=0;
+
+        if(uibyteorder==QDataStream::ByteOrder::BigEndian) dtoffset=16;
+        datastream.setByteOrder(uibyteorder);
+        plaintextedit->clear();
+
+        // DSC
+        file.seek(DIVA_SCRIPT_OFFSET+dtoffset);
+        for(short s=0; s<max; s++)
+        {
+            int opc;
+            datastream >> opc;
+            if(getOpcodeParamCount(opc)==-1) break;
+            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            for(int i=0; i<getOpcodeParamCount(opc); i++)
+            {
+                if(i) plaintextedit->insertPlainText(", ");
+                int byte;
+                datastream >> byte;
+                plaintextedit->insertPlainText(QString::number(byte));
+            }
+            plaintextedit->insertPlainText(");");
+        }
+
+        // Lyrics
+        {
+            file.seek(LYRICS_OFFSET+dtoffset);
+            QString line;
+            for(int i=0; i<BAR_COUNT; i++)
+            {
+                char* data = new char[LYRICS_LENGTH];
+                file.read(data, LYRICS_LENGTH);
+                line = codec->toUnicode(data);
+                if(!(line.isEmpty()||line.isNull()))
+                    editWidgets.bartable->setItem(i, 0, new QTableWidgetItem(line));
+                delete[] data;
+            }
+        }
+
+        // BPM changes
+        {
+            file.seek(BPM_OFFSET+dtoffset);
+            for(int i=0; i<BAR_COUNT; i++)
+            {
+                int bpm;
+                datastream >> bpm;
+                if(bpm!=-1) editWidgets.bartable->setItem(i, 1, new QTableWidgetItem(QString::number(bpm)));
+            }
+            for(int i=0; i<BAR_COUNT; i++)
+            {
+                int changebar;
+                datastream >> changebar;
+                if(changebar!=-1) editWidgets.bartable->setItem(i, 2, new QTableWidgetItem(QString::number(changebar)));
+            }
+        }
+
+        // TS changes
+        {
+            for(int i=0; i<BAR_COUNT; i++)
+            {
+                int ts;
+                datastream >> ts;
+                if(ts!=-1) editWidgets.bartable->setItem(i, 3, new QTableWidgetItem(QString::number(ts+1)));
+            }
+        }
+
+        const int STAGE_COUNT = 20;
+        const int MOTION_COUNT = 30;
+        const int HAND_ITEM_COUNT = 9;
+        const int EFFECT_COUNT = 11;
+        const int NAME_LENGTH = 0x28;
+
+        // Song end
+        {
+            file.seek(SONGEND_OFFSET+dtoffset);
+            int end;
+            datastream >> end;
+            if(end!=-1) editWidgets.songend->setValue(end);
+        }
+
+        // Modules
+        {
+            for(int i=0; i<2; i++)
+            {
+                int module;
+                datastream >> module;
+                if(module!=-1) editWidgets.modulelist->addItem(QString::number(module));
+            }
+        }
+
+        // Stages
+        {
+            file.seek(STAGE_OFFSET+dtoffset);
+            for(int i=0; i<STAGE_COUNT; i++)
+            {
+                int stage;
+                datastream >> stage;
+                if(stage!=-1) editWidgets.stagelist->addItem(QString::number(stage));
+            }
+        }
+
+        // Motions
+        {
+            for(int i=0; i<MOTION_COUNT; i++)
+            {
+                int motion;
+                datastream >> motion;
+                if(motion!=-1) editWidgets.motionlist->addItem(QString::number(motion));
+            }
+        }
+
+        // Button SFX
+        {
+            int sfx;
+            datastream >> sfx;
+            if(sfx!=-1) editWidgets.buttonsfx->setValue(sfx);
+        }
+
+        // Hand Items
+        {
+            for(int i=0; i<HAND_ITEM_COUNT; i++)
+            {
+                int hitem;
+                datastream >> hitem;
+                if(hitem!=-1) editWidgets.handitemlist->addItem(QString::number(hitem));
+            }
+        }
+
+        // Effects
+        {
+            for(int i=0; i<EFFECT_COUNT; i++)
+            {
+                int effect;
+                datastream >> effect;
+                if(effect!=-1) editWidgets.effectlist->addItem(QString::number(effect));
+            }
+        }
+
+        // Edit Name
+        {
+            char *data = new char[NAME_LENGTH];
+            file.read(data, NAME_LENGTH);
+            QString editname=codec->toUnicode(data);
+            editWidgets.editname->setText(editname);
+            delete[] data;
+        }
+
+        // Song Name
+        {
+            char *data = new char[NAME_LENGTH];
+            file.read(data, NAME_LENGTH);
+            QString songname=codec->toUnicode(data);
+            editWidgets.songname->setText(songname);
+            delete[] data;
+        }
+
+        // Start Time
+        {
+            int time;
+            datastream >> time;
+            editWidgets.songstart->setValue(time);
+        }
+
+        editWidgets.tabedit->setEnabled(true);
     }
 };
 
@@ -3119,7 +3328,7 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(4);
@@ -3138,6 +3347,8 @@ public:
             }
             plaintextedit->insertPlainText(");");
         }
+
+        editWidgets.tabedit->setEnabled(false);
     }
     static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
     {

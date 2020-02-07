@@ -16,14 +16,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    DSC.cpp \
+    command.cpp \
+    diag_lipsync.cpp \
+    lipsync_v1_0.cpp \
+    lyrics.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    DSC.h \
+    command.h \
+    diag_lipsync.h \
+    lipsync.h \
+    lipsync_settings.h \
+    lyrics.h \
     mainwindow.h
 
 FORMS += \
+    diag_lipsync.ui \
     mainwindow.ui
 
 # Default rules for deployment.
@@ -33,3 +43,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+QMAKE_CXXFLAGS_RELEASE -= -O
+QMAKE_CXXFLAGS_RELEASE -= -O1
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE *= -O3
+QMAKE_LFLAGS_RELEASE -= -O1
+QMAKE_LFLAGS_RELEASE -= -O2
+QMAKE_LFLAGS_RELEASE *= -O3
