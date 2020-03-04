@@ -2113,7 +2113,7 @@ public:
         else if(opcodeString=="CHARA_POS_ADJUST") return 0x3E;
         else if(opcodeString=="SCENE_ROT") return 0x3F;
         else if(opcodeString=="MOT_SMOOTH") return 0x40;
-        else if(opcodeString=="PV_BRANCH_MODE") return 0x41;
+        //else if(opcodeString=="PV_BRANCH_MODE") return 0x41;
         else if(opcodeString=="DATA_CAMERA_START") return 0x42;
         else if(opcodeString=="MOVIE_PLAY") return 0x43;
         else if(opcodeString=="MOVIE_DISP") return 0x44;
@@ -2135,7 +2135,7 @@ public:
         else if(opcodeString=="TARGET_FLAG") return 0x54;
         else if(opcodeString=="ITEM_ANIM_ATTACH") return 0x55;
         else if(opcodeString=="SHADOW_RANGE") return 0x56;
-        else if(opcodeString=="HAND_SCALE") return 0x57;
+        /*else if(opcodeString=="HAND_SCALE") return 0x57;
         else if(opcodeString=="LIGHT_POS") return 0x58;
         else if(opcodeString=="FACE_TYPE") return 0x59;
         else if(opcodeString=="SHADOW_CAST") return 0x5A;
@@ -2154,7 +2154,7 @@ public:
         else if(opcodeString=="CHARA_LIGHT") return 0x67;
         else if(opcodeString=="STAGE_LIGHT") return 0x68;
         else if(opcodeString=="AGEAGE_CTRL") return 0x69;
-        else if(opcodeString=="PSE") return 0x6A;
+        else if(opcodeString=="PSE") return 0x6A;*/
         else return -1;
     }
     static QString getOpcodeString(int opcodeNumber)

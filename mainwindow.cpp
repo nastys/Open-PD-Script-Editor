@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QDataStream>
 #include <QInputDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -157,10 +158,15 @@ void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
     {
         QStringList command = commandlist.at(i).split('(');
         int opcode=DivaScriptOpcode_PDA::getOpcodeNumber(command.at(0));
-        if(opcode==-1) continue;
+        if(opcode==-1)
+        {
+            i++;
+            continue;
+        }
         QStringList parameters = command.at(1).split(')').at(0).split(',');
+        if(opcode==0x18/*LYRIC*/) parameters.removeLast();
         int paramcount=DivaScriptOpcode_PDA::getOpcodeParamCount(opcode);
-        while(parameters.length()>paramcount) parameters.removeLast();
+        while(parameters.length()>paramcount) parameters.removeFirst();
         QString finalcommand = command.at(0)+'(';
         for(int j=0; j<parameters.length(); j++)
         {
@@ -173,62 +179,120 @@ void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
     }
 }
 
-int getNewMouthID(int oldMouthID)
+int getNewID(int oldID, QString idcommand)
 {
-    switch(oldMouthID)
+    if(idcommand=="MOUTH_ANIM")
     {
-    case 6:
-        return 23;
-    case 0:
-        return 24;
-    case 2:
-        return 25;
-    case 3:
-        return 26;
-    case 4:
-        return 27;
-    case 8:
-        return 28;
-    case 10:
-        return 29;
-    case 11:
-        return 30;
-    case 1:
-        return 31;
-    case 5:
-        return 32;
-    case 7:
-        return 33;
+        switch(oldID)
+        {
+        case 6:
+            return 28;
+        case 0:
+            return 24;
+        case 2:
+            return 25;
+        case 3:
+            return 26;
+        case 4:
+            return 27;
+        case 8:
+            return 29;
+        case 10:
+            return 29;
+        case 9:
+            return 30;
+        case 1:
+            return 31;
+        case 5:
+            return 32;
+        case 7:
+            return 33;
 
-    case 23:
-        return 6;
-    case 24:
-        return 0;
-    case 25:
-        return 2;
-    case 26:
-        return 3;
-    case 27:
-        return 4;
-    case 28:
-        return 8;
-    case 29:
-        return 10;
-    case 30:
-        return 11;
-    case 31:
-        return 1;
-    case 32:
-        return 5;
-    case 33:
-        return 7;
-
-    default:
-        return oldMouthID;
+        case 23:
+            return 6;
+        case 24:
+            return 0;
+        case 25:
+            return 2;
+        case 26:
+            return 3;
+        case 27:
+            return 4;
+        case 28:
+            return 6;
+        case 29:
+            return 8;
+        case 30:
+            return 9;
+        case 31:
+            return 1;
+        case 32:
+            return 5;
+        case 33:
+            return 7;
+        }
     }
+    else if(idcommand=="EXPRESSION")
+    {
+        switch(oldID)
+        {
+        case 54:
+            return 6;
+        case 55:
+            return 8;
+        case 56:
+            return 9;
+        case 57:
+            return 10;
+        case 66:
+            return 1;
+        case 68:
+            return 5;
+
+        case 6:
+            return 54;
+        case 8:
+            return 55;
+        case 9:
+            return 56;
+        case 1:
+            return 66;
+        case 10:
+            return 57;
+        case 5:
+            return 68;
+        }
+    }
+    else if(idcommand=="HAND_ANIM")
+    {
+        switch(oldID)
+        {
+        case 0:
+            return 0;
+
+        case 1:
+            return 1;
+
+        case 11:
+            return 10;
+
+        case 10:
+            return 11;
+        }
+    }
+    else if(idcommand=="LOOK_ANIM")
+    {
+        if(oldID<11)
+            return oldID+11;
+
+        return oldID-11;
+    }
+
+    QMessageBox::warning(nullptr, "Warning", "Unknown "+idcommand+ " ID "+QString::number(oldID)+'.');
+    return oldID;
 }
 
-void MainWindow::on_action_FT_new_mouth_to_FT_old_mouth_triggered()
+void MainWindow::replaceID(QString idcommand)
 {
     QStringList commandlist;
     commandlist=ui->plainTextEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
@@ -236,7 +300,7 @@ void MainWindow::on_action_FT_new_mouth_to_FT_old_mouth_triggered()
     for(int i=0; i<commandlist.length(); i++)
     {
         QStringList command = commandlist.at(i).split('(');
-        if(command.at(0)!="MOUTH_ANIM")
+        if(command.at(0)!=idcommand)
         {
             ui->plainTextEdit->appendPlainText(commandlist.at(i)+';');
             continue;
@@ -244,7 +308,29 @@ void MainWindow::on_action_FT_new_mouth_to_FT_old_mouth_triggered()
         int opcode=DivaScriptOpcode_PDA::getOpcodeNumber(command.at(0));
         if(opcode==-1) continue;
         QStringList parameters = command.at(1).split(')').at(0).split(',');
-        parameters[2]=' '+QString::number(getNewMouthID(parameters.at(2).toInt()));
+
+        int offset=0;
+
+        if(idcommand=="HAND_ANIM"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked()==false)
+            offset=2;
+        else if(idcommand=="HAND_ANIM"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked())
+            offset=1;
+        else if(idcommand=="MOUTH_ANIM"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked()==false)
+            offset=2;
+        else if(idcommand=="MOUTH_ANIM"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked())
+            offset=0;
+        else if(idcommand=="EXPRESSION"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked()==false)
+            offset=1;
+        else if(idcommand=="EXPRESSION"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked())
+            offset=0;
+        else if(idcommand=="LOOK_ANIM"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked()==false)
+            offset=1;
+        else if(idcommand=="LOOK_ANIM"&&ui->actionI_have_already_converted_the_DSC_to_PDA_1_01->isChecked())
+            offset=0;
+
+        QString spc="";
+        if(offset>0) spc.append(' ');
+        parameters[offset]=spc+QString::number(getNewID(parameters.at(offset).toInt(), idcommand));
         QString finalcommand = command.at(0)+'(';
         for(int j=0; j<parameters.length(); j++)
         {
@@ -254,4 +340,33 @@ void MainWindow::on_action_FT_new_mouth_to_FT_old_mouth_triggered()
         finalcommand.append(");");
         ui->plainTextEdit->appendPlainText(finalcommand);
     }
+}
+
+void MainWindow::on_action_FT_new_mouth_to_FT_old_mouth_triggered()
+{
+    replaceID("MOUTH_ANIM");
+}
+
+void MainWindow::on_action_Look_FT_old_look_triggered()
+{
+    replaceID("LOOK_ANIM");
+}
+
+void MainWindow::on_action_Expressions_FT_old_expressions_triggered()
+{
+    replaceID("EXPRESSION");
+}
+
+void MainWindow::on_action_Hand_animations_FT_old_animations_triggered()
+{
+    replaceID("HAND_ANIM");
+}
+
+
+void MainWindow::on_actionAll_of_them_triggered()
+{
+    replaceID("MOUTH_ANIM");
+    replaceID("LOOK_ANIM");
+    replaceID("EXPRESSION");
+    replaceID("HAND_ANIM");
 }

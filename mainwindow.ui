@@ -284,7 +284,13 @@
     <addaction name="separator"/>
     <addaction name="actionPDA_2_00_to_PDA_1_01"/>
     <addaction name="separator"/>
+    <addaction name="actionRun_these_before_converting_to_PDA_1_01"/>
+    <addaction name="actionI_have_already_converted_the_DSC_to_PDA_1_01"/>
     <addaction name="action_FT_new_mouth_to_FT_old_mouth"/>
+    <addaction name="action_Look_FT_old_look"/>
+    <addaction name="action_Expressions_FT_old_expressions"/>
+    <addaction name="action_Hand_animations_FT_old_animations"/>
+    <addaction name="actionAll_of_them"/>
    </widget>
    <widget class="QMenu" name="menu_Lyrics">
     <property name="title">
@@ -330,6 +336,9 @@
   <action name="actionExit">
    <property name="text">
     <string>E&amp;xit</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
   <action name="actionOpen_DSC">
@@ -378,7 +387,46 @@
   </action>
   <action name="action_FT_new_mouth_to_FT_old_mouth">
    <property name="text">
-    <string>&amp;Mouth &lt;-&gt; FT old mouth</string>
+    <string>&amp;Mouth animations &lt;-&gt; FT old mouth animations</string>
+   </property>
+  </action>
+  <action name="action_Look_FT_old_look">
+   <property name="text">
+    <string>&amp;Look animations &lt;-&gt; FT old look animations</string>
+   </property>
+  </action>
+  <action name="action_Expressions_FT_old_expressions">
+   <property name="text">
+    <string>&amp;Expressions &lt;-&gt; FT old expressions</string>
+   </property>
+  </action>
+  <action name="actionRun_these_before_converting_to_PDA_1_01">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Run these when converting old PVs to PDA 1.01</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionI_have_already_converted_the_DSC_to_PDA_1_01">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>I have already converted the script to PDA 1.01</string>
+   </property>
+  </action>
+  <action name="actionAll_of_them">
+   <property name="text">
+    <string>All &amp;of them</string>
+   </property>
+  </action>
+  <action name="action_Hand_animations_FT_old_animations">
+   <property name="text">
+    <string>&amp;Hand animations &lt;-&gt; FT old animations</string>
    </property>
   </action>
  </widget>

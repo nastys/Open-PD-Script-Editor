@@ -36,8 +36,17 @@ private slots:
 
     void on_action_FT_new_mouth_to_FT_old_mouth_triggered();
 
+    void on_action_Look_FT_old_look_triggered();
+
+    void on_action_Expressions_FT_old_expressions_triggered();
+
+    void on_action_Hand_animations_FT_old_animations_triggered();
+
+    void on_actionAll_of_them_triggered();
+
 private:
     Ui::MainWindow *ui;
+    void replaceID(QString command);
 };
 
 #endif // MAINWINDOW_H
