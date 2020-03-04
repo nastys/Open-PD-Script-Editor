@@ -303,6 +303,9 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -316,6 +319,9 @@
   <action name="actionEnable_Big_Endian">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="application-octet-stream"/>
    </property>
    <property name="text">
     <string>&amp;Big Endian</string>
