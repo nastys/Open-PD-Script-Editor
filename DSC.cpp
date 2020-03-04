@@ -2095,7 +2095,7 @@ public:
         else if(opcodeString=="EDIT_DISP") return 0x2C;
         else if(opcodeString=="EDIT_HAND_ANIM") return 0x2D;
         else if(opcodeString=="AIM") return 0x2E;
-        else if(opcodeString=="HAND_ITEM") return 0x2F;
+        //else if(opcodeString=="HAND_ITEM") return 0x2F;
         else if(opcodeString=="EDIT_BLUSH") return 0x30;
         else if(opcodeString=="NEAR_CLIP") return 0x31;
         else if(opcodeString=="CLOTH_WET") return 0x32;
