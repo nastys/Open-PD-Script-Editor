@@ -281,6 +281,10 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionPSP_to_DT"/>
+    <addaction name="separator"/>
+    <addaction name="actionPDA_2_00_to_PDA_1_01"/>
+    <addaction name="separator"/>
+    <addaction name="action_FT_new_mouth_to_FT_old_mouth"/>
    </widget>
    <widget class="QMenu" name="menu_Lyrics">
     <property name="title">
@@ -348,7 +352,7 @@
   </action>
   <action name="actionPSP_to_DT">
    <property name="text">
-    <string>PSP to DT...</string>
+    <string>PSP to &amp;DT...</string>
    </property>
   </action>
   <action name="actionImport_VTT">
@@ -359,6 +363,16 @@
   <action name="actionLip_sync">
    <property name="text">
     <string>Lip &amp;Sync WebVTT...</string>
+   </property>
+  </action>
+  <action name="actionPDA_2_00_to_PDA_1_01">
+   <property name="text">
+    <string>PDA 2.00 to PD&amp;A 1.01</string>
+   </property>
+  </action>
+  <action name="action_FT_new_mouth_to_FT_old_mouth">
+   <property name="text">
+    <string>&amp;Mouth &lt;-&gt; FT old mouth</string>
    </property>
   </action>
  </widget>

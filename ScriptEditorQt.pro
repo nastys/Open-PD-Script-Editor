@@ -25,6 +25,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    EditWidgets.h \
     command.h \
     diag_lipsync.h \
     lipsync.h \

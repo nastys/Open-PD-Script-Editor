@@ -3,30 +3,11 @@
 
 #include <QMainWindow>
 
-#include <QTableWidget>
-#include <QListWidget>
-#include <QLineEdit>
-#include <QSpinBox>
+#include "EditWidgets.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
-struct EditWidgets
-{
-    QWidget *tabedit;
-    QTableWidget *bartable;
-    QListWidget *modulelist;
-    QListWidget *stagelist;
-    QListWidget *motionlist;
-    QListWidget *handitemlist;
-    QListWidget *effectlist;
-    QLineEdit *editname;
-    QLineEdit *songname;
-    QSpinBox *songstart;
-    QSpinBox *songend;
-    QSpinBox *buttonsfx;
-};
 
 class MainWindow : public QMainWindow
 {
@@ -50,6 +31,10 @@ private slots:
     void on_actionImport_VTT_triggered();
 
     void on_actionLip_sync_triggered();
+
+    void on_actionPDA_2_00_to_PDA_1_01_triggered();
+
+    void on_action_FT_new_mouth_to_FT_old_mouth_triggered();
 
 private:
     Ui::MainWindow *ui;
