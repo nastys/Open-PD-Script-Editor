@@ -165,6 +165,7 @@ void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
         }
         QStringList parameters = command.at(1).split(')').at(0).split(',');
         if(opcode==0x18/*LYRIC*/) parameters.removeLast();
+        else if(opcode==0x1F/*MOVE_CAMERA*/) {parameters.removeLast(); parameters.removeLast();}
         int paramcount=DivaScriptOpcode_PDA::getOpcodeParamCount(opcode);
         while(parameters.length()>paramcount) parameters.removeFirst();
         QString finalcommand = command.at(0)+'(';
@@ -236,6 +237,10 @@ int getNewID(int oldID, QString idcommand)
     {
         switch(oldID)
         {
+        case 52:
+            return 0;
+        case 53:
+            return 3;
         case 54:
             return 6;
         case 55:
@@ -244,40 +249,78 @@ int getNewID(int oldID, QString idcommand)
             return 9;
         case 57:
             return 10;
+        case 58:
+            return 11;
+        case 59:
+            return 12;
+        case 65:
+            return 2;
         case 66:
             return 1;
         case 68:
             return 5;
+        case 70:
+            return 7;
+        case 72:
+            return 13;
+        case 73:
+            return 14;
 
+        case 0:
+            return 52;
+        case 3:
+            return 53;
         case 6:
             return 54;
         case 8:
             return 55;
         case 9:
             return 56;
+        case 2:
+            return 65;
         case 1:
             return 66;
         case 10:
             return 57;
+        case 11:
+            return 58;
+        case 12:
+            return 59;
         case 5:
             return 68;
+        case 7:
+            return 70;
+        case 13:
+            return 72;
+        case 14:
+            return 73;
+
+        case 4:
+            return oldID;
         }
     }
     else if(idcommand=="HAND_ANIM")
     {
         switch(oldID)
         {
-        case 0:
-            return 0;
-
-        case 1:
-            return 1;
-
+        case 9:
+            return 8;
         case 11:
             return 10;
 
+        case 8:
+            return 9;
         case 10:
             return 11;
+
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            return oldID;
         }
     }
     else if(idcommand=="LOOK_ANIM")
@@ -369,7 +412,6 @@ void MainWindow::on_actionAll_of_them_triggered()
     replaceID("LOOK_ANIM");
     replaceID("EXPRESSION");
     replaceID("HAND_ANIM");
-    on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered();
 }
 
 void MainWindow::on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered()
