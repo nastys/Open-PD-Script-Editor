@@ -5,6 +5,7 @@
 #include <QDataStream>
 #include <QTextCodec>
 #include <QDebug>
+#include <QMessageBox>
 #include "mainwindow.h"
 
 class DivaScriptOpcode_F
@@ -186,7 +187,10 @@ public:
             case 0x51: return "EDIT_CAMERA";
             case 0x52: return "EDIT_MODE_SELECT";
             case 0x53: return "PV_END_FADEOUT";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -551,7 +555,10 @@ public:
             case 0x67: return "EDIT_CAMERA_BOX";
             case 0x68: return "EDIT_STAGE_PARAM";
             case 0x69: return "EDIT_CHANGE_FIELD";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -949,7 +956,10 @@ public:
             case 0x68: return "FOG_ENABLE";
             case 0x69: return "EDIT_CAMERA_BOX_";
             case 0x6A: return "EDIT_STAGE_PARAM";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -1437,7 +1447,10 @@ public:
             case 0x97: return "VR_LIVE_TRANSFORM";
             case 0x98: return "VR_LIVE_FLY";
             case 0x99: return "VR_LIVE_CHARA_VOICE";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -1878,7 +1891,10 @@ public:
             case 0x68: return "STAGE_LIGHT";
             case 0x69: return "AGEAGE_CTRL";
             case 0x6A: return "PSE";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -2084,7 +2100,7 @@ public:
         else if(opcodeString=="SHADOWPOS") return 0x21;
         else if(opcodeString=="EDIT_LYRIC") return 0x22;
         else if(opcodeString=="EDIT_TARGET") return 0x23;
-        else if(opcodeString=="EDIT_MOUTH") return 0x24;
+        /*else if(opcodeString=="EDIT_MOUTH") return 0x24;
         else if(opcodeString=="SET_CHARA") return 0x25;
         else if(opcodeString=="EDIT_MOVE") return 0x26;
         else if(opcodeString=="EDIT_SHADOW") return 0x27;
@@ -2095,7 +2111,7 @@ public:
         else if(opcodeString=="EDIT_DISP") return 0x2C;
         else if(opcodeString=="EDIT_HAND_ANIM") return 0x2D;
         else if(opcodeString=="AIM") return 0x2E;
-        //else if(opcodeString=="HAND_ITEM") return 0x2F;
+        else if(opcodeString=="HAND_ITEM") return 0x2F;
         else if(opcodeString=="EDIT_BLUSH") return 0x30;
         else if(opcodeString=="NEAR_CLIP") return 0x31;
         else if(opcodeString=="CLOTH_WET") return 0x32;
@@ -2113,7 +2129,7 @@ public:
         else if(opcodeString=="CHARA_POS_ADJUST") return 0x3E;
         else if(opcodeString=="SCENE_ROT") return 0x3F;
         else if(opcodeString=="MOT_SMOOTH") return 0x40;
-        //else if(opcodeString=="PV_BRANCH_MODE") return 0x41;
+        else if(opcodeString=="PV_BRANCH_MODE") return 0x41;
         else if(opcodeString=="DATA_CAMERA_START") return 0x42;
         else if(opcodeString=="MOVIE_PLAY") return 0x43;
         else if(opcodeString=="MOVIE_DISP") return 0x44;
@@ -2135,7 +2151,7 @@ public:
         else if(opcodeString=="TARGET_FLAG") return 0x54;
         else if(opcodeString=="ITEM_ANIM_ATTACH") return 0x55;
         else if(opcodeString=="SHADOW_RANGE") return 0x56;
-        /*else if(opcodeString=="HAND_SCALE") return 0x57;
+        else if(opcodeString=="HAND_SCALE") return 0x57;
         else if(opcodeString=="LIGHT_POS") return 0x58;
         else if(opcodeString=="FACE_TYPE") return 0x59;
         else if(opcodeString=="SHADOW_CAST") return 0x5A;
@@ -2197,7 +2213,7 @@ public:
             case 0x21: return "SHADOWPOS";
             case 0x22: return "EDIT_LYRIC";
             case 0x23: return "EDIT_TARGET";
-            case 0x24: return "EDIT_MOUTH";
+            /*case 0x24: return "EDIT_MOUTH";
             case 0x25: return "SET_CHARA";
             case 0x26: return "EDIT_MOVE";
             case 0x27: return "EDIT_SHADOW";
@@ -2267,8 +2283,11 @@ public:
             case 0x67: return "CHARA_LIGHT";
             case 0x68: return "STAGE_LIGHT";
             case 0x69: return "AGEAGE_CTRL";
-            case 0x6A: return "PSE";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            case 0x6A: return "PSE";*/
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -2310,8 +2329,8 @@ public:
             case 0x20: return 0;
             case 0x21: return 2;
             case 0x22: return 2;
-            case 0x23: return 5;
-            case 0x24: return 1;
+            case 0x23: return 11;
+            /*case 0x24: return 1;
             case 0x25: return 1;
             case 0x26: return 7;
             case 0x27: return 1;
@@ -2381,7 +2400,7 @@ public:
             case 0x67: return 3;
             case 0x68: return 3;
             case 0x69: return 8;
-            case 0x6A: return 2;
+            case 0x6A: return 2;*/
             default: return -1;
         }
     }
@@ -2514,7 +2533,10 @@ public:
             case 0x21: return "SHADOWPOS";
             case 0x22: return "NEAR_CLIP";
             case 0x23: return "CLOTH_WET";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -2745,7 +2767,10 @@ public:
             case 0x3D: return "ITEM_ANIM";
             case 0x3E: return "CHARA_POS_ADJUST";
             case 0x3F: return "SCENE_ROT";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
@@ -3234,7 +3259,10 @@ public:
             case 0x51: return "EDIT_CAMERA";
             case 0x52: return "EDIT_MODE_SELECT";
             case 0x53: return "PV_END_FADEOUT";
-            default: return "UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            default:
+            QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
+            QMessageBox::warning(nullptr, "Warning", opcode);
+            return opcode;
         }
     }
     static int getOpcodeParamCount(int opcodeNumber)
