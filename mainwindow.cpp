@@ -369,4 +369,37 @@ void MainWindow::on_actionAll_of_them_triggered()
     replaceID("LOOK_ANIM");
     replaceID("EXPRESSION");
     replaceID("HAND_ANIM");
+    on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered();
+}
+
+void MainWindow::on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered()
+{
+    QStringList commandlist;
+    commandlist=ui->plainTextEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
+    ui->plainTextEdit->clear();
+    for(int i=0; i<commandlist.length(); i++)
+    {
+        QStringList command = commandlist.at(i).split('(');
+        QString finalcommand;
+        if(command.at(0)=="TARGET_FLYING_TIME")
+        {
+            double tft = command.at(1).split(')').at(0).toInt();
+            int bpm=qRound(240000.00/tft);
+            finalcommand="BAR_TIME_SET("+QString::number(bpm)+", 3);";
+        }
+        else if(command.at(0)=="BAR_TIME_SET")
+        {
+            QStringList parameters = command.at(1).split(')').at(0).split(',');
+            double bpm = parameters.at(0).toInt();
+            double ts = parameters.at(1).toInt();
+            int tft=qRound(1000.0 / (bpm / ((ts + 1) * 60.0)));
+            finalcommand="TARGET_FLYING_TIME("+QString::number(tft)+");";
+        }
+        else
+        {
+            ui->plainTextEdit->appendPlainText(commandlist.at(i)+';');
+            continue;
+        }
+        ui->plainTextEdit->appendPlainText(finalcommand);
+    }
 }

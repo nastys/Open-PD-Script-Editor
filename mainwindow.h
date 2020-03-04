@@ -44,6 +44,8 @@ private slots:
 
     void on_actionAll_of_them_triggered();
 
+    void on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered();
+
 private:
     Ui::MainWindow *ui;
     void replaceID(QString command);

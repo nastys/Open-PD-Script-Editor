@@ -290,6 +290,7 @@
     <addaction name="action_Look_FT_old_look"/>
     <addaction name="action_Expressions_FT_old_expressions"/>
     <addaction name="action_Hand_animations_FT_old_animations"/>
+    <addaction name="actionBAR_TIME_SET_TARGET_FLYING_TIME"/>
     <addaction name="actionAll_of_them"/>
    </widget>
    <widget class="QMenu" name="menu_Lyrics">
@@ -327,7 +328,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="application-octet-stream"/>
+    <iconset theme="application-octet-stream">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Big Endian</string>
@@ -427,6 +429,11 @@
   <action name="action_Hand_animations_FT_old_animations">
    <property name="text">
     <string>&amp;Hand animations &lt;-&gt; FT old animations</string>
+   </property>
+  </action>
+  <action name="actionBAR_TIME_SET_TARGET_FLYING_TIME">
+   <property name="text">
+    <string>BAR_TIME_SET &lt;-&gt; TARGET_FLYING_TIME (lossy)</string>
    </property>
   </action>
  </widget>
