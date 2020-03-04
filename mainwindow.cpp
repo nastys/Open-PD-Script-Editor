@@ -26,8 +26,9 @@ void MainWindow::on_actionOpen_DSC_triggered()
 {
     QStringList filepaths=QFileDialog::getOpenFileNames();
     if(filepaths.isEmpty()) return;
-    QString format=QInputDialog::getItem(this, "Format", "DSC format:", {"Project DIVA", "Project DIVA 2nd/Extend", "Project DIVA 2nd/Extend/DT2/DTE edit", "Project DIVA Arcade/Dreamy Theater", "Project DIVA Arcade 2.00/Future Tone/MEGA39's", "Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend", "Project DIVA F 2nd", "Project DIVA X", "Project Mirai", "Miracle Girls Festival"}, 0, false);
-    if(format.isEmpty()||format=="CANCEL") return;
+    bool ok;
+    QString format=QInputDialog::getItem(this, "Format", "DSC format:", {"Project DIVA", "Project DIVA 2nd/Extend", "Project DIVA 2nd/Extend/DT2/DTE edit", "Project DIVA Arcade/Dreamy Theater", "Project DIVA Arcade 2.00/Future Tone/MEGA39's", "Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend", "Project DIVA F 2nd", "Project DIVA X", "Project Mirai", "Miracle Girls Festival"}, 0, false, &ok);
+    if(format.isEmpty()||!ok) return;
     QString filepath=filepaths.at(0);
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
@@ -48,9 +49,10 @@ void MainWindow::on_actionOpen_DSC_triggered()
 void MainWindow::on_actionSave_DSC_triggered()
 {
     QString filepath=QFileDialog::getSaveFileName();
-    if(filepath.isEmpty()||filepath=="CANCEL") return;
-    QString format=QInputDialog::getItem(this, "Format", "DSC format:", {"Project DIVA", "Project DIVA 2nd/Extend", "Project DIVA Arcade/Dreamy Theater", "Project DIVA Arcade 2.00/Future Tone/MEGA39's", "Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend", "Project DIVA F 2nd", "Project DIVA X", "Project Mirai", "Miracle Girls Festival"}, 0, false);
-    if(format.isEmpty()) return;
+    if(filepath.isEmpty()||filepath.isNull()) return;
+    bool ok;
+    QString format=QInputDialog::getItem(this, "Format", "DSC format:", {"Project DIVA", "Project DIVA 2nd/Extend", "Project DIVA Arcade/Dreamy Theater", "Project DIVA Arcade 2.00/Future Tone/MEGA39's", "Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend", "Project DIVA F 2nd", "Project DIVA X", "Project Mirai", "Miracle Girls Festival"}, 0, false, &ok);
+    if(format.isEmpty()||!ok) return;
     QFile file(filepath);
     file.open(QIODevice::WriteOnly);
     file.resize(0);
@@ -95,10 +97,10 @@ EditWidgets MainWindow::uiEditWidgets()
 void MainWindow::on_actionPSP_to_DT_triggered()
 {
     QString ifilepath=QFileDialog::getOpenFileName();
-    if(ifilepath.isEmpty()||ifilepath=="CANCEL") return;
+    if(ifilepath.isEmpty()||ifilepath.isNull()) return;
 
     QString ofilepath=QFileDialog::getSaveFileName();
-    if(ofilepath.isEmpty()||ofilepath=="CANCEL") return;
+    if(ofilepath.isEmpty()||ofilepath.isNull()) return;
 
     QFile ifile(ifilepath);
     ifile.open(QIODevice::ReadOnly);
@@ -125,7 +127,7 @@ void MainWindow::on_actionPSP_to_DT_triggered()
 void MainWindow::on_actionImport_VTT_triggered()
 {
     QString ifilepath=QFileDialog::getOpenFileName();
-    if(ifilepath.isEmpty()||ifilepath=="CANCEL") return;
+    if(ifilepath.isEmpty()||ifilepath.isNull()) return;
     QFile ifile(ifilepath);
     ifile.open(QIODevice::ReadOnly);
     fromVtt(ifile, ui->plainTextEdit, ui->plainTextEdit_db, ui->spinBox_pv->value());
@@ -135,7 +137,7 @@ void MainWindow::on_actionImport_VTT_triggered()
 void MainWindow::on_actionLip_sync_triggered()
 {
     QString ifilepath=QFileDialog::getOpenFileName();
-    if(ifilepath.isEmpty()||ifilepath=="CANCEL") return;
+    if(ifilepath.isEmpty()||ifilepath.isNull()) return;
     QFile ifile(ifilepath);
     ifile.open(QIODevice::ReadOnly);
 
