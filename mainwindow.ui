@@ -19,31 +19,213 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="QSpinBox" name="spinBox_pv">
-      <property name="minimum">
-       <number>0</number>
-      </property>
-      <property name="maximum">
-       <number>999</number>
-      </property>
-      <property name="value">
-       <number>1</number>
-      </property>
-     </widget>
-    </item>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>0</number>
+      </property>
+      <property name="documentMode">
+       <bool>true</bool>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>Script</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QPlainTextEdit" name="plainTextEdit"/>
+        <item row="0" column="2" rowspan="3">
+         <widget class="QFrame" name="frame_paramEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QTextEdit" name="textEdit"/>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QWidget" name="widget" native="true">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_13">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item row="0" column="4">
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Branch/Timestamp list</string>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-lista-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-lista-48.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Next timestamp</string>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-48.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEdit_time">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Timestamp</string>
+             </property>
+             <property name="text">
+              <string>00:00:00.00000</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QComboBox" name="comboBox_branch">
+             <property name="toolTip">
+              <string>PV branch</string>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <item>
+              <property name="text">
+               <string>Default</string>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</iconset>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Fail</string>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</iconset>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Success</string>
+              </property>
+              <property name="icon">
+               <iconset resource="res.qrc">
+                <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</iconset>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="pushButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Previous timestamp</string>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-rivolta-a-sinistra-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-rivolta-a-sinistra-48.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -272,7 +454,9 @@
     <addaction name="actionOpen_DSC"/>
     <addaction name="actionSave_DSC"/>
     <addaction name="actionEnable_Big_Endian"/>
+    <addaction name="actionSet_PV_slot"/>
     <addaction name="separator"/>
+    <addaction name="actionAbout"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menu_Convert">
@@ -302,7 +486,24 @@
     <addaction name="separator"/>
     <addaction name="actionLip_sync"/>
    </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>Ed&amp;it</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCo&amp;py"/>
+    <addaction name="actionPaste"/>
+    <addaction name="separator"/>
+    <addaction name="actionFind_and_replace"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_command"/>
+    <addaction name="actionRemove_command"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_Edit"/>
    <addaction name="menu_Convert"/>
    <addaction name="menu_Lyrics"/>
   </widget>
@@ -322,17 +523,34 @@
    <addaction name="actionOpen_DSC"/>
    <addaction name="actionSave_DSC"/>
    <addaction name="actionEnable_Big_Endian"/>
+   <addaction name="actionSet_PV_slot"/>
+   <addaction name="separator"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+   <addaction name="separator"/>
+   <addaction name="actionCut"/>
+   <addaction name="actionCo&amp;py"/>
+   <addaction name="actionPaste"/>
+   <addaction name="separator"/>
+   <addaction name="actionFind_and_replace"/>
+   <addaction name="separator"/>
+   <addaction name="actionAdd_command"/>
+   <addaction name="actionRemove_command"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionEnable_Big_Endian">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="application-octet-stream">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Big Endian</string>
+    <string>&amp;Big endian</string>
+   </property>
+   <property name="toolTip">
+    <string>Big endian</string>
    </property>
   </action>
   <action name="actionExit">
@@ -345,8 +563,8 @@
   </action>
   <action name="actionOpen_DSC">
    <property name="icon">
-    <iconset theme="fileopen">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-apri-cartella-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-apri-cartella-48.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Open DSC...</string>
@@ -357,8 +575,8 @@
   </action>
   <action name="actionSave_DSC">
    <property name="icon">
-    <iconset theme="filesave">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-48.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Save DSC...</string>
@@ -379,7 +597,10 @@
   </action>
   <action name="actionLip_sync">
    <property name="text">
-    <string>Lip &amp;Sync WebVTT...</string>
+    <string>Lip &amp;sync WebVTT...</string>
+   </property>
+   <property name="toolTip">
+    <string>Lip sync WebVTT</string>
    </property>
   </action>
   <action name="actionPDA_2_00_to_PDA_1_01">
@@ -418,7 +639,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>I have already converted the script to PDA 1.01</string>
+    <string>I have already converted the script to PDA 1.&amp;01</string>
    </property>
   </action>
   <action name="actionAll_of_them">
@@ -434,6 +655,158 @@
   <action name="actionBAR_TIME_SET_TARGET_FLYING_TIME">
    <property name="text">
     <string>BAR_TIME_SET &lt;-&gt; TARGET_FLYING_TIME (lossy)</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>&amp;About...</string>
+   </property>
+  </action>
+  <action name="actionSet_PV_slot">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-elenco-numerato-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-elenco-numerato-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;PV 001...</string>
+   </property>
+   <property name="toolTip">
+    <string>Set PV slot</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-annulla-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-annulla-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-ripeti-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-ripeti-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y, Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-taglia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-taglia-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cu&amp;t</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionCo&amp;py">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-copia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-copia-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cop&amp;y</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-incolla-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-incolla-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionFind_and_replace">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-trova-e-sostituisci-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-trova-e-sostituisci-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fi&amp;nd...</string>
+   </property>
+   <property name="toolTip">
+    <string>Find and replace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionAdd_command">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Add...</string>
+   </property>
+   <property name="toolTip">
+    <string>Add command</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+A</string>
+   </property>
+  </action>
+  <action name="actionRemove_command">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-rimuovi-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-rimuovi-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>Re&amp;move...</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove command</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
    </property>
   </action>
  </widget>

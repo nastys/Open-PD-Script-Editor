@@ -93,7 +93,7 @@ void LipSync_v1_0::getLyrics(QFile &vtt, QVector<lyric> &lyrics, lipsync_setting
     }
 }
 
-void LipSync_v1_0::lipsyncFromVtt(QPlainTextEdit *dscpte, QFile &vtt, lipsync_settings &settings)
+void LipSync_v1_0::lipsyncFromVtt(QTextEdit *dscpte, QFile &vtt, lipsync_settings &settings)
 {
     QStringList lyriccommandlist=dscpte->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "").filter("LYRIC(");
 
@@ -122,7 +122,7 @@ void LipSync_v1_0::lipsyncFromVtt(QPlainTextEdit *dscpte, QFile &vtt, lipsync_se
     dscpte->document()->clear();
     for(int i=0; i<commandlist.length(); i++)
         if(commandlist.at(i).isEmpty())
-            dscpte->appendPlainText(commandlist.at(i));
+            dscpte->append(commandlist.at(i));
         else
-            dscpte->appendPlainText(commandlist.at(i)+';');
+            dscpte->append(commandlist.at(i)+';');
 }

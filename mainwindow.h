@@ -46,6 +46,10 @@ private slots:
 
     void on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered();
 
+    void on_actionAbout_triggered();
+
+    void on_textEdit_cursorPositionChanged();
+
 private:
     Ui::MainWindow *ui;
     void replaceID(QString command);

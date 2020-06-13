@@ -5,7 +5,7 @@
 #include <QApplication>
 #include <QFile>
 #include <QDataStream>
-#include <QPlainTextEdit>
+#include <QTextEdit>
 
 EditWidgets uiEditWidgetsStub()
 {
@@ -34,11 +34,11 @@ int main(int argc, char *argv[])
         QFile input(argv[1]);
         input.open(QIODevice::ReadOnly);
         QDataStream qds(&input);
-        QPlainTextEdit *plainTextEdit = new QPlainTextEdit;
-        DivaScriptOpcode_FT::readAll(input, qds, plainTextEdit, uiEditWidgetsStub(), QDataStream::LittleEndian);
+        QTextEdit *textEdit = new QTextEdit;
+        DivaScriptOpcode_FT::readAll(input, qds, textEdit, uiEditWidgetsStub(), QDataStream::LittleEndian);
         input.close();
         QStringList commandlist;
-        commandlist=plainTextEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         QFile output(argv[2]);
         output.open(QIODevice::WriteOnly);
         output.resize(0);

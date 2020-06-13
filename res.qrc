@@ -2,4 +2,48 @@
     <qresource prefix="/2d">
         <file>PokeSlow.png</file>
     </qresource>
+    <qresource prefix="/icons/icons8/color">
+        <file>icons/icons8/color/icons8-salva-48.png</file>
+        <file>icons/icons8/color/icons8-salva-96.png</file>
+        <file>icons/icons8/color/icons8-salva-con-nome-48.png</file>
+        <file>icons/icons8/color/icons8-salva-con-nome-96.png</file>
+        <file>icons/icons8/color/icons8-apri-cartella-48.png</file>
+        <file>icons/icons8/color/icons8-apri-cartella-96.png</file>
+        <file>icons/icons8/color/icons8-creare-nuovo-48.png</file>
+        <file>icons/icons8/color/icons8-creare-nuovo-96.png</file>
+        <file>icons/icons8/color/icons8-freccia-48.png</file>
+        <file>icons/icons8/color/icons8-freccia-96.png</file>
+        <file>icons/icons8/color/icons8-freccia-rivolta-a-sinistra-48.png</file>
+        <file>icons/icons8/color/icons8-freccia-rivolta-a-sinistra-96.png</file>
+        <file>icons/icons8/color/icons8-lista-48.png</file>
+        <file>icons/icons8/color/icons8-lista-96.png</file>
+        <file>icons/icons8/color/icons8-trova-e-sostituisci-48.png</file>
+        <file>icons/icons8/color/icons8-trova-e-sostituisci-96.png</file>
+        <file>icons/icons8/color/icons8-fork-del-codice-48.png</file>
+        <file>icons/icons8/color/icons8-fork-del-codice-96.png</file>
+        <file>icons/icons8/color/icons8-elenco-numerato-48.png</file>
+        <file>icons/icons8/color/icons8-elenco-numerato-96.png</file>
+        <file>icons/icons8/color/icons8-file-binario-96.png</file>
+        <file>icons/icons8/color/icons8-file-binario-48.png</file>
+        <file>icons/icons8/color/icons8-cerchio-48.png</file>
+        <file>icons/icons8/color/icons8-cerchio-96.png</file>
+        <file>icons/icons8/color/icons8-triangolo-48.png</file>
+        <file>icons/icons8/color/icons8-triangolo-96.png</file>
+        <file>icons/icons8/color/icons8-eliminare-48.png</file>
+        <file>icons/icons8/color/icons8-eliminare-96.png</file>
+        <file>icons/icons8/color/icons8-aggiungi-48.png</file>
+        <file>icons/icons8/color/icons8-aggiungi-96.png</file>
+        <file>icons/icons8/color/icons8-rimuovi-48.png</file>
+        <file>icons/icons8/color/icons8-rimuovi-96.png</file>
+        <file>icons/icons8/color/icons8-ripeti-48.png</file>
+        <file>icons/icons8/color/icons8-ripeti-96.png</file>
+        <file>icons/icons8/color/icons8-annulla-48.png</file>
+        <file>icons/icons8/color/icons8-annulla-96.png</file>
+        <file>icons/icons8/color/icons8-copia-48.png</file>
+        <file>icons/icons8/color/icons8-copia-96.png</file>
+        <file>icons/icons8/color/icons8-incolla-48.png</file>
+        <file>icons/icons8/color/icons8-incolla-96.png</file>
+        <file>icons/icons8/color/icons8-taglia-48.png</file>
+        <file>icons/icons8/color/icons8-taglia-96.png</file>
+    </qresource>
 </RCC>

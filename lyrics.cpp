@@ -10,10 +10,10 @@ int getLyricLine(QStringList &lyrics, QString &lyric)
     return lyrics.size()-1;
 }
 
-void fromVtt(QFile &file, QPlainTextEdit *plaintextedit, QPlainTextEdit *pvdb, int pvnum)
+void fromVtt(QFile &file, QTextEdit *textedit, QPlainTextEdit *pvdb, int pvnum)
 {
     QStringList commandlist;
-    commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
         if(commandlist.at(i).simplified().startsWith("LYRIC("))
@@ -57,10 +57,10 @@ void fromVtt(QFile &file, QPlainTextEdit *plaintextedit, QPlainTextEdit *pvdb, i
 
     pvdb->clear();
     for(int h=0; h<maxinserted; h++) pvdb->appendPlainText("pv_"+QString("%1.lyric.%2="+lyricpvdb.at(h)).arg(pvnum, 3, 10, QChar('0')).arg(h+1, 3, 10, QChar('0')));
-    plaintextedit->document()->clear();
+    textedit->document()->clear();
     for(int i=0; i<commandlist.length(); i++)
         if(commandlist.at(i).isEmpty())
-            plaintextedit->appendPlainText(commandlist.at(i));
+            textedit->append(commandlist.at(i));
         else
-            plaintextedit->appendPlainText(commandlist.at(i)+';');
+            textedit->append(commandlist.at(i)+';');
 }

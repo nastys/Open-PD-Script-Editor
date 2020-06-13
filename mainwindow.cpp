@@ -9,6 +9,12 @@
 #include <QDataStream>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QTextBlock>
+#include <QCheckBox>
+#include <QScrollArea>
+
+static int pvslot=1;
+static bool isLoading=false;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,16 +40,18 @@ void MainWindow::on_actionOpen_DSC_triggered()
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
     QDataStream qds(&file);
-    if(format=="Project DIVA") DivaScriptOpcode_DIVA::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA 2nd/Extend") DivaScriptOpcode_DIVA2::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA 2nd/Extend/DT2/DTE edit") DivaScriptOpcode_DIVA2Edit::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade/Dreamy Theater") DivaScriptOpcode_PDA::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade 2.00/Future Tone/MEGA39's") DivaScriptOpcode_FT::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend") DivaScriptOpcode_F::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA F 2nd") DivaScriptOpcode_F2::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA X") DivaScriptOpcode_X::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project Mirai") DivaScriptOpcode_Mirai::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Miracle Girls Festival") DivaScriptOpcode_MGF::readAll(file, qds, ui->plainTextEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    isLoading=true;
+    if(format=="Project DIVA") DivaScriptOpcode_DIVA::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA 2nd/Extend") DivaScriptOpcode_DIVA2::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA 2nd/Extend/DT2/DTE edit") DivaScriptOpcode_DIVA2Edit::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA Arcade/Dreamy Theater") DivaScriptOpcode_PDA::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA Arcade 2.00/Future Tone/MEGA39's") DivaScriptOpcode_FT::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend") DivaScriptOpcode_F::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA F 2nd") DivaScriptOpcode_F2::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA X") DivaScriptOpcode_X::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project Mirai") DivaScriptOpcode_Mirai::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Miracle Girls Festival") DivaScriptOpcode_MGF::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    isLoading=false;
     file.close();
 }
 
@@ -59,15 +67,15 @@ void MainWindow::on_actionSave_DSC_triggered()
     file.resize(0);
     QDataStream qds(&file);
     qds.setByteOrder(ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    if(format=="Project DIVA") DivaScriptOpcode_DIVA::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA 2nd/Extend") DivaScriptOpcode_DIVA2::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade/Dreamy Theater") DivaScriptOpcode_PDA::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade 2.00/Future Tone/MEGA39's") DivaScriptOpcode_FT::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend") DivaScriptOpcode_F::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA F 2nd") DivaScriptOpcode_F2::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA X") DivaScriptOpcode_X::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project Mirai") DivaScriptOpcode_Mirai::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Miracle Girls Festival") DivaScriptOpcode_MGF::writeAll(file, qds, ui->plainTextEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    if(format=="Project DIVA") DivaScriptOpcode_DIVA::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA 2nd/Extend") DivaScriptOpcode_DIVA2::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA Arcade/Dreamy Theater") DivaScriptOpcode_PDA::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA Arcade 2.00/Future Tone/MEGA39's") DivaScriptOpcode_FT::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend") DivaScriptOpcode_F::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA F 2nd") DivaScriptOpcode_F2::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project DIVA X") DivaScriptOpcode_X::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Project Mirai") DivaScriptOpcode_Mirai::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    else if(format=="Miracle Girls Festival") DivaScriptOpcode_MGF::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
     file.close();
 }
 
@@ -131,7 +139,7 @@ void MainWindow::on_actionImport_VTT_triggered()
     if(ifilepath.isEmpty()||ifilepath.isNull()) return;
     QFile ifile(ifilepath);
     ifile.open(QIODevice::ReadOnly);
-    fromVtt(ifile, ui->plainTextEdit, ui->plainTextEdit_db, ui->spinBox_pv->value());
+    fromVtt(ifile, ui->textEdit, ui->plainTextEdit_db, pvslot);
     ifile.close();
 }
 
@@ -144,7 +152,7 @@ void MainWindow::on_actionLip_sync_triggered()
 
     diag_lipsync *diag = new diag_lipsync(this);
     bool result = diag->exec();
-    if(result) LipSync_v1_0::lipsyncFromVtt(ui->plainTextEdit, ifile, diag->settings);
+    if(result) LipSync_v1_0::lipsyncFromVtt(ui->textEdit, ifile, diag->settings);
     ifile.close();
     delete diag;
 }
@@ -152,8 +160,8 @@ void MainWindow::on_actionLip_sync_triggered()
 void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
 {
     QStringList commandlist;
-    commandlist=ui->plainTextEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
-    ui->plainTextEdit->clear();
+    commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    ui->textEdit->clear();
     for(int i=0; i<commandlist.length();)
     {
         QStringList command = commandlist.at(i).split('(');
@@ -175,7 +183,7 @@ void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
             finalcommand.append(parameters.at(j));
         }
         finalcommand.append(");");
-        ui->plainTextEdit->appendPlainText(finalcommand);
+        ui->textEdit->append(finalcommand);
         i++;
     }
 }
@@ -338,14 +346,14 @@ int getNewID(int oldID, QString idcommand)
 void MainWindow::replaceID(QString idcommand)
 {
     QStringList commandlist;
-    commandlist=ui->plainTextEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
-    ui->plainTextEdit->clear();
+    commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
+    ui->textEdit->clear();
     for(int i=0; i<commandlist.length(); i++)
     {
         QStringList command = commandlist.at(i).split('(');
         if(command.at(0)!=idcommand)
         {
-            ui->plainTextEdit->appendPlainText(commandlist.at(i)+';');
+            ui->textEdit->append(commandlist.at(i)+';');
             continue;
         }
         int opcode=DivaScriptOpcode_PDA::getOpcodeNumber(command.at(0));
@@ -381,7 +389,7 @@ void MainWindow::replaceID(QString idcommand)
             finalcommand.append(parameters.at(j));
         }
         finalcommand.append(");");
-        ui->plainTextEdit->appendPlainText(finalcommand);
+        ui->textEdit->append(finalcommand);
     }
 }
 
@@ -417,8 +425,8 @@ void MainWindow::on_actionAll_of_them_triggered()
 void MainWindow::on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered()
 {
     QStringList commandlist;
-    commandlist=ui->plainTextEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
-    ui->plainTextEdit->clear();
+    commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
+    ui->textEdit->clear();
     for(int i=0; i<commandlist.length(); i++)
     {
         QStringList command = commandlist.at(i).split('(');
@@ -439,9 +447,228 @@ void MainWindow::on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered()
         }
         else
         {
-            ui->plainTextEdit->appendPlainText(commandlist.at(i)+';');
+            ui->textEdit->append(commandlist.at(i)+';');
             continue;
         }
-        ui->plainTextEdit->appendPlainText(finalcommand);
+        ui->textEdit->append(finalcommand);
     }
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::about(this, "About Open PD Script Editor", "MIT License\nCopyright (c) 2020 nastys\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.");
+    QMessageBox i8about;
+    i8about.setTextFormat(Qt::RichText);
+    //i8about.setIcon();
+    i8about.setText("Icons by Icons8<br><a href='https://icons8.it/'>https://icons8.it</a>");
+    i8about.setStandardButtons(QMessageBox::Ok);
+    //i8about.setParent(this);
+    i8about.exec();
+    QMessageBox::aboutQt(this, "About Qt");
+}
+
+void MainWindow::on_textEdit_cursorPositionChanged()
+{
+    if(isLoading) return;
+
+    QLayout *curlayout = ui->frame_paramEdit->layout();
+    if ( curlayout != NULL )
+    {
+        QLayoutItem* item;
+        while ( ( item = curlayout->takeAt( 0 ) ) != NULL )
+        {
+            delete item->widget();
+            delete item;
+        }
+        delete curlayout->layout();
+    }
+
+    QTextEdit *edit = qobject_cast<QTextEdit *>(sender());
+    Q_ASSERT(edit);
+    QTextCursor cursor = edit->textCursor();
+    cursor.movePosition(QTextCursor::StartOfLine);
+
+    int line = 0;
+    while(cursor.positionInBlock()>0) {
+        cursor.movePosition(QTextCursor::Up);
+        line++;
+    }
+    QTextBlock block = cursor.block().previous();
+
+    while(block.isValid()) {
+        line += block.lineCount();
+        block = block.previous();
+    }
+
+    QScrollArea *scrollarea = new QScrollArea();
+    QWidget *frame = new QWidget(scrollarea);
+    QVBoxLayout *layout = new QVBoxLayout(frame);
+    scrollarea->setWidgetResizable(true);
+    scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
+    scrollarea->setFrameStyle(QFrame::Plain);
+    scrollarea->setWidget(frame);
+    ui->statusBar->showMessage("Line "+QString::number(line+1));
+    QString currline=ui->textEdit->document()->findBlockByLineNumber(line).text();
+    if(currline.endsWith(");")) // TODO make it game-specific instead of assuming PDA 2.00
+    {
+        if(currline.startsWith("TIME("))
+        {
+            QLabel *label = new QLabel("Time");
+            label->setStyleSheet("font-weight: bold");
+            layout->addWidget(label);
+            QFrame *separator = new QFrame;
+            separator->setFrameShape(QFrame::HLine);
+            separator->setFrameShadow(QFrame::Sunken);
+            layout->addWidget(new QLabel("Waits until this timestamp."));
+            layout->addWidget(separator);
+            QString timestr=currline.mid(5, currline.length()-7);
+            unsigned long long divatime=timestr.toULongLong(), seconds=0, minutes=0, hours=0;
+            for(unsigned long long i=0; i<divatime; i++)
+            {
+                seconds++;
+                if(seconds>=6000000)
+                {
+                    seconds=0;
+                    minutes++;
+                    if(minutes>=60)
+                    {
+                        minutes=0;
+                        hours++;
+                    }
+                }
+            }
+            QString strhours=QString::number(hours, 10);
+            if(strhours.length()<2) strhours.prepend('0');
+            QString strminutes=QString::number(minutes, 10);
+            if(strminutes.length()<2) strminutes.prepend('0');
+            QString strseconds=QString::number(seconds, 10);
+            while(strseconds.length()<6) strseconds.prepend('0');
+            strseconds.insert(2, '.');
+            QString timestr_fn=strhours+':'+strminutes+':'+strseconds;
+            ui->lineEdit_time->setText(timestr_fn); // TODO check the time of any command and update lineEdit_time accordingly
+
+            layout->addWidget(new QLabel("Hours:"));
+            QSpinBox *sb_hours = new QSpinBox;
+            sb_hours->setValue(hours);
+            layout->addWidget(sb_hours);
+            QSpinBox *sb_minutes = new QSpinBox;
+            sb_minutes->setRange(0, 59);
+            sb_minutes->setValue(minutes);
+            layout->addWidget(new QLabel("Minutes:"));
+            layout->addWidget(sb_minutes);
+            QSpinBox *sb_seconds = new QSpinBox;
+            sb_seconds->setRange(0, 5999999);
+            sb_seconds->setValue(seconds);
+            layout->addWidget(new QLabel("Nanoseconds:"));
+            layout->addWidget(sb_seconds);
+            QCheckBox *cb_move = new QCheckBox;
+            cb_move->setText("Move commands");
+            layout->addWidget(cb_move);
+            layout->addStretch(1);
+            QPushButton *pb_apply = new QPushButton;
+            pb_apply->setText("Apply");
+            layout->addWidget(pb_apply);
+        }
+        else if(currline.startsWith("TARGET("))
+        {
+            QStringList par_cs=currline.chopped(2).split('(');
+            if(par_cs.length()>=2)
+            {
+                QStringList parameters_str=par_cs.at(1).split(',');
+
+                QLabel *label = new QLabel("Target");
+                label->setStyleSheet("font-weight: bold");
+                layout->addWidget(label);
+                QFrame *separator = new QFrame;
+                separator->setFrameShape(QFrame::HLine);
+                separator->setFrameShadow(QFrame::Sunken);
+                layout->addWidget(new QLabel("Displays a target."));
+                layout->addWidget(separator);
+
+                layout->addWidget(new QLabel("Type:"));
+                QComboBox *typecb = new QComboBox;
+                if(parameters_str.length()>=1)
+                {
+                    typecb->addItem(QIcon("qrc:/icons/icons8/color/icons8-cerchio-48.png"), "Circle"); // TODO fix icon
+                }
+                layout->addWidget(typecb);
+
+                layout->addWidget(new QLabel("Horizontal position:"));
+                QSpinBox *posx = new QSpinBox;
+                posx->setRange(0, 128000);
+                if(parameters_str.length()>=2) posx->setValue(parameters_str.at(1).toInt());
+                layout->addWidget(posx);
+
+                layout->addWidget(new QLabel("Vertical position:"));
+                QSpinBox *posy = new QSpinBox;
+                posy->setRange(0, 72000);
+                if(parameters_str.length()>=3) posy->setValue(parameters_str.at(2).toInt());
+                layout->addWidget(posy);
+
+                layout->addWidget(new QLabel("Angle:"));
+                QSpinBox *angle = new QSpinBox;
+                angle->setRange(INT_MIN, INT_MAX);
+                if(parameters_str.length()>=4) angle->setValue(parameters_str.at(3).toInt());
+                layout->addWidget(angle);
+
+                layout->addWidget(new QLabel("Distance:"));
+                QSpinBox *distance = new QSpinBox;
+                distance->setRange(INT_MIN, INT_MAX);
+                if(parameters_str.length()>=5) distance->setValue(parameters_str.at(4).toInt());
+                layout->addWidget(distance);
+
+                layout->addWidget(new QLabel("Amplitude:"));
+                QSpinBox *amplitude = new QSpinBox;
+                amplitude->setRange(INT_MIN, INT_MAX);
+                if(parameters_str.length()>=6) amplitude->setValue(parameters_str.at(5).toInt());
+                layout->addWidget(amplitude);
+
+                layout->addWidget(new QLabel("Wave count:"));
+                QSpinBox *wavecount = new QSpinBox;
+                wavecount->setRange(INT_MIN, INT_MAX);
+                if(parameters_str.length()>=7) wavecount->setValue(parameters_str.at(6).toInt());
+                layout->addWidget(wavecount);
+
+                QPushButton *pb_apply = new QPushButton;
+                pb_apply->setText("Apply");
+                layout->addWidget(pb_apply);
+            }
+        }
+        else
+        {
+            QStringList par_cs=currline.chopped(2).split('(');
+            if(par_cs.length()>=2)
+            {
+                QLabel *label = new QLabel(par_cs.at(0));
+                label->setStyleSheet("font-weight: bold");
+                layout->addWidget(label);
+                QFrame *separator = new QFrame;
+                separator->setFrameShape(QFrame::HLine);
+                separator->setFrameShadow(QFrame::Sunken);
+                layout->addWidget(separator);
+                QStringList parameters_str=par_cs.at(1).split(',');
+                if(parameters_str.length()>0&&!(parameters_str.at(0).isNull()||parameters_str.at(0).isEmpty()))
+                {
+                    for(int i=0; i<parameters_str.length(); i++)
+                    {
+                        layout->addWidget(new QLabel("Parameter "+QString::number(i+1)+':'));
+                        QSpinBox *spinbox=new QSpinBox;
+                        spinbox->setRange(INT_MIN, INT_MAX);
+                        spinbox->setValue(parameters_str.at(i).toInt());
+                        layout->addWidget(spinbox);
+                    }
+                    layout->addStretch(1);
+                    QPushButton *pb_apply = new QPushButton;
+                    pb_apply->setText("Apply");
+                    layout->addWidget(pb_apply);
+                }
+                else layout->addStretch(1);
+            }
+        }
+    }
+    QLayout *container = new QGridLayout;
+    container->setMargin(0);
+    container->setContentsMargins(0, 0, 0, 0);
+    container->addWidget(scrollarea);
+    ui->frame_paramEdit->setLayout(container);
 }

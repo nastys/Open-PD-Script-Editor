@@ -1,6 +1,6 @@
 #include <QString>
 #include <QFile>
-#include <QPlainTextEdit>
+#include <QTextEdit>
 #include <QTableWidget>
 #include <QDataStream>
 #include <QTextCodec>
@@ -284,35 +284,35 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(4);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream << 302121504;
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -443,6 +443,11 @@ public:
         else if(opcodeString=="EDIT_CAMERA_BOX") return 0x67;
         else if(opcodeString=="EDIT_STAGE_PARAM") return 0x68;
         else if(opcodeString=="EDIT_CHANGE_FIELD") return 0x69;
+        else if(opcodeString=="MIKUDAYO_ADJUST") return 0x6A;
+        else if(opcodeString=="LYRIC_2") return 0x6B;
+        else if(opcodeString=="LYRIC_READ") return 0x6C;
+        else if(opcodeString=="LYRIC_READ_2") return 0x6D;
+        else if(opcodeString=="ANNOTATION") return 0x6E;
         else return -1;
     }
     static QString getOpcodeString(int opcodeNumber)
@@ -555,6 +560,11 @@ public:
             case 0x67: return "EDIT_CAMERA_BOX";
             case 0x68: return "EDIT_STAGE_PARAM";
             case 0x69: return "EDIT_CHANGE_FIELD";
+            case 0x6A: return "MIKUDAYO_ADJUST";
+            case 0x6B: return "LYRIC_2";
+            case 0x6C: return "LYRIC_READ";
+            case 0x6D: return "LYRIC_READ_2";
+            case 0x6E: return "ANNOTATION";
             default:
             QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
             QMessageBox::warning(nullptr, "Warning", opcode);
@@ -671,40 +681,45 @@ public:
             case 0x67: return 112;
             case 0x68: return 1;
             case 0x69: return 1;
+            case 0x6A: return 7;
+            case 0x6B: return 2;
+            case 0x6C: return 2;
+            case 0x6D: return 2;
+            case 0x6E: return 5;
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(72);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
             if((uibyteorder==QDataStream::LittleEndian&&opc==1128681285)||(uibyteorder==QDataStream::BigEndian&&opc==1162823235)) break; // "EOFC"
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(QDataStream::ByteOrder::LittleEndian);
         datastream << 1129535056 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0;
         datastream.setByteOrder(uibyteorder);
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -841,8 +856,14 @@ public:
         else if(opcodeString=="EVENT_JUDGE") return 0x66;
         else if(opcodeString=="TOON__EDGE") return 0x67;
         else if(opcodeString=="FOG_ENABLE") return 0x68;
-        else if(opcodeString=="EDIT_CAMERA_BOX_") return 0x69;
+        else if(opcodeString=="EDIT_CAMERA_BOX") return 0x69;
         else if(opcodeString=="EDIT_STAGE_PARAM") return 0x6A;
+        else if(opcodeString=="EDIT_CHANGE_FIELD") return 0x6B;
+        else if(opcodeString=="CROSSFADE") return 0x6C;
+        else if(opcodeString=="SUBFRAMERENDER") return 0x6D;
+        else if(opcodeString=="EVENT_JUDGE") return 0x6E;
+        else if(opcodeString=="TOON＿EDGE") return 0x6F;
+        else if(opcodeString=="FOG_ENABLE") return 0x70;
         else return -1;
     }
     static QString getOpcodeString(int opcodeNumber)
@@ -950,12 +971,14 @@ public:
             case 0x62: return "ITEM_ALPHA";
             case 0x63: return "MOVIE_CUT";
             case 0x64: return "CROSSFADE";
-            case 0x65: return "SUBFRAMERENDER";
-            case 0x66: return "EVENT_JUDGE";
-            case 0x67: return "TOON__EDGE";
-            case 0x68: return "FOG_ENABLE";
-            case 0x69: return "EDIT_CAMERA_BOX_";
+            case 0x69: return "EDIT_CAMERA_BOX";
             case 0x6A: return "EDIT_STAGE_PARAM";
+            case 0x6B: return "EDIT_CHANGE_FIELD";
+            case 0x6C: return "CROSSFADE";
+            case 0x6D: return "SUBFRAMERENDERER";
+            case 0x6E: return "EVENT_JUDGE";
+            case 0x6F: return "TOON＿EDGE";
+            case 0x70: return "FOG_ENABLE";
             default:
             QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
             QMessageBox::warning(nullptr, "Warning", opcode);
@@ -1073,40 +1096,46 @@ public:
             case 0x68: return 1;
             case 0x69: return 36;
             case 0x6A: return 2;
+            case 0x6B: return 1;
+            case 0x6C: return 1;
+            case 0x6D: return 1;
+            case 0x6E: return 1;
+            case 0x6F: return 1;
+            case 0x70: return 1;
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(72);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
             if((uibyteorder==QDataStream::LittleEndian&&opc==1128681285)||(uibyteorder==QDataStream::BigEndian&&opc==1162823235)) break; // "EOFC"
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(QDataStream::ByteOrder::LittleEndian);
         datastream << 1129535056 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0;
         datastream.setByteOrder(uibyteorder);
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -1220,7 +1249,7 @@ public:
         else if(opcodeString=="CREDIT_TITLE") return 0x54;
         else if(opcodeString=="BAR_POINT") return 0x55;
         else if(opcodeString=="BEAT_POINT") return 0x56;
-        else if(opcodeString=="RESERVE") return 0x57;
+        else if(opcodeString=="RESERVE0") return 0x57;
         else if(opcodeString=="PV_AUTH_LIGHT_PRIORITY") return 0x58;
         else if(opcodeString=="PV_CHARA_LIGHT") return 0x59;
         else if(opcodeString=="PV_STAGE_LIGHT") return 0x5A;
@@ -1250,43 +1279,52 @@ public:
         else if(opcodeString=="LIGHT_AUTH") return 0x72;
         else if(opcodeString=="FADE") return 0x73;
         else if(opcodeString=="SET_STAGE_EFFECT_ENV") return 0x74;
-        else if(opcodeString=="COMMON_EFFECT_AET_FRONT") return 0x75;
-        else if(opcodeString=="COMMON_EFFECT_AET_FRONT_LOW") return 0x76;
-        else if(opcodeString=="COMMON_EFFECT_PARTICLE") return 0x77;
-        else if(opcodeString=="SONG_EFFECT_ALPHA_SORT") return 0x78;
-        else if(opcodeString=="LOOK_CAMERA_FACE_LIMIT") return 0x79;
-        else if(opcodeString=="ITEM_LIGHT") return 0x7A;
-        else if(opcodeString=="CHARA_EFFECT") return 0x7B;
-        else if(opcodeString=="MARKER") return 0x7C;
-        else if(opcodeString=="CHARA_EFFECT_CHARA_LIGHT") return 0x7D;
-        else if(opcodeString=="ENABLE_COMMON_LIGHT_TO_CHARA") return 0x7E;
-        else if(opcodeString=="ENABLE_FXAA") return 0x7F;
-        else if(opcodeString=="ENABLE_TEMPORAL_AA") return 0x80;
-        else if(opcodeString=="ENABLE_REFLECTION") return 0x81;
-        else if(opcodeString=="BANK_BRANCH") return 0x82;
-        else if(opcodeString=="BANK_END") return 0x83;
-        else if(opcodeString=="VR_LIVE_MOVIE") return 0x84;
-        else if(opcodeString=="VR_CHEER") return 0x85;
-        else if(opcodeString=="VR_CHARA_PSMOVE") return 0x86;
-        else if(opcodeString=="VR_MOVE_PATH") return 0x87;
-        else if(opcodeString=="VR_SET_BASE") return 0x88;
-        else if(opcodeString=="VR_TECH_DEMO_EFFECT") return 0x89;
-        else if(opcodeString=="VR_TRANSFORM") return 0x8A;
-        else if(opcodeString=="GAZE") return 0x8B;
-        else if(opcodeString=="TECH_DEMO_GESUTRE") return 0x8C;
-        else if(opcodeString=="VR_CHEMICAL_LIGHT_COLOR") return 0x8D;
-        else if(opcodeString=="VR_LIVE_MOB") return 0x8E;
-        else if(opcodeString=="VR_LIVE_HAIR_OSAGE") return 0x8F;
-        else if(opcodeString=="VR_LIVE_LOOK_CAMERA") return 0x90;
-        else if(opcodeString=="VR_LIVE_CHEER") return 0x91;
-        else if(opcodeString=="VR_LIVE_GESTURE") return 0x92;
-        else if(opcodeString=="VR_LIVE_CLONE") return 0x93;
-        else if(opcodeString=="VR_LOOP_EFFECT") return 0x94;
-        else if(opcodeString=="VR_LIVE_ONESHOT_EFFECT") return 0x95;
-        else if(opcodeString=="VR_LIVE_PRESENT") return 0x96;
-        else if(opcodeString=="VR_LIVE_TRANSFORM") return 0x97;
-        else if(opcodeString=="VR_LIVE_FLY") return 0x98;
-        else if(opcodeString=="VR_LIVE_CHARA_VOICE") return 0x99;
+        else if(opcodeString=="RESERVE1") return 0x75;
+        else if(opcodeString=="COMMON_EFFECT_AET_FRONT") return 0x76;
+        else if(opcodeString=="COMMON_EFFECT_AET_FRONT_LOW") return 0x77;
+        else if(opcodeString=="COMMON_EFFECT_PARTICLE") return 0x78;
+        else if(opcodeString=="SONG_EFFECT_ALPHA_SORT") return 0x79;
+        else if(opcodeString=="LOOK_CAMERA_FACE_LIMIT") return 0x7A;
+        else if(opcodeString=="ITEM_LIGHT") return 0x7B;
+        else if(opcodeString=="CHARA_EFFECT") return 0x7C;
+        else if(opcodeString=="MARKER") return 0x7D;
+        else if(opcodeString=="CHARA_EFFECT_CHARA_LIGHT") return 0x7E;
+        else if(opcodeString=="ENABLE_COMMON_LIGHT_TO_CHARA") return 0x7F;
+        else if(opcodeString=="ENABLE_FXAA") return 0x80;
+        else if(opcodeString=="ENABLE_TEMPORAL_AA") return 0x81;
+        else if(opcodeString=="ENABLE_REFLECTION") return 0x82;
+        else if(opcodeString=="BANK_BRANCH") return 0x83;
+        else if(opcodeString=="BANK_END") return 0x84;
+        else if(opcodeString=="NULL0") return 0x85;
+        else if(opcodeString=="NULL1") return 0x86;
+        else if(opcodeString=="NULL2") return 0x87;
+        else if(opcodeString=="NULL3") return 0x88;
+        else if(opcodeString=="NULL4") return 0x89;
+        else if(opcodeString=="NULL5") return 0x8A;
+        else if(opcodeString=="NULL6") return 0x8B;
+        else if(opcodeString=="NULL7") return 0x8C;
+        else if(opcodeString=="VR_LIVE_MOVIE") return 0x8D;
+        else if(opcodeString=="VR_CHEER") return 0x8E;
+        else if(opcodeString=="VR_CHARA_PSMOVE") return 0x8F;
+        else if(opcodeString=="VR_MOVE_PATH") return 0x90;
+        else if(opcodeString=="VR_SET_BASE") return 0x91;
+        else if(opcodeString=="VR_TECH_DEMO_EFFECT") return 0x92;
+        else if(opcodeString=="VR_TRANSFORM") return 0x93;
+        else if(opcodeString=="GAZE") return 0x94;
+        else if(opcodeString=="TECH_DEMO_GESUTRE") return 0x95;
+        else if(opcodeString=="VR_CHEMICAL_LIGHT_COLOR") return 0x96;
+        else if(opcodeString=="VR_LIVE_MOB") return 0x97;
+        else if(opcodeString=="VR_LIVE_HAIR_OSAGE") return 0x98;
+        else if(opcodeString=="VR_LIVE_LOOK_CAMERA") return 0x99;
+        else if(opcodeString=="VR_LIVE_CHEER") return 0x9A;
+        else if(opcodeString=="VR_LIVE_GESTURE") return 0x9B;
+        else if(opcodeString=="VR_LIVE_CLONE") return 0x9C;
+        else if(opcodeString=="VR_LOOP_EFFECT") return 0x9D;
+        else if(opcodeString=="VR_LIVE_ONESHOT_EFFECT") return 0x9E;
+        else if(opcodeString=="VR_LIVE_PRESENT") return 0x9F;
+        else if(opcodeString=="VR_LIVE_TRANSFORM") return 0xA0;
+        else if(opcodeString=="VR_LIVE_FLY") return 0xA1;
+        else if(opcodeString=="VR_LIVE_CHARA_VOICE") return 0xA2;
         else return -1;
     }
     static QString getOpcodeString(int opcodeNumber)
@@ -1380,7 +1418,7 @@ public:
             case 0x54: return "CREDIT_TITLE";
             case 0x55: return "BAR_POINT";
             case 0x56: return "BEAT_POINT";
-            case 0x57: return "RESERVE";
+            case 0x57: return "RESERVE0";
             case 0x58: return "PV_AUTH_LIGHT_PRIORITY";
             case 0x59: return "PV_CHARA_LIGHT";
             case 0x5A: return "PV_STAGE_LIGHT";
@@ -1410,43 +1448,52 @@ public:
             case 0x72: return "LIGHT_AUTH";
             case 0x73: return "FADE";
             case 0x74: return "SET_STAGE_EFFECT_ENV";
-            case 0x75: return "COMMON_EFFECT_AET_FRONT";
-            case 0x76: return "COMMON_EFFECT_AET_FRONT_LOW";
-            case 0x77: return "COMMON_EFFECT_PARTICLE";
-            case 0x78: return "SONG_EFFECT_ALPHA_SORT";
-            case 0x79: return "LOOK_CAMERA_FACE_LIMIT";
-            case 0x7A: return "ITEM_LIGHT";
-            case 0x7B: return "CHARA_EFFECT";
-            case 0x7C: return "MARKER";
-            case 0x7D: return "CHARA_EFFECT_CHARA_LIGHT";
-            case 0x7E: return "ENABLE_COMMON_LIGHT_TO_CHARA";
-            case 0x7F: return "ENABLE_FXAA";
-            case 0x80: return "ENABLE_TEMPORAL_AA";
-            case 0x81: return "ENABLE_REFLECTION";
-            case 0x82: return "BANK_BRANCH";
-            case 0x83: return "BANK_END";
-            case 0x84: return "VR_LIVE_MOVIE";
-            case 0x85: return "VR_CHEER";
-            case 0x86: return "VR_CHARA_PSMOVE";
-            case 0x87: return "VR_MOVE_PATH";
-            case 0x88: return "VR_SET_BASE";
-            case 0x89: return "VR_TECH_DEMO_EFFECT";
-            case 0x8A: return "VR_TRANSFORM";
-            case 0x8B: return "GAZE";
-            case 0x8C: return "TECH_DEMO_GESUTRE";
-            case 0x8D: return "VR_CHEMICAL_LIGHT_COLOR";
-            case 0x8E: return "VR_LIVE_MOB";
-            case 0x8F: return "VR_LIVE_HAIR_OSAGE";
-            case 0x90: return "VR_LIVE_LOOK_CAMERA";
-            case 0x91: return "VR_LIVE_CHEER";
-            case 0x92: return "VR_LIVE_GESTURE";
-            case 0x93: return "VR_LIVE_CLONE";
-            case 0x94: return "VR_LOOP_EFFECT";
-            case 0x95: return "VR_LIVE_ONESHOT_EFFECT";
-            case 0x96: return "VR_LIVE_PRESENT";
-            case 0x97: return "VR_LIVE_TRANSFORM";
-            case 0x98: return "VR_LIVE_FLY";
-            case 0x99: return "VR_LIVE_CHARA_VOICE";
+            case 0x75: return "RESERVE1";
+            case 0x76: return "COMMON_EFFECT_AET_FRONT";
+            case 0x77: return "COMMON_EFFECT_AET_FRONT_LOW";
+            case 0x78: return "COMMON_EFFECT_PARTICLE";
+            case 0x79: return "SONG_EFFECT_ALPHA_SORT";
+            case 0x7A: return "LOOK_CAMERA_FACE_LIMIT";
+            case 0x7B: return "ITEM_LIGHT";
+            case 0x7C: return "CHARA_EFFECT";
+            case 0x7D: return "MARKER";
+            case 0x7E: return "CHARA_EFFECT_CHARA_LIGHT";
+            case 0x7F: return "ENABLE_COMMON_LIGHT_TO_CHARA";
+            case 0x80: return "ENABLE_FXAA";
+            case 0x81: return "ENABLE_TEMPORAL_AA";
+            case 0x82: return "ENABLE_REFLECTION";
+            case 0x83: return "BANK_BRANCH";
+            case 0x84: return "BANK_END";
+            case 0x85: return "NULL0";
+            case 0x86: return "NULL1";
+            case 0x87: return "NULL2";
+            case 0x88: return "NULL3";
+            case 0x89: return "NULL4";
+            case 0x8A: return "NULL5";
+            case 0x8B: return "NULL6";
+            case 0x8C: return "NULL7";
+            case 0x8D: return "VR_LIVE_MOVIE";
+            case 0x8E: return "VR_CHEER";
+            case 0x8F: return "VR_CHARA_PSMOVE";
+            case 0x90: return "VR_MOVE_PATH";
+            case 0x91: return "VR_SET_BASE";
+            case 0x92: return "VR_TECH_DEMO_EFFECT";
+            case 0x93: return "VR_TRANSFORM";
+            case 0x94: return "GAZE";
+            case 0x95: return "TECH_DEMO_GESUTRE";
+            case 0x96: return "VR_CHEMICAL_LIGHT_COLOR";
+            case 0x97: return "VR_LIVE_MOB";
+            case 0x98: return "VR_LIVE_HAIR_OSAGE";
+            case 0x99: return "VR_LIVE_LOOK_CAMERA";
+            case 0x9A: return "VR_LIVE_CHEER";
+            case 0x9B: return "VR_LIVE_GESTURE";
+            case 0x9C: return "VR_LIVE_CLONE";
+            case 0x9D: return "VR_LOOP_EFFECT";
+            case 0x9E: return "VR_LIVE_ONESHOT_EFFECT";
+            case 0x9F: return "VR_LIVE_PRESENT";
+            case 0xA0: return "VR_LIVE_TRANSFORM";
+            case 0xA1: return "VR_LIVE_FLY";
+            case 0xA2: return "VR_LIVE_CHARA_VOICE";
             default:
             QString opcode="UNKNOWN_OPCODE_0x"+QString::number(opcodeNumber, 16);
             QMessageBox::warning(nullptr, "Warning", opcode);
@@ -1577,13 +1624,13 @@ public:
             case 0x75: return 2;
             case 0x76: return 2;
             case 0x77: return 2;
-            case 0x78: return 3;
-            case 0x79: return 5;
-            case 0x7A: return 3;
+            case 0x78: return 2;
+            case 0x79: return 3;
+            case 0x7A: return 5;
             case 0x7B: return 3;
-            case 0x7C: return 2;
-            case 0x7D: return 3;
-            case 0x7E: return 2;
+            case 0x7C: return 3;
+            case 0x7D: return 2;
+            case 0x7E: return 3;
             case 0x7F: return 2;
             case 0x80: return 2;
             case 0x81: return 2;
@@ -1599,52 +1646,61 @@ public:
             case 0x8B: return 2;
             case 0x8C: return 2;
             case 0x8D: return 2;
-            case 0x8E: return 5;
-            case 0x8F: return 9;
-            case 0x90: return 9;
-            case 0x91: return 5;
-            case 0x92: return 3;
-            case 0x93: return 7;
-            case 0x94: return 7;
-            case 0x95: return 6;
-            case 0x96: return 9;
+            case 0x8E: return 2;
+            case 0x8F: return 2;
+            case 0x90: return 2;
+            case 0x91: return 2;
+            case 0x92: return 2;
+            case 0x93: return 2;
+            case 0x94: return 2;
+            case 0x95: return 2;
+            case 0x96: return 2;
             case 0x97: return 5;
-            case 0x98: return 5;
-            case 0x99: return 2;
+            case 0x98: return 9;
+            case 0x99: return 9;
+            case 0x9A: return 5;
+            case 0x9B: return 3;
+            case 0x9C: return 7;
+            case 0x9D: return 7;
+            case 0x9E: return 6;
+            case 0x9F: return 9;
+            case 0xA0: return 5;
+            case 0xA1: return 5;
+            case 0xA2: return 2;
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(72);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
             if((uibyteorder==QDataStream::LittleEndian&&opc==1128681285)||(uibyteorder==QDataStream::BigEndian&&opc==1162823235)) break; // "EOFC"
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(QDataStream::ByteOrder::LittleEndian);
         datastream << 1129535056 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0 << 0;
         datastream.setByteOrder(uibyteorder);
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -2011,35 +2067,53 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(4);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+
+            if(getOpcodeString(opc)=="TIME")
+            {
+                textedit->setTextColor(QColor(20, 10, 200));
+                textedit->setFontWeight(QFont::Bold);
+            }
+            else if(getOpcodeString(opc)=="PV_BRANCH_MODE")
+            {
+                textedit->setTextColor(QColor(200, 200, 20));
+                textedit->setFontWeight(QFont::Bold);
+            }
+            else
+            {
+                textedit->setTextColor(QColor(0, 0, 0));
+                textedit->setFontWeight(QFont::Normal);
+            }
+
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream << 335874337;
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -2191,33 +2265,33 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -2369,33 +2443,33 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -2631,33 +2705,33 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
@@ -2680,7 +2754,7 @@ public:
 class DivaScriptOpcode_DIVA2Edit:DivaScriptOpcode_DIVA2
 {
 public:
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         QTextCodec *codec = QTextCodec::codecForName("Shift_JIS");
         if(codec==nullptr) return;
@@ -2704,7 +2778,7 @@ public:
 
         if(uibyteorder==QDataStream::ByteOrder::BigEndian) dtoffset=16;
         datastream.setByteOrder(uibyteorder);
-        plaintextedit->clear();
+        textedit->clear();
 
         // DSC
         file.seek(DIVA_SCRIPT_OFFSET+dtoffset);
@@ -2713,15 +2787,15 @@ public:
             int opc;
             datastream >> opc;
             if(getOpcodeParamCount(opc)==-1) break;
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         // Lyrics
@@ -3143,36 +3217,36 @@ public:
             default: return -1;
         }
     }
-    static void readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+    static void readAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(uibyteorder);
         datastream.skipRawData(4);
-        plaintextedit->clear();
+        textedit->clear();
         while(!(file.atEnd()))
         {
             int opc;
             datastream >> opc;
-            plaintextedit->appendPlainText(getOpcodeString(opc)+"(");
+            textedit->append(getOpcodeString(opc)+"(");
             for(int i=0; i<getOpcodeParamCount(opc); i++)
             {
-                if(i) plaintextedit->insertPlainText(", ");
+                if(i) textedit->insertPlainText(", ");
                 int byte;
                 datastream >> byte;
-                plaintextedit->insertPlainText(QString::number(byte));
+                textedit->insertPlainText(QString::number(byte));
             }
-            plaintextedit->insertPlainText(");");
+            textedit->insertPlainText(");");
         }
 
         editWidgets.tabedit->setEnabled(false);
     }
-    static void writeAll(QFile &file, QDataStream &datastream, QPlainTextEdit *plaintextedit, QDataStream::ByteOrder uibyteorder)
+    static void writeAll(QFile &file, QDataStream &datastream, QTextEdit *textedit, QDataStream::ByteOrder uibyteorder)
     {
         datastream.setByteOrder(QDataStream::ByteOrder::LittleEndian);
         datastream << 302121504;
         datastream.setByteOrder(uibyteorder);
         QString line;
         QStringList commandlist;
-        commandlist=plaintextedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         for(int i=0; i<commandlist.length(); i++)
         {
             QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
