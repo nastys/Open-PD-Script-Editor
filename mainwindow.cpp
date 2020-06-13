@@ -595,13 +595,13 @@ void MainWindow::on_textEdit_cursorPositionChanged()
 
                 layout->addWidget(new QLabel("Horizontal position:"));
                 QSpinBox *posx = new QSpinBox;
-                posx->setRange(0, 128000);
+                posx->setRange(INT_MIN, INT_MAX);
                 if(parameters_str.length()>=2) posx->setValue(parameters_str.at(1).toInt());
                 layout->addWidget(posx);
 
                 layout->addWidget(new QLabel("Vertical position:"));
                 QSpinBox *posy = new QSpinBox;
-                posy->setRange(0, 72000);
+                posy->setRange(INT_MIN, INT_MAX);
                 if(parameters_str.length()>=3) posy->setValue(parameters_str.at(2).toInt());
                 layout->addWidget(posy);
 
