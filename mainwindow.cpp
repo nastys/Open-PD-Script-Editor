@@ -4,6 +4,9 @@
 #include "lyrics.cpp"
 #include "diag_lipsync.h"
 #include "lipsync_v1_0.cpp"
+#include "lipsync_midiseq.h"
+#include "diag_lipsync_vsqx.h"
+#include "diag_addcommand.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QDataStream>
@@ -155,6 +158,29 @@ void MainWindow::on_actionLip_sync_triggered()
     if(result) LipSync_v1_0::lipsyncFromVtt(ui->textEdit, ifile, diag->settings);
     ifile.close();
     delete diag;
+}
+
+void MainWindow::on_actionLip_sync_VSQX_triggered()
+{
+    QString ifilepath=QFileDialog::getOpenFileName();
+    if(ifilepath.isEmpty()||ifilepath.isNull()) return;
+    diag_lipsync_vsqx *diag = new diag_lipsync_vsqx(this);
+    bool result = diag->exec();
+    if(result)
+    {
+        delete diag;
+        isLoading = true;
+        QFile ifile(ifilepath);
+        ifile.open(QIODevice::ReadOnly);
+        midiseq::Sequence *sequence = new midiseq::Sequence_VSQX;
+        sequence->readSequence(ifile);
+        ifile.close();
+        midiseq::DscSequence dscseq;
+        dscseq.fromSequence(*sequence, diag->settings);
+        dscseq.applyCommands(ui->textEdit, diag->settings);
+        delete sequence;
+        isLoading = false;
+    }
 }
 
 void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
@@ -545,7 +571,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
             while(strseconds.length()<6) strseconds.prepend('0');
             strseconds.insert(2, '.');
             QString timestr_fn=strhours+':'+strminutes+':'+strseconds;
-            ui->lineEdit_time->setText(timestr_fn); // TODO check the time of any command and update lineEdit_time accordingly
+            //ui->lineEdit_time->setText(timestr_fn);
 
             layout->addWidget(new QLabel("Hours:"));
             QSpinBox *sb_hours = new QSpinBox;
@@ -634,6 +660,83 @@ void MainWindow::on_textEdit_cursorPositionChanged()
                 layout->addWidget(pb_apply);
             }
         }
+        else if(currline.startsWith("MOUTH_ANIM("))
+        {
+            QStringList par_cs=currline.chopped(2).split('(');
+            if(par_cs.length()>=2)
+            {
+                QStringList parameters_str=par_cs.at(1).split(',');
+
+                QLabel *label = new QLabel("Mouth animation");
+                label->setStyleSheet("font-weight: bold");
+                layout->addWidget(label);
+                QFrame *separator = new QFrame;
+                separator->setFrameShape(QFrame::HLine);
+                separator->setFrameShadow(QFrame::Sunken);
+                layout->addWidget(new QLabel("Changes the mouth shape."));
+                layout->addWidget(separator);
+
+                layout->addWidget(new QLabel("Performer:"));
+                QSpinBox *sb_performer = new QSpinBox;
+                sb_performer->setRange(0,5);
+                if(parameters_str.length()>=1) sb_performer->setValue(parameters_str.at(0).toInt());
+                layout->addWidget(sb_performer);
+
+                layout->addWidget(new QLabel("???:"));
+                QSpinBox *sb_unknown = new QSpinBox;
+                sb_unknown->setRange(INT_MIN,INT_MAX);
+                if(parameters_str.length()>=2) sb_unknown->setValue(parameters_str.at(1).toInt());
+                layout->addWidget(sb_unknown);
+
+                layout->addWidget(new QLabel("Animation:"));
+                QComboBox *animation = new QComboBox;
+                if(parameters_str.length()>=3)
+                {
+                    QString mouth_string="";
+                    switch(parameters_str.at(2).toUInt())
+                    {
+                    case mouth_ft_a:
+                        mouth_string="A";
+                        break;
+                    case mouth_ft_i:
+                        mouth_string="I";
+                        break;
+                    case mouth_ft_u:
+                        mouth_string="U";
+                        break;
+                    case mouth_ft_e:
+                        mouth_string="E";
+                        break;
+                    case mouth_ft_o:
+                        mouth_string="O";
+                        break;
+                    case mouth_ft_m:
+                        mouth_string="M";
+                        break;
+                    default:
+                        mouth_string=parameters_str.at(2);
+                    }
+                    animation->addItem(mouth_string);
+                }
+                layout->addWidget(animation);
+
+                layout->addWidget(new QLabel("Transition:"));
+                QSpinBox *sb_transition = new QSpinBox;
+                sb_transition->setRange(0,INT_MAX);
+                if(parameters_str.length()>=4) sb_transition->setValue(parameters_str.at(3).toInt());
+                layout->addWidget(sb_transition);
+
+                layout->addWidget(new QLabel("???:"));
+                QSpinBox *sb_unknown2 = new QSpinBox;
+                sb_unknown2->setRange(INT_MIN,INT_MAX);
+                if(parameters_str.length()>=5) sb_unknown2->setValue(parameters_str.at(4).toInt());
+                layout->addWidget(sb_unknown2);
+
+                QPushButton *pb_apply = new QPushButton;
+                pb_apply->setText("Apply");
+                layout->addWidget(pb_apply);
+            }
+        }
         else
         {
             QStringList par_cs=currline.chopped(2).split('(');
@@ -665,10 +768,64 @@ void MainWindow::on_textEdit_cursorPositionChanged()
                 else layout->addStretch(1);
             }
         }
+
+        // Update time
+        QStringList commandlist;
+        commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        int timecmd = findTimeOfCommand(*ui->textEdit, line);
+        if(timecmd<0) timecmd = 0;
+        QString timestr=commandlist.at(timecmd).mid(5, commandlist.at(timecmd).length()-6);
+        unsigned long long divatime=timestr.toULongLong(), seconds=0, minutes=0, hours=0;
+        for(unsigned long long i=0; i<divatime; i++)
+        {
+            seconds++;
+            if(seconds>=6000000)
+            {
+                seconds=0;
+                minutes++;
+                if(minutes>=60)
+                {
+                    minutes=0;
+                    hours++;
+                }
+            }
+        }
+        QString strhours=QString::number(hours, 10);
+        if(strhours.length()<2) strhours.prepend('0');
+        QString strminutes=QString::number(minutes, 10);
+        if(strminutes.length()<2) strminutes.prepend('0');
+        QString strseconds=QString::number(seconds, 10);
+        while(strseconds.length()<6) strseconds.prepend('0');
+        strseconds.insert(2, '.');
+        QString timestr_fn=strhours+':'+strminutes+':'+strseconds;
+        ui->lineEdit_time->setText(timestr_fn);
     }
     QLayout *container = new QGridLayout;
     container->setMargin(0);
     container->setContentsMargins(0, 0, 0, 0);
     container->addWidget(scrollarea);
     ui->frame_paramEdit->setLayout(container);
+}
+
+void MainWindow::on_actionAdd_command_triggered()
+{
+    diag_addcommand *diag = new diag_addcommand(this);
+    QString *command = new QString("");
+    int *time = new int;
+    diag->command=command;
+    diag->time=time;
+    bool accepted = diag->exec();
+    delete diag;
+    if(accepted&&!command->isEmpty())
+    {
+        isLoading=true;
+        if(command->endsWith(';')) command->chop(1);
+        QStringList commandlist;
+        commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        insertCommand(commandlist, *time, *command);
+        ui->textEdit->clear();
+        for(int i=0; i<commandlist.length(); i++)
+            ui->textEdit->append(commandlist.at(i)+';');
+        isLoading=false;
+    }
 }

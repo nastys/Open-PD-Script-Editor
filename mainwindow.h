@@ -32,6 +32,8 @@ private slots:
 
     void on_actionLip_sync_triggered();
 
+    void on_actionLip_sync_VSQX_triggered();
+
     void on_actionPDA_2_00_to_PDA_1_01_triggered();
 
     void on_action_FT_new_mouth_to_FT_old_mouth_triggered();
@@ -49,6 +51,8 @@ private slots:
     void on_actionAbout_triggered();
 
     void on_textEdit_cursorPositionChanged();
+
+    void on_actionAdd_command_triggered();
 
 private:
     Ui::MainWindow *ui;

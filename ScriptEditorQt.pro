@@ -18,8 +18,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     DSC.cpp \
     command.cpp \
+    diag_addcommand.cpp \
     diag_lipsync.cpp \
+    diag_lipsync_vsqx.cpp \
+    lipsync_midiseq.cpp \
     lipsync_v1_0.cpp \
+    logger.cpp \
     lyrics.cpp \
     main.cpp \
     mainwindow.cpp
@@ -27,14 +31,20 @@ SOURCES += \
 HEADERS += \
     EditWidgets.h \
     command.h \
+    diag_addcommand.h \
     diag_lipsync.h \
+    diag_lipsync_vsqx.h \
     lipsync.h \
+    lipsync_midiseq.h \
     lipsync_settings.h \
+    logger.h \
     lyrics.h \
     mainwindow.h
 
 FORMS += \
+    diag_addcommand.ui \
     diag_lipsync.ui \
+    diag_lipsync_vsqx.ui \
     mainwindow.ui
 
 # Default rules for deployment.

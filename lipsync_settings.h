@@ -20,6 +20,17 @@ struct lipsync_settings
     bool close_mouth_end;
 };
 
+struct VSQX_Settings
+{
+    int track;
+    int offset;
+    int transition_duration;
+    int transition_timeout;
+    int performer;
+    bool exclude_premeasure;
+    bool delete_existing;
+};
+
 namespace lipsync_language
 {
     const int ENGLISH_US=0;

@@ -73,7 +73,21 @@
          </widget>
         </item>
         <item row="0" column="0" colspan="2">
-         <widget class="QTextEdit" name="textEdit"/>
+         <widget class="QTextEdit" name="textEdit">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#c8c814;&quot;&gt;PV_BRANCH_MODE(0);&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#140ac8;&quot;&gt;TIME(0);&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;MUSIC_PLAY();&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;BAR_TIME_SET(120, 3);&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;TIME(6000000);&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;PV_END();&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;END();&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
         </item>
         <item row="1" column="0" colspan="2">
          <widget class="QWidget" name="widget" native="true">
@@ -444,7 +458,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -485,6 +499,7 @@
     <addaction name="actionImport_VTT"/>
     <addaction name="separator"/>
     <addaction name="actionLip_sync"/>
+    <addaction name="actionLip_sync_VSQX"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
     <property name="title">
@@ -774,9 +789,6 @@
    </property>
   </action>
   <action name="actionAdd_command">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</iconset>
@@ -807,6 +819,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+R</string>
+   </property>
+  </action>
+  <action name="actionLip_sync_VSQX">
+   <property name="text">
+    <string>Lip s&amp;ync VSQX...</string>
    </property>
   </action>
  </widget>

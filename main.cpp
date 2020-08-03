@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "DSC.cpp"
 #include "EditWidgets.h"
+#include "logger.h"
 
 #include <QApplication>
 #include <QFile>
@@ -28,6 +29,8 @@ EditWidgets uiEditWidgetsStub()
 
 int main(int argc, char *argv[])
 {
+    logger::initlogfile();
+
     QApplication a(argc, argv);
     if(argc>=3)
     {
