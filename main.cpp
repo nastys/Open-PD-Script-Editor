@@ -1,12 +1,12 @@
 #include "mainwindow.h"
-#include "DSC.cpp"
+#include "DSC.h"
 #include "EditWidgets.h"
 #include "logger.h"
 
 #include <QApplication>
 #include <QFile>
 #include <QDataStream>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 EditWidgets uiEditWidgetsStub()
 {
@@ -34,11 +34,16 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     if(argc>=3)
     {
+        QTextEdit dummyLogEdit;
+        dummyLogEdit.document()->setUndoRedoEnabled(false);
+        DivaScriptOpcode_FT DSO(&dummyLogEdit);
+
         QFile input(argv[1]);
         input.open(QIODevice::ReadOnly);
         QDataStream qds(&input);
-        QTextEdit *textEdit = new QTextEdit;
-        DivaScriptOpcode_FT::readAll(input, qds, textEdit, uiEditWidgetsStub(), QDataStream::LittleEndian);
+        QPlainTextEdit *textEdit = new QPlainTextEdit;
+        textEdit->document()->setUndoRedoEnabled(false);
+        DSO.readAll(input, qds, textEdit, uiEditWidgetsStub(), QDataStream::LittleEndian);
         input.close();
         QStringList commandlist;
         commandlist=textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
@@ -49,6 +54,8 @@ int main(int argc, char *argv[])
         for(int i=0; i<commandlist.length(); i++)
             qdso << commandlist.at(i).toLatin1() << '\n';
         output.close();
+
+        qDebug() << dummyLogEdit.document()->toPlainText();
         exit(0);
     }
 

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>opcode_db/db.json</file>
+    </qresource>
+</RCC>

@@ -2,8 +2,16 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
+#include <QComboBox>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QCloseEvent>
 
 #include "EditWidgets.h"
+#include "DSC.h"
+
+class DivaScriptOpcode;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,9 +28,17 @@ public:
 private slots:
     EditWidgets uiEditWidgets();
 
+    void openDSC(QString filepath);
+
+    void formatSelector(int defaultsel, int version, bool& ok);
+
     void on_actionOpen_DSC_triggered();
 
-    void on_actionSave_DSC_triggered();
+    bool on_actionSave_DSC_triggered();
+
+    bool on_actionSave_DSC_as_triggered();
+
+    bool doSave(QString &filepath);
 
     void on_actionExit_triggered();
 
@@ -54,9 +70,55 @@ private slots:
 
     void on_actionAdd_command_triggered();
 
+    void dragEnterEvent(QDragEnterEvent *event);
+
+    void dropEvent(QDropEvent *event);
+
+    void on_actionEdits_triggered();
+
+    void on_actionCut_triggered();
+
+    void on_actionCopy_triggered();
+
+    void on_actionPaste_triggered();
+
+    void on_actionRedo_triggered();
+
+    void on_actionUndo_triggered();
+
+    void on_action_Wrap_toggled(bool arg1);
+
+    void on_action_Dark_mode_toggled(bool arg1);
+
+    void on_actionLight_mode_toggled(bool arg1);
+
+    void on_textEdit_modificationChanged(bool arg1);
+
+    void setTitleBarText(bool modified);
+
+    void setPvSlot();
+
+    void on_actionChang_e_format_triggered();
+
+    void on_actionSet_PV_slot_triggered();
+
+    void on_actionFind_and_replace_triggered();
+
+    void on_textEdit_Log_textChanged();
+
+    void on_pushButton_List_clicked();
+
+    void on_actionTime_triggered();
+
+    void on_actionExport_L_RC_triggered();
+
+    void on_actionReload_data_base_entry_triggered();
+
 private:
     Ui::MainWindow *ui;
     void replaceID(QString command);
+    void closeEvent(QCloseEvent *event);
+    void loadPvDbEntry();
 };
 
 #endif // MAINWINDOW_H

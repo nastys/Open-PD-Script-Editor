@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>diag_lipsync</class>
  <widget class="QDialog" name="diag_lipsync">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -24,6 +27,9 @@
   </property>
   <property name="windowTitle">
    <string>Lip Sync</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="8" column="0" colspan="2">

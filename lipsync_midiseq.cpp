@@ -2,11 +2,11 @@
 #include "lipsync_midiseq.h"
 #include "command.h"
 #include "logger.h"
-#include <QDebug>
+#include "debug.h"
 
 #define readULL reader.readElementText().toULongLong
 #define readUI reader.readElementText().toUInt
-#define errorChk(); if(reader.hasError()) {qDebug() << "An error has occurred." << reader.error() << reader.errorString();}
+#define errorChk(); if(reader.hasError()) {debugger("An error has occurred." << reader.error() << reader.errorString());}
 
 void midiseq::Sequence_VSQX :: readSequence(QFile &file)
 {
@@ -18,13 +18,13 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
         {
             while(reader.readNextStartElement())
             {
-                qDebug() << "Name (1):" << reader.name();
+                debugger("Name (1):" << reader.name());
                 errorChk();
                 if(reader.name() == "masterTrack")
                 {
                     while(reader.readNextStartElement())
                     {
-                        qDebug() << "Name (2):" << reader.name();
+                        debugger("Name (2):" << reader.name());
                         errorChk();
                         if(reader.name() == "resolution")
                             this->master_track.sequence_resolution = readULL();
@@ -35,7 +35,7 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
                             TimeSignature ts;
                             while(reader.readNextStartElement())
                             {
-                                qDebug() << "Name (3):" << reader.name();
+                                debugger("Name (3):" << reader.name());
                                 errorChk();
                                 if(reader.name() == "m" || reader.name() == "posMes")
                                     ts.measure = readULL();
@@ -51,7 +51,7 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
                             Tempo temp;
                             while(reader.readNextStartElement())
                             {
-                                qDebug() << "Name (3):" << reader.name();
+                                debugger("Name (3):" << reader.name());
                                 errorChk();
                                 if(reader.name() == "t" || reader.name() == "posTick")
                                     temp.tick = readULL();
@@ -68,7 +68,7 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
                     Track trk;
                     while(reader.readNextStartElement())
                     {
-                        qDebug() << "Name (2b):" << reader.name();
+                        debugger("Name (2b):" << reader.name());
                         errorChk();
                         if(reader.name() == "tNo" || reader.name() == "vsTrackNo")
                             trk.track_number = readUI();
@@ -77,7 +77,7 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
                             Part prt;
                             while(reader.readNextStartElement())
                             {
-                                qDebug() << "Name (3b):" << reader.name();
+                                debugger("Name (3b):" << reader.name());
                                 errorChk();
                                 if(reader.name() == "t" || reader.name() == "posTick")
                                     prt.tick = readULL();
@@ -88,7 +88,7 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
                                     Note nt;
                                     while(reader.readNextStartElement())
                                     {
-                                        qDebug() << "Name (4):" << reader.name();
+                                        debugger("Name (4):" << reader.name());
                                         errorChk();
                                         if(reader.name() == "n" || reader.name() == "noteNum")
                                             nt.note_number = readUI();
@@ -117,7 +117,7 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
         }
     }
 
-    qDebug() << "End";
+    debugger("End");
     return;
 }
 
@@ -212,11 +212,11 @@ void midiseq::DscSequence :: fromSequence(Sequence &sequence, VSQX_Settings &set
                 for(int l=0; l < sequence.track_vector.at(i).part_vector.at(j).note_vector.at(k).phonemes.length(); l++)
                 {
                     cmd.mouthId = getMouthId(sequence.track_vector.at(i).part_vector.at(j).note_vector.at(k).phonemes.at(l).toLatin1());
-                    qDebug() << "Phoneme:" << sequence.track_vector.at(i).part_vector.at(j).note_vector.at(k).phonemes.at(l).toLatin1() << "Mouth ID:" << cmd.mouthId;
+                    debugger("Phoneme:" << sequence.track_vector.at(i).part_vector.at(j).note_vector.at(k).phonemes.at(l).toLatin1() << "Mouth ID:" << cmd.mouthId);
                     if(cmd.mouthId!=-1) break;
                 }
 
-                qDebug() << "Time:" << cmd.divaTime << "Mouth ID:" << cmd.mouthId;
+                debugger("Time:" << cmd.divaTime << "Mouth ID:" << cmd.mouthId);
                 dsc_sequence_commands.append(cmd);
             }
     DscSequenceCommand cmd_close;
@@ -225,7 +225,7 @@ void midiseq::DscSequence :: fromSequence(Sequence &sequence, VSQX_Settings &set
     dsc_sequence_commands.append(cmd_close);
 }
 
-void midiseq::DscSequence :: applyCommands(QTextEdit *dscpte, VSQX_Settings &settings)
+void midiseq::DscSequence :: applyCommands(QPlainTextEdit *dscpte, VSQX_Settings &settings)
 {
     logger::log("Adding DSC commands...\n");
 
@@ -254,8 +254,8 @@ void midiseq::DscSequence :: applyCommands(QTextEdit *dscpte, VSQX_Settings &set
     dscpte->document()->clear();
     for(int i=0; i<commandlist.length(); i++)
         if(commandlist.at(i).isEmpty())
-            dscpte->append(commandlist.at(i));
+            dscpte->insertPlainText(commandlist.at(i));
         else
-            dscpte->append(commandlist.at(i)+';');
+            dscpte->insertPlainText(commandlist.at(i)+';');
 
 }

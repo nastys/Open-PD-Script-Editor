@@ -22,7 +22,7 @@ public:
     static char phonemeToMouthId(QChar phoneme, lipsync_settings &settings);
     static void fillPhonemeList(QVector<lyric> &inLyrics, QVector<phoneme> &outPhonemes, lipsync_settings &settings);
     static void getLyrics(QFile &vtt, QVector<lyric> &lyrics, lipsync_settings &settings);
-    static void lipsyncFromVtt(QTextEdit *dscpte, QFile &vtt, lipsync_settings &settings);
+    static void lipsyncFromVtt(QPlainTextEdit *dscpte, QFile &vtt, lipsync_settings &settings);
 
 };
 

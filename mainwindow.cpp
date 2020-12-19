@@ -1,12 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "DSC.cpp"
 #include "lyrics.cpp"
 #include "diag_lipsync.h"
 #include "lipsync_v1_0.cpp"
 #include "lipsync_midiseq.h"
 #include "diag_lipsync_vsqx.h"
 #include "diag_addcommand.h"
+#include "diag_format.h"
+#include "diag_pvslot.h"
+#include "diag_find.h"
+#include "diag_time.h"
+#include "diag_merge.h"
+#include "pdtime.h"
+#include "debug.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QDataStream>
@@ -15,9 +21,20 @@
 #include <QTextBlock>
 #include <QCheckBox>
 #include <QScrollArea>
+#include <QMimeData>
+#include <QtEndian>
+#include <QDesktopServices>
+
+#define leading(number, digits, base) QStringLiteral("%1").arg(number, digits, base, QLatin1Char('0'))
+#define pvslot_leading leading(pvslot, 3, 10)
 
 static int pvslot=1;
 static bool isLoading=false;
+static bool bigEndian=false;
+static int dscfmt=4, dscver=335874337;
+static QString currentFilePath="";
+static bool preModified;
+static bool errorState=false;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,55 +53,220 @@ void MainWindow::on_actionOpen_DSC_triggered()
 {
     QStringList filepaths=QFileDialog::getOpenFileNames();
     if(filepaths.isEmpty()) return;
+    openDSC(filepaths.at(0));
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls())
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    if(event->mimeData()->hasUrls())
+        openDSC(event->mimeData()->urls().at(0).toLocalFile());
+}
+
+void MainWindow::openDSC(QString filepath)
+{
     bool ok;
-    QString format=QInputDialog::getItem(this, "Format", "DSC format:", {"Project DIVA", "Project DIVA 2nd/Extend", "Project DIVA 2nd/Extend/DT2/DTE edit", "Project DIVA Arcade/Dreamy Theater", "Project DIVA Arcade 2.00/Future Tone/MEGA39's", "Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend", "Project DIVA F 2nd", "Project DIVA X", "Project Mirai", "Miracle Girls Festival"}, 0, false, &ok);
-    if(format.isEmpty()||!ok) return;
-    QString filepath=filepaths.at(0);
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
     QDataStream qds(&file);
+    qds.setByteOrder(QDataStream::ByteOrder::LittleEndian);
+    int autodetected_ver=0, autodetected=0;
+    qds >> autodetected_ver;
+    autodetected_ver = qFromLittleEndian(autodetected_ver);
+#ifdef QT_DEBUG
+    debugger("Autodetected format:" << autodetected_ver);
+#endif
+    switch(autodetected_ver)
+    {
+        case 285614104: // Arcade
+        case 335874337: // Future Tone
+        case 369295649:
+        case 353510679:
+        case 352458520:
+        case 335745816:
+        case 335618838:
+        case 319956249:
+        case 319296802:
+        case 318845217:
+        //case 269615382: // DT 2nd dummy PV
+            autodetected = 4;
+            break;
+        case 269615382: // Mirai DX
+            autodetected = 8;
+            break;
+        case 1: // 1, i.e. no magic... Probably old Arcade/DT1, but it may also be PSP
+            autodetected = 3;
+            break;
+        case 285419544: // DT 2nd/Extend
+        case 285349657:
+        case 302121504: // f/F
+            autodetected = 5;
+            break;
+        case 1129535056: // F 2nd
+            autodetected = 6; // assume F 2nd, but it may also be MGF or X/XHD
+            break;
+        default:
+            autodetected = 0;
+    }
+    file.reset();
+    int old_dscfmt = dscfmt;
+    formatSelector(autodetected, autodetected_ver, ok);
+    if(!ok) return;
     isLoading=true;
-    if(format=="Project DIVA") DivaScriptOpcode_DIVA::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA 2nd/Extend") DivaScriptOpcode_DIVA2::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA 2nd/Extend/DT2/DTE edit") DivaScriptOpcode_DIVA2Edit::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade/Dreamy Theater") DivaScriptOpcode_PDA::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade 2.00/Future Tone/MEGA39's") DivaScriptOpcode_FT::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend") DivaScriptOpcode_F::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA F 2nd") DivaScriptOpcode_F2::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA X") DivaScriptOpcode_X::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project Mirai") DivaScriptOpcode_Mirai::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Miracle Girls Festival") DivaScriptOpcode_MGF::readAll(file, qds, ui->textEdit, uiEditWidgets(), ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    ui->textEdit->setUndoRedoEnabled(false);
+    DivaScriptOpcode *DSO = formatSelection(dscfmt, ui->textEdit_Log);
+    bool updateFilename=false;
+    if(dscfmt!=2&&dscfmt==old_dscfmt)
+    {
+        QStringList mergelist={};
+        QPlainTextEdit *internalEdit = new QPlainTextEdit;
+        internalEdit->setUndoRedoEnabled(false);
+        DSO->readAll(file, qds, internalEdit, uiEditWidgets(), bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian);
+        delete DSO;
+        diag_merge diag(this, &mergelist, internalEdit);
+        bool accepted = diag.exec();
+        if(accepted)
+        {
+            if(!mergelist.isEmpty())
+            {
+                mergeDsc(mergelist, ui->textEdit, internalEdit, isLoading, ui->textEdit_Log);
+                delete internalEdit;
+                isLoading=false;
+                setTitleBarText(true);
+            }
+            else
+            {
+                updateFilename=true;
+                ui->textEdit->setDocument(internalEdit->document());
+                //delete internalEdit; // TODO fix memory leak
+            }
+        }
+    }
+    else
+    {
+        DSO->readAll(file, qds, ui->textEdit, uiEditWidgets(), bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian);
+        delete DSO;
+        updateFilename=true;
+    }
+
+    if(updateFilename)
+    {
+        ui->textEdit->document()->clearUndoRedoStacks();
+        ui->textEdit->document()->setModified(false);
+
+        QFileInfo info(filepath);
+        currentFilePath=filepath;
+        QString filename=info.fileName();
+        pvslot=1;
+        if(filename.length()>=6 && filename.startsWith("pv_", Qt::CaseInsensitive))
+        {
+            QString filename_pvnum = filename.mid(3, 3);
+            bool ok2=false;
+            int pv_num = filename_pvnum.toInt(&ok2, 10);
+            if(ok2) pvslot=pv_num;
+        }
+        setPvSlot();
+        loadPvDbEntry();
+        isLoading=false;
+        setTitleBarText(false);
+    }
+
+    ui->textEdit->setUndoRedoEnabled(true);
     isLoading=false;
     file.close();
 }
 
-void MainWindow::on_actionSave_DSC_triggered()
+void MainWindow::formatSelector(int defaultsel, int version, bool& ok)
 {
-    QString filepath=QFileDialog::getSaveFileName();
-    if(filepath.isEmpty()||filepath.isNull()) return;
-    bool ok;
-    QString format=QInputDialog::getItem(this, "Format", "DSC format:", {"Project DIVA", "Project DIVA 2nd/Extend", "Project DIVA Arcade/Dreamy Theater", "Project DIVA Arcade 2.00/Future Tone/MEGA39's", "Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend", "Project DIVA F 2nd", "Project DIVA X", "Project Mirai", "Miracle Girls Festival"}, 0, false, &ok);
-    if(format.isEmpty()||!ok) return;
+    Diag_Format diag(this);
+    ok=false;
+    diag.ok=&ok;
+    diag.useBigEndian=&bigEndian;
+    diag.format=&dscfmt;
+    diag.formatVer=&dscver;
+    diag.setDefaults(defaultsel, version);
+    diag.exec();
+    if(ok) ui->textEdit->document()->setModified(true);
+}
+
+bool MainWindow::on_actionSave_DSC_triggered()
+{
+    QFileInfo file(currentFilePath);
+    if(file.exists())
+    {
+        if(ui->actionOverwrite_files_without_as_king->isChecked()||QMessageBox::question(this, "Save", "This will OVERWRITE the file. Continue?")==QMessageBox::Yes)
+            return doSave(currentFilePath);
+    }
+    else return on_actionSave_DSC_as_triggered();
+
+    return false;
+}
+
+bool MainWindow::on_actionSave_DSC_as_triggered()
+{
+    QFileInfo oldFile(currentFilePath);
+    QString filepath=QFileDialog::getSaveFileName(this, "Save DSC as", oldFile.path(), "DivaScript (*.dsc);;Binary file (*)");
+    if(filepath.isEmpty()||filepath.isNull()) return false;
+    bool ok=false;
+    formatSelector(dscfmt, dscver, ok);
+    if(!ok) return false;
+    return doSave(filepath);
+}
+
+void MainWindow::on_actionChang_e_format_triggered()
+{
+    bool ok=false;
+    formatSelector(dscfmt, dscver, ok);
+}
+
+bool MainWindow::doSave(QString& filepath)
+{
     QFile file(filepath);
-    file.open(QIODevice::WriteOnly);
+    file.open(QIODevice::ReadWrite);
     file.resize(0);
     QDataStream qds(&file);
-    qds.setByteOrder(ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    if(format=="Project DIVA") DivaScriptOpcode_DIVA::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA 2nd/Extend") DivaScriptOpcode_DIVA2::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade/Dreamy Theater") DivaScriptOpcode_PDA::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA Arcade 2.00/Future Tone/MEGA39's") DivaScriptOpcode_FT::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA f/F/Dreamy Theater 2nd/Dreamy Theater Extend") DivaScriptOpcode_F::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA F 2nd") DivaScriptOpcode_F2::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project DIVA X") DivaScriptOpcode_X::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Project Mirai") DivaScriptOpcode_Mirai::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
-    else if(format=="Miracle Girls Festival") DivaScriptOpcode_MGF::writeAll(file, qds, ui->textEdit, ui->actionEnable_Big_Endian->isChecked()?QDataStream::BigEndian:QDataStream::LittleEndian);
+    qds.setByteOrder(bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian);
+    DivaScriptOpcode *DSO = formatSelection(dscfmt, ui->textEdit_Log);
+    DSO->writeAll(file, qds, ui->textEdit, bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian);
+    delete DSO;
+    if(errorState) errorState=false;
+    if(file.error()) ui->textEdit_Log->append("E: "+file.errorString()+"\n");
+    else
+    {
+        currentFilePath=filepath;
+        ui->textEdit->document()->setModified(false);
+        file.close();
+        return true;
+    }
     file.close();
+    return false;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    on_actionExit_triggered();
+    event->ignore();
 }
 
 void MainWindow::on_actionExit_triggered()
 {
-    exit(0);
+    if(!ui->textEdit->document()->isModified()) exit(0);
+    switch(QMessageBox::question(this, "Exit", "Save your changes?", QMessageBox::StandardButtons(QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel)))
+    {
+        case QMessageBox::Yes:
+            if(!on_actionSave_DSC_triggered()) return;
+        case QMessageBox::No:
+            exit(0);
+        default:
+            return;
+    }
 }
 
 EditWidgets MainWindow::uiEditWidgets()
@@ -120,7 +302,7 @@ void MainWindow::on_actionPSP_to_DT_triggered()
     iqds.setByteOrder(QDataStream::ByteOrder::LittleEndian);
 
     QFile ofile(ofilepath);
-    ofile.open(QIODevice::WriteOnly);
+    ofile.open(QIODevice::ReadWrite);
     ofile.resize(0);
     QDataStream oqds(&ofile);
     oqds.setByteOrder(QDataStream::ByteOrder::LittleEndian);
@@ -185,13 +367,15 @@ void MainWindow::on_actionLip_sync_VSQX_triggered()
 
 void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
 {
+    DivaScriptOpcode_PDA DSO(ui->textEdit_Log);
+
     QStringList commandlist;
     commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     ui->textEdit->clear();
     for(int i=0; i<commandlist.length();)
     {
         QStringList command = commandlist.at(i).split('(');
-        int opcode=DivaScriptOpcode_PDA::getOpcodeNumber(command.at(0));
+        int opcode=DSO.getOpcodeNumber(command.at(0));
         if(opcode==-1)
         {
             i++;
@@ -200,7 +384,7 @@ void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
         QStringList parameters = command.at(1).split(')').at(0).split(',');
         if(opcode==0x18/*LYRIC*/) parameters.removeLast();
         else if(opcode==0x1F/*MOVE_CAMERA*/) {parameters.removeLast(); parameters.removeLast();}
-        int paramcount=DivaScriptOpcode_PDA::getOpcodeParamCount(opcode);
+        int paramcount=DSO.getOpcodeParamCount(opcode);
         while(parameters.length()>paramcount) parameters.removeFirst();
         QString finalcommand = command.at(0)+'(';
         for(int j=0; j<parameters.length(); j++)
@@ -209,7 +393,7 @@ void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
             finalcommand.append(parameters.at(j));
         }
         finalcommand.append(");");
-        ui->textEdit->append(finalcommand);
+        ui->textEdit->insertPlainText(finalcommand);
         i++;
     }
 }
@@ -371,6 +555,8 @@ int getNewID(int oldID, QString idcommand)
 
 void MainWindow::replaceID(QString idcommand)
 {
+    DivaScriptOpcode_PDA DSO(ui->textEdit_Log);
+
     QStringList commandlist;
     commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
     ui->textEdit->clear();
@@ -379,10 +565,10 @@ void MainWindow::replaceID(QString idcommand)
         QStringList command = commandlist.at(i).split('(');
         if(command.at(0)!=idcommand)
         {
-            ui->textEdit->append(commandlist.at(i)+';');
+            ui->textEdit->insertPlainText(commandlist.at(i)+';');
             continue;
         }
-        int opcode=DivaScriptOpcode_PDA::getOpcodeNumber(command.at(0));
+        int opcode=DSO.getOpcodeNumber(command.at(0));
         if(opcode==-1) continue;
         QStringList parameters = command.at(1).split(')').at(0).split(',');
 
@@ -415,7 +601,7 @@ void MainWindow::replaceID(QString idcommand)
             finalcommand.append(parameters.at(j));
         }
         finalcommand.append(");");
-        ui->textEdit->append(finalcommand);
+        ui->textEdit->insertPlainText(finalcommand);
     }
 }
 
@@ -438,7 +624,6 @@ void MainWindow::on_action_Hand_animations_FT_old_animations_triggered()
 {
     replaceID("HAND_ANIM");
 }
-
 
 void MainWindow::on_actionAll_of_them_triggered()
 {
@@ -473,10 +658,10 @@ void MainWindow::on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered()
         }
         else
         {
-            ui->textEdit->append(commandlist.at(i)+';');
+            ui->textEdit->insertPlainText(commandlist.at(i)+';');
             continue;
         }
-        ui->textEdit->append(finalcommand);
+        ui->textEdit->insertPlainText(finalcommand);
     }
 }
 
@@ -509,7 +694,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         delete curlayout->layout();
     }
 
-    QTextEdit *edit = qobject_cast<QTextEdit *>(sender());
+    QPlainTextEdit *edit = qobject_cast<QPlainTextEdit *>(sender());
     Q_ASSERT(edit);
     QTextCursor cursor = edit->textCursor();
     cursor.movePosition(QTextCursor::StartOfLine);
@@ -548,52 +733,35 @@ void MainWindow::on_textEdit_cursorPositionChanged()
             layout->addWidget(new QLabel("Waits until this timestamp."));
             layout->addWidget(separator);
             QString timestr=currline.mid(5, currline.length()-7);
-            unsigned long long divatime=timestr.toULongLong(), seconds=0, minutes=0, hours=0;
-            for(unsigned long long i=0; i<divatime; i++)
-            {
-                seconds++;
-                if(seconds>=6000000)
-                {
-                    seconds=0;
-                    minutes++;
-                    if(minutes>=60)
-                    {
-                        minutes=0;
-                        hours++;
-                    }
-                }
-            }
-            QString strhours=QString::number(hours, 10);
-            if(strhours.length()<2) strhours.prepend('0');
-            QString strminutes=QString::number(minutes, 10);
-            if(strminutes.length()<2) strminutes.prepend('0');
-            QString strseconds=QString::number(seconds, 10);
-            while(strseconds.length()<6) strseconds.prepend('0');
-            strseconds.insert(2, '.');
-            QString timestr_fn=strhours+':'+strminutes+':'+strseconds;
-            //ui->lineEdit_time->setText(timestr_fn);
+
+            pdsplittime pdtime = pdtime_split(timestr.toInt());
 
             layout->addWidget(new QLabel("Hours:"));
             QSpinBox *sb_hours = new QSpinBox;
-            sb_hours->setValue(hours);
+            sb_hours->setValue(pdtime.hours);
             layout->addWidget(sb_hours);
             QSpinBox *sb_minutes = new QSpinBox;
             sb_minutes->setRange(0, 59);
-            sb_minutes->setValue(minutes);
+            sb_minutes->setValue(pdtime.minutes);
             layout->addWidget(new QLabel("Minutes:"));
             layout->addWidget(sb_minutes);
             QSpinBox *sb_seconds = new QSpinBox;
-            sb_seconds->setRange(0, 5999999);
-            sb_seconds->setValue(seconds);
-            layout->addWidget(new QLabel("Nanoseconds:"));
+            sb_seconds->setRange(0, 59);
+            sb_seconds->setValue(pdtime.seconds);
+            layout->addWidget(new QLabel("Seconds:"));
             layout->addWidget(sb_seconds);
+            QSpinBox *sb_frac = new QSpinBox;
+            sb_frac->setRange(0, 99999);
+            sb_frac->setValue(pdtime.frac);
+            layout->addWidget(new QLabel("Subseconds:"));
+            layout->addWidget(sb_frac);
             QCheckBox *cb_move = new QCheckBox;
             cb_move->setText("Move commands");
             layout->addWidget(cb_move);
             layout->addStretch(1);
-            QPushButton *pb_apply = new QPushButton;
+            /*QPushButton *pb_apply = new QPushButton;
             pb_apply->setText("Apply");
-            layout->addWidget(pb_apply);
+            layout->addWidget(pb_apply);*/
         }
         else if(currline.startsWith("TARGET("))
         {
@@ -655,9 +823,9 @@ void MainWindow::on_textEdit_cursorPositionChanged()
                 if(parameters_str.length()>=7) wavecount->setValue(parameters_str.at(6).toInt());
                 layout->addWidget(wavecount);
 
-                QPushButton *pb_apply = new QPushButton;
+                /*QPushButton *pb_apply = new QPushButton;
                 pb_apply->setText("Apply");
-                layout->addWidget(pb_apply);
+                layout->addWidget(pb_apply);*/
             }
         }
         else if(currline.startsWith("MOUTH_ANIM("))
@@ -732,9 +900,36 @@ void MainWindow::on_textEdit_cursorPositionChanged()
                 if(parameters_str.length()>=5) sb_unknown2->setValue(parameters_str.at(4).toInt());
                 layout->addWidget(sb_unknown2);
 
-                QPushButton *pb_apply = new QPushButton;
+                /*QPushButton *pb_apply = new QPushButton;
                 pb_apply->setText("Apply");
-                layout->addWidget(pb_apply);
+                layout->addWidget(pb_apply);*/
+            }
+        }
+        else if(currline.startsWith("PV_BRANCH_MODE("))
+        {
+            QStringList par_cs=currline.chopped(2).split('(');
+            if(par_cs.length()>=2)
+            {
+                QLabel *label = new QLabel("PV branch mode");
+                label->setStyleSheet("font-weight: bold");
+                layout->addWidget(label);
+                QFrame *separator = new QFrame;
+                separator->setFrameShape(QFrame::HLine);
+                separator->setFrameShadow(QFrame::Sunken);
+                layout->addWidget(new QLabel("Changes the current branch."));
+                layout->addWidget(separator);
+
+                layout->addWidget(new QLabel("New branch:"));
+                QComboBox *branch = new QComboBox;
+                branch->addItems({"Default", "Chance time failed", "Chance time success"});
+                branch->setCurrentIndex(par_cs.at(1).toInt());
+                layout->addWidget(branch);
+
+                layout->addStretch(1);
+
+                /*QPushButton *pb_apply = new QPushButton;
+                pb_apply->setText("Apply");
+                layout->addWidget(pb_apply);*/
             }
         }
         else
@@ -761,9 +956,9 @@ void MainWindow::on_textEdit_cursorPositionChanged()
                         layout->addWidget(spinbox);
                     }
                     layout->addStretch(1);
-                    QPushButton *pb_apply = new QPushButton;
+                    /*QPushButton *pb_apply = new QPushButton;
                     pb_apply->setText("Apply");
-                    layout->addWidget(pb_apply);
+                    layout->addWidget(pb_apply);*/
                 }
                 else layout->addStretch(1);
             }
@@ -775,30 +970,9 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         int timecmd = findTimeOfCommand(*ui->textEdit, line);
         if(timecmd<0) timecmd = 0;
         QString timestr=commandlist.at(timecmd).mid(5, commandlist.at(timecmd).length()-6);
-        unsigned long long divatime=timestr.toULongLong(), seconds=0, minutes=0, hours=0;
-        for(unsigned long long i=0; i<divatime; i++)
-        {
-            seconds++;
-            if(seconds>=6000000)
-            {
-                seconds=0;
-                minutes++;
-                if(minutes>=60)
-                {
-                    minutes=0;
-                    hours++;
-                }
-            }
-        }
-        QString strhours=QString::number(hours, 10);
-        if(strhours.length()<2) strhours.prepend('0');
-        QString strminutes=QString::number(minutes, 10);
-        if(strminutes.length()<2) strminutes.prepend('0');
-        QString strseconds=QString::number(seconds, 10);
-        while(strseconds.length()<6) strseconds.prepend('0');
-        strseconds.insert(2, '.');
-        QString timestr_fn=strhours+':'+strminutes+':'+strseconds;
-        ui->lineEdit_time->setText(timestr_fn);
+        ui->lineEdit_time->setText(pdtime_string(pdtime_split(timestr.toInt())));
+        // Update branch
+        ui->label_Branch->setText("B"+QString(findBranchOfCommand(*ui->textEdit, line)));
     }
     QLayout *container = new QGridLayout;
     container->setMargin(0);
@@ -809,13 +983,16 @@ void MainWindow::on_textEdit_cursorPositionChanged()
 
 void MainWindow::on_actionAdd_command_triggered()
 {
-    diag_addcommand *diag = new diag_addcommand(this);
+    DivaScriptOpcode* DSO;
+    DSO=formatSelection(dscfmt, ui->textEdit_Log);
+    diag_addcommand *diag = new diag_addcommand(this, DSO);
     QString *command = new QString("");
     int *time = new int;
     diag->command=command;
     diag->time=time;
     bool accepted = diag->exec();
     delete diag;
+    delete DSO;
     if(accepted&&!command->isEmpty())
     {
         isLoading=true;
@@ -825,7 +1002,219 @@ void MainWindow::on_actionAdd_command_triggered()
         insertCommand(commandlist, *time, *command);
         ui->textEdit->clear();
         for(int i=0; i<commandlist.length(); i++)
-            ui->textEdit->append(commandlist.at(i)+';');
+            ui->textEdit->insertPlainText(commandlist.at(i)+";\n");
         isLoading=false;
     }
+}
+
+void MainWindow::on_actionEdits_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/nastys/UltraEdit/releases"));
+}
+
+void MainWindow::on_actionCut_triggered()
+{
+    ui->textEdit->cut();
+}
+
+void MainWindow::on_actionCopy_triggered()
+{
+    ui->textEdit->copy();
+}
+
+void MainWindow::on_actionPaste_triggered()
+{
+    ui->textEdit->paste();
+}
+
+void MainWindow::on_actionRedo_triggered()
+{
+    ui->textEdit->redo();
+}
+
+void MainWindow::on_actionUndo_triggered()
+{
+    ui->textEdit->undo();
+}
+
+void MainWindow::on_action_Wrap_toggled(bool arg1)
+{
+    ui->textEdit->setLineWrapMode(arg1 ? QPlainTextEdit::LineWrapMode::WidgetWidth : QPlainTextEdit::LineWrapMode::NoWrap);
+}
+
+void MainWindow::on_action_Dark_mode_toggled(bool arg1)
+{
+    ui->actionLight_mode->blockSignals(true);
+    ui->actionLight_mode->setChecked(false);
+    if(arg1)
+    {
+        this->setStyleSheet("background-color: rgb(46, 52, 54);\nalternate-background-color: rgb(46, 52, 54);\ncolor: rgb(255, 255, 255);\nborder-color: rgb(238, 238, 236);\nborder-top-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\nborder-right-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\nborder-bottom-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\nborder-left-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\ngridline-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));");
+        ui->textEdit->setStyleSheet("background-color: rgb(0, 0, 0);");
+    }
+    else
+    {
+        this->setStyleSheet("");
+        ui->textEdit->setStyleSheet("");
+    }
+    ui->actionLight_mode->blockSignals(false);
+}
+
+void MainWindow::on_actionLight_mode_toggled(bool arg1)
+{
+    ui->action_Dark_mode->blockSignals(true);
+    ui->action_Dark_mode->setChecked(false);
+    if(arg1)
+    {
+        this->setStyleSheet("background-color: rgb(238, 238, 236);\nalternate-background-color: rgb(255, 255, 255);\ncolor: rgb(0, 0, 0);\nborder-color: rgb(238, 238, 236);\nborder-top-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\nborder-right-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\nborder-bottom-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\nborder-left-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));\ngridline-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(0, 0, 0, 255));");
+        ui->textEdit->setStyleSheet("background-color: rgb(255, 255, 255);\ncolor: rgb(0, 0, 0);");
+    }
+    else
+    {
+        this->setStyleSheet("");
+        ui->textEdit->setStyleSheet("");
+    }
+    ui->action_Dark_mode->blockSignals(false);
+}
+
+void MainWindow::on_textEdit_modificationChanged(bool arg1)
+{
+    if(!isLoading) setTitleBarText(arg1);
+}
+
+void MainWindow::setTitleBarText(bool modified)
+{
+    if(isLoading) return;
+    if(!preModified&&modified)
+    {
+        QFileInfo file(currentFilePath);
+        QWidget::setWindowTitle(file.fileName()+" *");
+        preModified=true;
+    }
+    else if(!modified)
+    {
+        QFileInfo file(currentFilePath);
+        QWidget::setWindowTitle(file.fileName());
+    }
+}
+
+void MainWindow::on_actionSet_PV_slot_triggered()
+{
+    diag_pvslot diag;
+    diag.setPvSlotPtr(&pvslot);
+    diag.exec();
+    setPvSlot();
+}
+
+void MainWindow::setPvSlot()
+{
+    ui->actionSet_PV_slot->setText("PV "+pvslot_leading);
+}
+
+void MainWindow::on_actionFind_and_replace_triggered()
+{
+    diag_find * diag = new diag_find(this, ui->textEdit);
+    diag->show();
+}
+
+void MainWindow::on_textEdit_Log_textChanged()
+{
+    ui->tabWidget->setCurrentWidget(ui->tab_log);
+    errorState=true;
+}
+
+void MainWindow::on_pushButton_List_clicked()
+{
+    on_actionFind_and_replace_triggered();
+}
+
+void MainWindow::on_actionTime_triggered()
+{
+    diag_time* diag = new diag_time;
+    diag->show();
+}
+
+void MainWindow::on_actionExport_L_RC_triggered()
+{
+    QString plaindoc = ui->plainTextEdit_db->document()->toPlainText();
+    if(!plaindoc.contains(".lyric.")) // TODO change this
+    {
+        ui->textEdit_Log->append("E: No lyrics in pv_db.\n");
+        return;
+    }
+    QString filepath = QFileDialog::getSaveFileName(this, "Export LRC", "", "Lyrics (*.lrc);;Text file (*.txt);;Binary file (*)");
+    if(filepath.isEmpty()||filepath.isNull()) return;
+    QFile file(filepath);
+    file.open(QIODevice::ReadWrite);
+    file.resize(0);
+    if(file.error())
+    {
+        ui->textEdit_Log->append("E: "+file.errorString()+"\n");
+        return;
+    }
+    QStringList commands = ui->textEdit->document()->toPlainText().split('\n');
+    QStringList dblist = plaindoc.split('\n');
+    for(int i=0; i<commands.length(); i++)
+    {
+        QString line = commands.at(i).simplified();
+        if(line.startsWith("LYRIC("))
+        {
+            QStringList paramSplit = line.split(')');
+            if(paramSplit.length()>0)
+            {
+                QStringList paramSplit2 = paramSplit.at(0).mid(6).split(',');
+                const QString lyrparam = paramSplit2.at(0);
+                QString pv = "pv_"+pvslot_leading+".lyric.";
+                QString l_num = leading(lyrparam.toInt(), 3, 10);
+                for(int j=0; j<dblist.length(); j++)
+                {
+                    if(dblist.at(j).startsWith(pv+l_num+"="))
+                    {
+                        QStringList lyriclinesplit = dblist.at(j).split('=');
+                        if(lyriclinesplit.length()>=2)
+                        {
+                            QString lyricline = lyriclinesplit.at(1);
+                            int linetime = findTimeOfCommand(commands, i);
+                            if(commands.length()>linetime){
+                                QStringList splitlinetime = commands.at(linetime).split(')');
+                                if(splitlinetime.length()>0)
+                                {
+                                    pdsplittime splittime = pdtime_split(splitlinetime.at(0).mid(5).toInt());
+                                    QString lrcline = "["+leading((splittime.hours*60)+splittime.minutes, 2, 10).right(2)+":"+leading(splittime.seconds, 2, 10).right(2)+"."+leading(splittime.frac, 2, 10).left(2)+"]"+lyricline+"\n";
+                                    file.write(lrcline.toUtf8());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::loadPvDbEntry()
+{
+    // TODO dlcs, etc
+    // TODO more than just lyrics
+
+    ui->plainTextEdit_db->clear();
+    const QStringList databases({"mdata_pv_db.txt", "pv_db.txt"});
+    for(QString database : databases)
+    {
+        QFile file(database);
+        if(!file.open(QIODevice::ReadOnly)) continue;
+        QStringList dblines;
+        while(!file.atEnd())
+        {
+            QString line = file.readLine().simplified();
+            if(!line.startsWith("pv_"+pvslot_leading+".lyric.")) continue;
+            ui->plainTextEdit_db->appendPlainText(line);
+        }
+
+        if(!ui->plainTextEdit_db->document()->isEmpty()) break;
+    }
+}
+
+void MainWindow::on_actionReload_data_base_entry_triggered()
+{
+    loadPvDbEntry();
 }

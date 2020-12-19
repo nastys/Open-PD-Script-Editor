@@ -2,7 +2,7 @@
 #define LIPSYNC_VSQX_H
 #include <QVector>
 #include <QFile>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <lipsync_settings.h>
 
 namespace midiseq
@@ -97,7 +97,7 @@ namespace midiseq
         QVector<DscSequenceCommand> dsc_sequence_commands;
 
         void fromSequence(Sequence &sequence, VSQX_Settings &settings);
-        void applyCommands(QTextEdit *dscpte, VSQX_Settings &settings);
+        void applyCommands(QPlainTextEdit *dscpte, VSQX_Settings &settings);
     };
 }
 

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Diag_Format</class>
+ <widget class="QDialog" name="Diag_Format">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>562</width>
+    <height>378</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Format</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="3">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>Project DIVA</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="text">
+         <string>Project DIVA 2nd/Extend</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_3">
+        <property name="text">
+         <string>Project DIVA 2nd/Extend/DT2/DTE edit</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_4">
+        <property name="text">
+         <string>Project DIVA Arcade/Dreamy Theater</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_5">
+        <property name="text">
+         <string>Project DIVA Arcade 2.00/Future Tone/Mega Mix</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_6">
+        <property name="text">
+         <string>Project DIVA Dreamy Theater 2nd/Dreamy Theater Extend/f/F</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_7">
+        <property name="text">
+         <string>Project DIVA F 2nd</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_8">
+        <property name="text">
+         <string>Project DIVA X</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_9">
+        <property name="text">
+         <string>Project Mirai</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QComboBox" name="comboBox">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>285614104</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>335874337</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>369295649</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>353510679</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>352458520</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>335745816</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>335618838</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>319956249</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>319296802</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>318845217</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>269615382</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>285419544</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>285349657</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>302121504</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>1129535056</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="checkBox">
+     <property name="text">
+      <string>Force big endian</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Diag_Format</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Diag_Format</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

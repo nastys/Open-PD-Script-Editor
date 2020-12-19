@@ -10,6 +10,9 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>Open PD Script Editor</string>
   </property>
@@ -18,6 +21,9 @@
     <normaloff>:/2d/PokeSlow.png</normaloff>:/2d/PokeSlow.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="acceptDrops">
+    <bool>true</bool>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
      <number>0</number>
@@ -36,6 +42,9 @@
     </property>
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -43,56 +52,20 @@
        <bool>true</bool>
       </property>
       <widget class="QWidget" name="tab">
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
        <attribute name="title">
         <string>Script</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="2" rowspan="3">
-         <widget class="QFrame" name="frame_paramEdit">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QTextEdit" name="textEdit">
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#c8c814;&quot;&gt;PV_BRANCH_MODE(0);&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#140ac8;&quot;&gt;TIME(0);&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;MUSIC_PLAY();&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;BAR_TIME_SET(120, 3);&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;TIME(6000000);&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;PV_END();&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;END();&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
+        <item row="1" column="0">
          <widget class="QWidget" name="widget" native="true">
           <property name="enabled">
            <bool>false</bool>
+          </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout_13">
            <property name="leftMargin">
@@ -107,52 +80,6 @@ p, li { white-space: pre-wrap; }
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <item row="0" column="4">
-            <widget class="QPushButton" name="pushButton_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>Branch/Timestamp list</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-lista-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-lista-48.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>24</width>
-               <height>24</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QPushButton" name="pushButton_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>Next timestamp</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-48.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>24</width>
-               <height>24</height>
-              </size>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineEdit_time">
              <property name="sizePolicy">
@@ -160,6 +87,9 @@ p, li { white-space: pre-wrap; }
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="acceptDrops">
+              <bool>true</bool>
              </property>
              <property name="toolTip">
               <string>Timestamp</string>
@@ -176,69 +106,67 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QComboBox" name="comboBox_branch">
-             <property name="toolTip">
-              <string>PV branch</string>
+            <widget class="QLabel" name="label_Branch">
+             <property name="acceptDrops">
+              <bool>true</bool>
              </property>
-             <property name="iconSize">
-              <size>
-               <width>24</width>
-               <height>24</height>
-              </size>
-             </property>
-             <item>
-              <property name="text">
-               <string>Default</string>
-              </property>
-              <property name="icon">
-               <iconset resource="res.qrc">
-                <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</iconset>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Fail</string>
-              </property>
-              <property name="icon">
-               <iconset resource="res.qrc">
-                <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</iconset>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Success</string>
-              </property>
-              <property name="icon">
-               <iconset resource="res.qrc">
-                <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-fork-del-codice-48.png</iconset>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QPushButton" name="pushButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>Previous timestamp</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-rivolta-a-sinistra-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-freccia-rivolta-a-sinistra-48.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>24</width>
-               <height>24</height>
-              </size>
+             <property name="text">
+              <string>BD</string>
              </property>
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="2" rowspan="2">
+         <widget class="QFrame" name="frame_paramEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pushButton_List">
+          <property name="text">
+           <string>List...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QPlainTextEdit" name="textEdit">
+          <property name="lineWrapMode">
+           <enum>QPlainTextEdit::NoWrap</enum>
+          </property>
+          <property name="plainText">
+           <string>PV_BRANCH_MODE(0);
+TIME(0);
+MUSIC_PLAY();
+BAR_TIME_SET(120, 3);
+TIME(6000000);
+PV_END();
+END();</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -253,6 +181,9 @@ p, li { white-space: pre-wrap; }
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget_edit_modules">
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -263,6 +194,9 @@ p, li { white-space: pre-wrap; }
            <layout class="QGridLayout" name="gridLayout_6">
             <item row="0" column="0">
              <widget class="QTableWidget" name="tableWidget_edit">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -277,6 +211,9 @@ p, li { white-space: pre-wrap; }
            <layout class="QGridLayout" name="gridLayout_11">
             <item row="0" column="0">
              <widget class="QListWidget" name="listWidget_edit_modules">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -291,6 +228,9 @@ p, li { white-space: pre-wrap; }
            <layout class="QGridLayout" name="gridLayout_7">
             <item row="0" column="0">
              <widget class="QListWidget" name="listWidget_edit_stages">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -305,6 +245,9 @@ p, li { white-space: pre-wrap; }
            <layout class="QGridLayout" name="gridLayout_8">
             <item row="0" column="0">
              <widget class="QListWidget" name="listWidget_edit_motions">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -319,6 +262,9 @@ p, li { white-space: pre-wrap; }
            <layout class="QGridLayout" name="gridLayout_9">
             <item row="0" column="0">
              <widget class="QListWidget" name="listWidget_edit_handitems">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -333,6 +279,9 @@ p, li { white-space: pre-wrap; }
            <layout class="QGridLayout" name="gridLayout_10">
             <item row="0" column="0">
              <widget class="QListWidget" name="listWidget_edit_effects">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -347,6 +296,9 @@ p, li { white-space: pre-wrap; }
            <layout class="QFormLayout" name="formLayout">
             <item row="0" column="0">
              <widget class="QLabel" name="label_edit_editname">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Edit name:</string>
               </property>
@@ -357,6 +309,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="0" column="1">
              <widget class="QLineEdit" name="lineEdit_edit_editname">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="readOnly">
                <bool>true</bool>
               </property>
@@ -364,6 +319,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_edit_songname">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Song name:</string>
               </property>
@@ -374,6 +332,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="1" column="1">
              <widget class="QLineEdit" name="lineEdit_edit_songname">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="readOnly">
                <bool>true</bool>
               </property>
@@ -381,6 +342,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_edit_starttime">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Start time:</string>
               </property>
@@ -391,6 +355,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="2" column="1">
              <widget class="QSpinBox" name="spinBox_edit_starttime">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="readOnly">
                <bool>true</bool>
               </property>
@@ -398,6 +365,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_edit_end">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Song end:</string>
               </property>
@@ -407,10 +377,17 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QSpinBox" name="spinBox_edit_end"/>
+             <widget class="QSpinBox" name="spinBox_edit_end">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
             <item row="4" column="0">
              <widget class="QLabel" name="label_edit_buttonsfx">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Button SFX:</string>
               </property>
@@ -420,7 +397,11 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="4" column="1">
-             <widget class="QSpinBox" name="spinBox_edit_buttonsfx"/>
+             <widget class="QSpinBox" name="spinBox_edit_buttonsfx">
+              <property name="acceptDrops">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -434,7 +415,14 @@ p, li { white-space: pre-wrap; }
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QPlainTextEdit" name="plainTextEdit_db"/>
+         <widget class="QPlainTextEdit" name="plainTextEdit_db">
+          <property name="undoRedoEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -444,7 +432,31 @@ p, li { white-space: pre-wrap; }
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
-         <widget class="QPlainTextEdit" name="plainTextEdit_field"/>
+         <widget class="QPlainTextEdit" name="plainTextEdit_field">
+          <property name="undoRedoEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_log">
+       <attribute name="title">
+        <string>Log</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_12">
+        <item row="0" column="0">
+         <widget class="QTextEdit" name="textEdit_Log">
+          <property name="undoRedoEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -465,10 +477,13 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="action_New_DSC"/>
     <addaction name="actionOpen_DSC"/>
     <addaction name="actionSave_DSC"/>
-    <addaction name="actionEnable_Big_Endian"/>
+    <addaction name="actionSave_DSC_as"/>
+    <addaction name="actionChang_e_format"/>
     <addaction name="actionSet_PV_slot"/>
+    <addaction name="actionReload_data_base_entry"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionExit"/>
@@ -477,8 +492,8 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>&amp;Convert</string>
     </property>
-    <addaction name="separator"/>
-    <addaction name="actionPSP_to_DT"/>
+    <addaction name="actionEdits"/>
+    <addaction name="actionTime"/>
     <addaction name="separator"/>
     <addaction name="actionRun_these_before_converting_to_PDA_1_01"/>
     <addaction name="actionI_have_already_converted_the_DSC_to_PDA_1_01"/>
@@ -497,6 +512,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="separator"/>
     <addaction name="actionImport_VTT"/>
+    <addaction name="actionExport_L_RC"/>
     <addaction name="separator"/>
     <addaction name="actionLip_sync"/>
     <addaction name="actionLip_sync_VSQX"/>
@@ -509,7 +525,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
     <addaction name="actionCut"/>
-    <addaction name="actionCo&amp;py"/>
+    <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
     <addaction name="separator"/>
     <addaction name="actionFind_and_replace"/>
@@ -517,10 +533,43 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionAdd_command"/>
     <addaction name="actionRemove_command"/>
    </widget>
+   <widget class="QMenu" name="menuSettin_gs">
+    <property name="title">
+     <string>Settin&amp;gs</string>
+    </property>
+    <addaction name="action_Wrap"/>
+    <addaction name="actionOverwrite_files_without_as_king"/>
+    <addaction name="separator"/>
+    <addaction name="action_Dark_mode"/>
+    <addaction name="actionLight_mode"/>
+   </widget>
+   <widget class="QMenu" name="menu_Audio">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Audio</string>
+    </property>
+    <addaction name="actionSet_music_start_end"/>
+    <addaction name="actionSet_chance_time_effect"/>
+   </widget>
+   <widget class="QMenu" name="menu_Video">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Video</string>
+    </property>
+    <addaction name="actionRemove_all_movie_commands"/>
+    <addaction name="actionSet_2D_PV_start_end"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_Convert"/>
    <addaction name="menu_Lyrics"/>
+   <addaction name="menu_Audio"/>
+   <addaction name="menu_Video"/>
+   <addaction name="menuSettin_gs"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -535,16 +584,17 @@ p, li { white-space: pre-wrap; }
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_New_DSC"/>
    <addaction name="actionOpen_DSC"/>
    <addaction name="actionSave_DSC"/>
-   <addaction name="actionEnable_Big_Endian"/>
+   <addaction name="actionSave_DSC_as"/>
    <addaction name="actionSet_PV_slot"/>
    <addaction name="separator"/>
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
    <addaction name="separator"/>
    <addaction name="actionCut"/>
-   <addaction name="actionCo&amp;py"/>
+   <addaction name="actionCopy"/>
    <addaction name="actionPaste"/>
    <addaction name="separator"/>
    <addaction name="actionFind_and_replace"/>
@@ -553,21 +603,6 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionRemove_command"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionEnable_Big_Endian">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Big endian</string>
-   </property>
-   <property name="toolTip">
-    <string>Big endian</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="text">
     <string>E&amp;xit</string>
@@ -607,12 +642,12 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionImport_VTT">
    <property name="text">
-    <string>Import &amp;WebVTT...</string>
+    <string>Import SRT/&amp;VTT...</string>
    </property>
   </action>
   <action name="actionLip_sync">
    <property name="text">
-    <string>Lip &amp;sync WebVTT...</string>
+    <string>Lip &amp;sync SRT/VTT...</string>
    </property>
    <property name="toolTip">
     <string>Lip sync WebVTT</string>
@@ -620,7 +655,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionPDA_2_00_to_PDA_1_01">
    <property name="text">
-    <string>PDA 2.00 to PD&amp;A 1.01</string>
+    <string>PDA 2.00 to PDA &amp;1.01</string>
    </property>
   </action>
   <action name="action_FT_new_mouth_to_FT_old_mouth">
@@ -630,7 +665,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_Look_FT_old_look">
    <property name="text">
-    <string>&amp;Look animations &lt;-&gt; FT old look animations</string>
+    <string>Loo&amp;k animations &lt;-&gt; FT old look animations</string>
    </property>
   </action>
   <action name="action_Expressions_FT_old_expressions">
@@ -669,18 +704,15 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionBAR_TIME_SET_TARGET_FLYING_TIME">
    <property name="text">
-    <string>BAR_TIME_SET &lt;-&gt; TARGET_FLYING_TIME (lossy)</string>
+    <string>BAR_TIME_SET &lt;-&gt; TARGET_FLYIN&amp;G_TIME (lossy)</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>&amp;About...</string>
+    <string>A&amp;bout...</string>
    </property>
   </action>
   <action name="actionSet_PV_slot">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-elenco-numerato-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-elenco-numerato-48.png</iconset>
@@ -696,9 +728,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionUndo">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-annulla-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-annulla-48.png</iconset>
@@ -711,9 +740,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionRedo">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-ripeti-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-ripeti-48.png</iconset>
@@ -726,9 +752,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionCut">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-taglia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-taglia-48.png</iconset>
@@ -740,10 +763,7 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+X</string>
    </property>
   </action>
-  <action name="actionCo&amp;py">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
+  <action name="actionCopy">
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-copia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-copia-48.png</iconset>
@@ -756,9 +776,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionPaste">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-incolla-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-incolla-48.png</iconset>
@@ -771,9 +788,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionFind_and_replace">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-trova-e-sostituisci-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-trova-e-sostituisci-48.png</iconset>
@@ -794,7 +808,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Add...</string>
+    <string>A&amp;dd...</string>
    </property>
    <property name="toolTip">
     <string>Add command</string>
@@ -824,6 +838,114 @@ p, li { white-space: pre-wrap; }
   <action name="actionLip_sync_VSQX">
    <property name="text">
     <string>Lip s&amp;ync VSQX...</string>
+   </property>
+  </action>
+  <action name="actionEdits">
+   <property name="text">
+    <string>Edit&amp;s...</string>
+   </property>
+  </action>
+  <action name="actionSave_DSC_as">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-con-nome-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-con-nome-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sav&amp;e DSC as...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="action_Wrap">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Wrap</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="action_Dark_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Dark mode</string>
+   </property>
+  </action>
+  <action name="actionLight_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lig&amp;ht mode</string>
+   </property>
+  </action>
+  <action name="action_New_DSC">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-creare-nuovo-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-creare-nuovo-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New DSC...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionChang_e_format">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</iconset>
+   </property>
+   <property name="text">
+    <string>Chan&amp;ge format...</string>
+   </property>
+  </action>
+  <action name="actionOverwrite_files_without_as_king">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Overwrite files without as&amp;king</string>
+   </property>
+  </action>
+  <action name="actionSet_music_start_end">
+   <property name="text">
+    <string>Set &amp;music start/end...</string>
+   </property>
+  </action>
+  <action name="actionSet_chance_time_effect">
+   <property name="text">
+    <string>Set chance &amp;time effect...</string>
+   </property>
+  </action>
+  <action name="actionRemove_all_movie_commands">
+   <property name="text">
+    <string>&amp;Remove all movie commands</string>
+   </property>
+  </action>
+  <action name="actionSet_2D_PV_start_end">
+   <property name="text">
+    <string>Set 2&amp;D PV start/end...</string>
+   </property>
+  </action>
+  <action name="actionExport_L_RC">
+   <property name="text">
+    <string>Export L&amp;RC...</string>
+   </property>
+  </action>
+  <action name="actionTime">
+   <property name="text">
+    <string>&amp;Time...</string>
+   </property>
+  </action>
+  <action name="actionReload_data_base_entry">
+   <property name="text">
+    <string>Reload data&amp;base entry</string>
    </property>
   </action>
  </widget>

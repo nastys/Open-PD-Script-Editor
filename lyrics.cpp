@@ -10,7 +10,7 @@ int getLyricLine(QStringList &lyrics, QString &lyric)
     return lyrics.size()-1;
 }
 
-void fromVtt(QFile &file, QTextEdit *textedit, QPlainTextEdit *pvdb, int pvnum)
+void fromVtt(QFile &file, QPlainTextEdit *textedit, QPlainTextEdit *pvdb, int pvnum)
 {
     QStringList commandlist;
     commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
@@ -60,7 +60,7 @@ void fromVtt(QFile &file, QTextEdit *textedit, QPlainTextEdit *pvdb, int pvnum)
     textedit->document()->clear();
     for(int i=0; i<commandlist.length(); i++)
         if(commandlist.at(i).isEmpty())
-            textedit->append(commandlist.at(i));
+            textedit->insertPlainText(commandlist.at(i));
         else
-            textedit->append(commandlist.at(i)+';');
+            textedit->insertPlainText(commandlist.at(i)+';');
 }
