@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QDataStream>
 #include <QPlainTextEdit>
+#include <QDebug>
 
 EditWidgets uiEditWidgetsStub()
 {

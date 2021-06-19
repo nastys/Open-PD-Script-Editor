@@ -34,7 +34,8 @@ SOURCES += \
     lyrics.cpp \
     main.cpp \
     mainwindow.cpp \
-    pdtime.cpp
+    pdtime.cpp \
+    qstring_helper.cpp
 
 HEADERS += \
     DoubleDigitQSpinBox.h \
@@ -58,7 +59,8 @@ HEADERS += \
     logger.h \
     lyrics.h \
     mainwindow.h \
-    pdtime.h
+    pdtime.h \
+    qstring_helper.h
 
 FORMS += \
     diag_addcommand.ui \

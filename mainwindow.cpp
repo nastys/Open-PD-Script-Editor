@@ -12,6 +12,7 @@
 #include "diag_time.h"
 #include "diag_merge.h"
 #include "pdtime.h"
+#include "qstring_helper.h"
 #include "debug.h"
 #include <QFileDialog>
 #include <QFile>
@@ -765,7 +766,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         }
         else if(currline.startsWith("TARGET("))
         {
-            QStringList par_cs=currline.chopped(2).split('(');
+            QStringList par_cs=chopped(currline, 2).split('(');
             if(par_cs.length()>=2)
             {
                 QStringList parameters_str=par_cs.at(1).split(',');
@@ -830,7 +831,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         }
         else if(currline.startsWith("MOUTH_ANIM("))
         {
-            QStringList par_cs=currline.chopped(2).split('(');
+            QStringList par_cs=chopped(currline, 2).split('(');
             if(par_cs.length()>=2)
             {
                 QStringList parameters_str=par_cs.at(1).split(',');
@@ -907,7 +908,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         }
         else if(currline.startsWith("PV_BRANCH_MODE("))
         {
-            QStringList par_cs=currline.chopped(2).split('(');
+            QStringList par_cs=chopped(currline, 2).split('(');
             if(par_cs.length()>=2)
             {
                 QLabel *label = new QLabel("PV branch mode");
@@ -934,7 +935,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         }
         else
         {
-            QStringList par_cs=currline.chopped(2).split('(');
+            QStringList par_cs=chopped(currline, 2).split('(');
             if(par_cs.length()>=2)
             {
                 QLabel *label = new QLabel(par_cs.at(0));
