@@ -542,6 +542,8 @@ END();</string>
     <addaction name="separator"/>
     <addaction name="action_Dark_mode"/>
     <addaction name="actionLight_mode"/>
+    <addaction name="separator"/>
+    <addaction name="actionClea_r_log"/>
    </widget>
    <widget class="QMenu" name="menu_Audio">
     <property name="enabled">
@@ -563,12 +565,19 @@ END();</string>
     <addaction name="actionRemove_all_movie_commands"/>
     <addaction name="actionSet_2D_PV_start_end"/>
    </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="action_Bulk_check"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_Convert"/>
    <addaction name="menu_Lyrics"/>
    <addaction name="menu_Audio"/>
    <addaction name="menu_Video"/>
+   <addaction name="menu_Tools"/>
    <addaction name="menuSettin_gs"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -946,6 +955,16 @@ END();</string>
   <action name="actionReload_data_base_entry">
    <property name="text">
     <string>Reload data&amp;base entry</string>
+   </property>
+  </action>
+  <action name="action_Bulk_check">
+   <property name="text">
+    <string>&amp;Bulk check...</string>
+   </property>
+  </action>
+  <action name="actionClea_r_log">
+   <property name="text">
+    <string>Clea&amp;r log</string>
    </property>
   </action>
  </widget>

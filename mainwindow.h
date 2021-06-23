@@ -28,7 +28,7 @@ public:
 private slots:
     EditWidgets uiEditWidgets();
 
-    void openDSC(QString filepath);
+    void openDSC(QString filepath, bool testopen = false);
 
     void formatSelector(int defaultsel, int version, bool& ok);
 
@@ -113,6 +113,10 @@ private slots:
     void on_actionExport_L_RC_triggered();
 
     void on_actionReload_data_base_entry_triggered();
+
+    void on_action_Bulk_check_triggered();
+
+    void on_actionClea_r_log_triggered();
 
 private:
     Ui::MainWindow *ui;

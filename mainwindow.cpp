@@ -25,6 +25,7 @@
 #include <QMimeData>
 #include <QtEndian>
 #include <QDesktopServices>
+#include <QDirIterator>
 
 #define leading(number, digits, base) QStringLiteral("%1").arg(number, digits, base, QLatin1Char('0'))
 #define pvslot_leading leading(pvslot, 3, 10)
@@ -52,9 +53,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_DSC_triggered()
 {
-    QStringList filepaths=QFileDialog::getOpenFileNames();
-    if(filepaths.isEmpty()) return;
-    openDSC(filepaths.at(0));
+    QString filepath=QFileDialog::getOpenFileName();
+    if(filepath.isEmpty()) return;
+    openDSC(filepath);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -71,21 +72,24 @@ void MainWindow::dropEvent(QDropEvent *event)
         openDSC(event->mimeData()->urls().at(0).toLocalFile());
 }
 
-void MainWindow::openDSC(QString filepath)
+void MainWindow::openDSC(QString filepath, bool testopen)
 {
     bool ok;
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
     QDataStream qds(&file);
     qds.setByteOrder(QDataStream::ByteOrder::LittleEndian);
-    int autodetected_ver=0, autodetected=0;
-    qds >> autodetected_ver;
-    autodetected_ver = qFromLittleEndian(autodetected_ver);
-#ifdef QT_DEBUG
-    debugger("Autodetected format:" << autodetected_ver);
-#endif
-    switch(autodetected_ver)
+    int old_dscfmt = dscfmt;
+    if(!testopen)
     {
+        int autodetected_ver=0, autodetected=0;
+        qds >> autodetected_ver;
+        autodetected_ver = qFromLittleEndian(autodetected_ver);
+#ifdef QT_DEBUG
+        debugger("Autodetected format:" << autodetected_ver);
+#endif
+        switch(autodetected_ver)
+        {
         case 285614104: // Arcade
         case 335874337: // Future Tone
         case 369295649:
@@ -96,7 +100,7 @@ void MainWindow::openDSC(QString filepath)
         case 319956249:
         case 319296802:
         case 318845217:
-        //case 269615382: // DT 2nd dummy PV
+            //case 269615382: // DT 2nd dummy PV
             autodetected = 4;
             break;
         case 269615382: // Mirai DX
@@ -115,21 +119,21 @@ void MainWindow::openDSC(QString filepath)
             break;
         default:
             autodetected = 0;
+        }
+        formatSelector(autodetected, autodetected_ver, ok);
+        if(!ok) return;
     }
     file.reset();
-    int old_dscfmt = dscfmt;
-    formatSelector(autodetected, autodetected_ver, ok);
-    if(!ok) return;
     isLoading=true;
     ui->textEdit->setUndoRedoEnabled(false);
     DivaScriptOpcode *DSO = formatSelection(dscfmt, ui->textEdit_Log);
     bool updateFilename=false;
-    if(dscfmt!=2&&dscfmt==old_dscfmt)
+    if(!testopen&&dscfmt!=2&&dscfmt==old_dscfmt)
     {
         QStringList mergelist={};
         QPlainTextEdit *internalEdit = new QPlainTextEdit;
         internalEdit->setUndoRedoEnabled(false);
-        DSO->readAll(file, qds, internalEdit, uiEditWidgets(), bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian);
+        DSO->readAll(file, qds, internalEdit, uiEditWidgets(), bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian, testopen);
         delete DSO;
         diag_merge diag(this, &mergelist, internalEdit);
         bool accepted = diag.exec();
@@ -152,7 +156,7 @@ void MainWindow::openDSC(QString filepath)
     }
     else
     {
-        DSO->readAll(file, qds, ui->textEdit, uiEditWidgets(), bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian);
+        DSO->readAll(file, qds, ui->textEdit, uiEditWidgets(), bigEndian?QDataStream::BigEndian:QDataStream::LittleEndian, testopen);
         delete DSO;
         updateFilename=true;
     }
@@ -1218,4 +1222,38 @@ void MainWindow::loadPvDbEntry()
 void MainWindow::on_actionReload_data_base_entry_triggered()
 {
     loadPvDbEntry();
+}
+
+void MainWindow::on_action_Bulk_check_triggered()
+{
+    if(QMessageBox::warning(this, "Bulk check", "The current file will be closed. Any unsaved changes will be lost.\n\nContinue?", QMessageBox::Yes|QMessageBox::No)!=QMessageBox::Yes) return;
+
+    QString script_folder = QFileDialog::getExistingDirectory(this, "Select script folder", QString(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if(script_folder.isEmpty()) return;
+    //int old_dscfmt = dscfmt;
+    //int old_dscver = dscver;
+
+    bool ok;
+    formatSelector(dscfmt, dscver, ok);
+    if(!ok) return;
+
+    QDirIterator it(script_folder);
+    while(it.hasNext())
+    {
+        QString next = it.next();
+        if(next.endsWith(".dsc"))
+        {
+            ui->textEdit_Log->append("-------------------------------------\n"+next+"\n-------------------------------------\n");
+            openDSC(next, true);
+            repaint();
+        }
+    }
+
+    //dscfmt = old_dscfmt;
+    //dscver = old_dscver;
+}
+
+void MainWindow::on_actionClea_r_log_triggered()
+{
+    ui->textEdit_Log->clear();
 }

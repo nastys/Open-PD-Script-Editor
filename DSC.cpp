@@ -50,6 +50,7 @@ QString DivaScriptOpcode::getOpcodeString(int opcodeNumber)
         }
     }
 
+    logEdit->append("E: DSC is corrupted. Unknown opcode "+QString::number(opcodeNumber)+'\n');
     return "UNKNOWN_OPCODE_"+QString::number(opcodeNumber);
 }
 
@@ -66,7 +67,7 @@ void DivaScriptOpcode::logger(QString log)
     logEdit->append(log+"\n");
 }
 
-void DivaScriptOpcode_F::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_F::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     datastream.skipRawData(4);
@@ -78,15 +79,19 @@ void DivaScriptOpcode_F::readAll(QFile &file, QDataStream &datastream, QPlainTex
     {
         int opc;
         datastream >> opc;
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
@@ -120,7 +125,7 @@ void DivaScriptOpcode_F::writeAll(QFile &file, QDataStream &datastream, QPlainTe
     }
 };
 
-void DivaScriptOpcode_F2::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_F2::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     datastream.skipRawData(72);
@@ -133,15 +138,19 @@ void DivaScriptOpcode_F2::readAll(QFile &file, QDataStream &datastream, QPlainTe
         int opc;
         datastream >> opc;
         if((uibyteorder==QDataStream::LittleEndian&&opc==1128681285)||(uibyteorder==QDataStream::BigEndian&&opc==1162823235)) break; // "EOFC"
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
@@ -185,7 +194,7 @@ void DivaScriptOpcode_F2::writeAll(QFile &file, QDataStream &datastream, QPlainT
     datastream << size;
 }
 
-void DivaScriptOpcode_X::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_X::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     datastream.skipRawData(72);
@@ -198,15 +207,19 @@ void DivaScriptOpcode_X::readAll(QFile &file, QDataStream &datastream, QPlainTex
         int opc;
         datastream >> opc;
         if((uibyteorder==QDataStream::LittleEndian&&opc==1128681285)||(uibyteorder==QDataStream::BigEndian&&opc==1162823235)) break; // "EOFC"
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
@@ -244,7 +257,7 @@ void DivaScriptOpcode_X::writeAll(QFile &file, QDataStream &datastream, QPlainTe
     datastream << 1128681285 << 0 << 0 << 0 << 0 << 0 << 0;
 }
 
-void DivaScriptOpcode_FT::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_FT::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     datastream.skipRawData(4);
@@ -257,16 +270,19 @@ void DivaScriptOpcode_FT::readAll(QFile &file, QDataStream &datastream, QPlainTe
         int opc;
         datastream >> opc;
 
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
@@ -300,7 +316,7 @@ void DivaScriptOpcode_FT::writeAll(QFile &file, QDataStream &datastream, QPlainT
     }
 }
 
-void DivaScriptOpcode_PDA::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_PDA::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     textedit->clear();
@@ -311,15 +327,19 @@ void DivaScriptOpcode_PDA::readAll(QFile &file, QDataStream &datastream, QPlainT
     {
         int opc;
         datastream >> opc;
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
@@ -352,7 +372,7 @@ void DivaScriptOpcode_PDA::writeAll(QFile &file, QDataStream &datastream, QPlain
     }
 }
 
-void DivaScriptOpcode_DIVA::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_DIVA::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     textedit->clear();
@@ -363,15 +383,19 @@ void DivaScriptOpcode_DIVA::readAll(QFile &file, QDataStream &datastream, QPlain
     {
         int opc;
         datastream >> opc;
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
@@ -404,7 +428,7 @@ void DivaScriptOpcode_DIVA::writeAll(QFile &file, QDataStream &datastream, QPlai
     }
 }
 
-void DivaScriptOpcode_DIVA2::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_DIVA2::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     textedit->clear();
@@ -415,15 +439,19 @@ void DivaScriptOpcode_DIVA2::readAll(QFile &file, QDataStream &datastream, QPlai
     {
         int opc;
         datastream >> opc;
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
@@ -456,7 +484,7 @@ void DivaScriptOpcode_DIVA2::writeAll(QFile &file, QDataStream &datastream, QPla
     }
 }
 
-void DivaScriptOpcode_DIVA2Edit::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_DIVA2Edit::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     QTextCodec *codec = QTextCodec::codecForName("Shift_JIS");
     if(codec==nullptr) return;
@@ -492,15 +520,19 @@ void DivaScriptOpcode_DIVA2Edit::readAll(QFile &file, QDataStream &datastream, Q
         int opc;
         datastream >> opc;
         if(getOpcodeParamCount(opc)==-1) break;
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
 
     // Lyrics
@@ -923,7 +955,7 @@ int DivaScriptOpcode_Mirai::getOpcodeParamCount(int opcodeNumber)
     }
 }
 
-void DivaScriptOpcode_Mirai::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder)
+void DivaScriptOpcode_Mirai::readAll(QFile &file, QDataStream &datastream, QPlainTextEdit *textedit, EditWidgets editWidgets, QDataStream::ByteOrder uibyteorder, bool testmode)
 {
     datastream.setByteOrder(uibyteorder);
     datastream.skipRawData(4);
@@ -935,15 +967,19 @@ void DivaScriptOpcode_Mirai::readAll(QFile &file, QDataStream &datastream, QPlai
     {
         int opc;
         datastream >> opc;
-        textedit->insertPlainText(getOpcodeString(opc)+"(");
+        QString ops = getOpcodeString(opc);
+        if(!testmode) textedit->insertPlainText(ops+"(");
         for(int i=0; i<getOpcodeParamCount(opc); i++)
         {
-            if(i) textedit->insertPlainText(", ");
             int byte;
             datastream >> byte;
-            textedit->insertPlainText(QString::number(byte));
+            if(!testmode)
+            {
+                if(i) textedit->insertPlainText(", ");
+                textedit->insertPlainText(QString::number(byte));
+            }
         }
-        textedit->insertPlainText(");\n");
+        if(!testmode) textedit->insertPlainText(");\n");
     }
     textedit->blockSignals(false);
     textedit->setUndoRedoEnabled(true);
