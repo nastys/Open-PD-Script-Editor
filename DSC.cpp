@@ -105,14 +105,14 @@ void DivaScriptOpcode_F::writeAll(QFile &file, QDataStream &datastream, QPlainTe
     datastream << 302121504;
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {
@@ -166,14 +166,14 @@ void DivaScriptOpcode_F2::writeAll(QFile &file, QDataStream &datastream, QPlainT
     datastream.setByteOrder(uibyteorder);
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {
@@ -235,14 +235,14 @@ void DivaScriptOpcode_X::writeAll(QFile &file, QDataStream &datastream, QPlainTe
     datastream.setByteOrder(uibyteorder);
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {
@@ -296,14 +296,14 @@ void DivaScriptOpcode_FT::writeAll(QFile &file, QDataStream &datastream, QPlainT
     datastream << 335874337;
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {
@@ -352,14 +352,14 @@ void DivaScriptOpcode_PDA::writeAll(QFile &file, QDataStream &datastream, QPlain
     datastream.setByteOrder(uibyteorder);
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {
@@ -408,14 +408,14 @@ void DivaScriptOpcode_DIVA::writeAll(QFile &file, QDataStream &datastream, QPlai
     datastream.setByteOrder(uibyteorder);
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {
@@ -464,14 +464,14 @@ void DivaScriptOpcode_DIVA2::writeAll(QFile &file, QDataStream &datastream, QPla
     datastream.setByteOrder(uibyteorder);
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {
@@ -994,14 +994,14 @@ void DivaScriptOpcode_Mirai::writeAll(QFile &file, QDataStream &datastream, QPla
     datastream.setByteOrder(uibyteorder);
     QString line;
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
-        QStringList splitcommand=commandlist.at(i).split('(', QString::SkipEmptyParts);
+        QStringList splitcommand=commandlist.at(i).split('(', Qt::SkipEmptyParts);
         if(!splitcommand.length()) continue;
         int opcode=getOpcodeNumber(splitcommand.at(0));
         datastream << opcode;
-        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', QString::SkipEmptyParts);
+        QStringList splitparams=QString(splitcommand.at(1)).remove(')').split(',', Qt::SkipEmptyParts);
         int expcount=getOpcodeParamCount(opcode);
         if(!(splitparams.length()==expcount))
         {

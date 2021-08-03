@@ -375,7 +375,7 @@ void MainWindow::on_actionPDA_2_00_to_PDA_1_01_triggered()
     DivaScriptOpcode_PDA DSO(ui->textEdit_Log);
 
     QStringList commandlist;
-    commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=ui->textEdit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     ui->textEdit->clear();
     for(int i=0; i<commandlist.length();)
     {
@@ -563,7 +563,7 @@ void MainWindow::replaceID(QString idcommand)
     DivaScriptOpcode_PDA DSO(ui->textEdit_Log);
 
     QStringList commandlist;
-    commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
+    commandlist=ui->textEdit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "");
     ui->textEdit->clear();
     for(int i=0; i<commandlist.length(); i++)
     {
@@ -641,7 +641,7 @@ void MainWindow::on_actionAll_of_them_triggered()
 void MainWindow::on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered()
 {
     QStringList commandlist;
-    commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "");
+    commandlist=ui->textEdit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "");
     ui->textEdit->clear();
     for(int i=0; i<commandlist.length(); i++)
     {
@@ -971,7 +971,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
 
         // Update time
         QStringList commandlist;
-        commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=ui->textEdit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         int timecmd = findTimeOfCommand(*ui->textEdit, line);
         if(timecmd<0) timecmd = 0;
         QString timestr=commandlist.at(timecmd).mid(5, commandlist.at(timecmd).length()-6);
@@ -980,7 +980,7 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         ui->label_Branch->setText("B"+QString(findBranchOfCommand(*ui->textEdit, line)));
     }
     QLayout *container = new QGridLayout;
-    container->setMargin(0);
+    //container->setMargin(0);
     container->setContentsMargins(0, 0, 0, 0);
     container->addWidget(scrollarea);
     ui->frame_paramEdit->setLayout(container);
@@ -1003,7 +1003,7 @@ void MainWindow::on_actionAdd_command_triggered()
         isLoading=true;
         if(command->endsWith(';')) command->chop(1);
         QStringList commandlist;
-        commandlist=ui->textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=ui->textEdit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         insertCommand(commandlist, *time, *command);
         ui->textEdit->clear();
         for(int i=0; i<commandlist.length(); i++)

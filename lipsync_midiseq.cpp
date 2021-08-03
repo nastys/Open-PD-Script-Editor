@@ -14,48 +14,48 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
 
     if(reader.readNextStartElement())
     {
-        if(reader.name() == "vsq4" || reader.name() == "vsq3")
+        if(reader.name().toString() == "vsq4" || reader.name().toString() == "vsq3")
         {
             while(reader.readNextStartElement())
             {
                 debugger("Name (1):" << reader.name());
                 errorChk();
-                if(reader.name() == "masterTrack")
+                if(reader.name().toString() == "masterTrack")
                 {
                     while(reader.readNextStartElement())
                     {
                         debugger("Name (2):" << reader.name());
                         errorChk();
-                        if(reader.name() == "resolution")
+                        if(reader.name().toString() == "resolution")
                             this->master_track.sequence_resolution = readULL();
-                        else if(reader.name() == "preMeasure")
+                        else if(reader.name().toString() == "preMeasure")
                             this->master_track.sequence_preMeasure = readULL();
-                        else if(reader.name() == "timeSig")
+                        else if(reader.name().toString() == "timeSig")
                         {
                             TimeSignature ts;
                             while(reader.readNextStartElement())
                             {
                                 debugger("Name (3):" << reader.name());
                                 errorChk();
-                                if(reader.name() == "m" || reader.name() == "posMes")
+                                if(reader.name().toString() == "m" || reader.name().toString() == "posMes")
                                     ts.measure = readULL();
-                                else if(reader.name() == "nu" || reader.name() == "nume")
+                                else if(reader.name().toString() == "nu" || reader.name().toString() == "nume")
                                     ts.numerator = readUI();
-                                else if(reader.name() == "de" || reader.name() == "denomi")
+                                else if(reader.name().toString() == "de" || reader.name().toString() == "denomi")
                                     ts.denominator = readUI();
                             }
                             this->master_track.sequence_timeSignature_vector.append(ts);
                         }
-                        else if(reader.name() == "tempo")
+                        else if(reader.name().toString() == "tempo")
                         {
                             Tempo temp;
                             while(reader.readNextStartElement())
                             {
                                 debugger("Name (3):" << reader.name());
                                 errorChk();
-                                if(reader.name() == "t" || reader.name() == "posTick")
+                                if(reader.name().toString() == "t" || reader.name().toString() == "posTick")
                                     temp.tick = readULL();
-                                else if(reader.name() == "v" || reader.name() == "bpm")
+                                else if(reader.name().toString() == "v" || reader.name().toString() == "bpm")
                                     temp.value = readULL();
                             }
                             this->master_track.sequence_tempo_vector.append(temp);
@@ -63,42 +63,42 @@ void midiseq::Sequence_VSQX :: readSequence(QFile &file)
                         else reader.skipCurrentElement();
                     }
                 }
-                else if(reader.name() == "vsTrack")
+                else if(reader.name().toString() == "vsTrack")
                 {
                     Track trk;
                     while(reader.readNextStartElement())
                     {
                         debugger("Name (2b):" << reader.name());
                         errorChk();
-                        if(reader.name() == "tNo" || reader.name() == "vsTrackNo")
+                        if(reader.name().toString() == "tNo" || reader.name().toString() == "vsTrackNo")
                             trk.track_number = readUI();
-                        else if(reader.name() == "vsPart" || reader.name() == "musicalPart")
+                        else if(reader.name().toString() == "vsPart" || reader.name().toString() == "musicalPart")
                         {
                             Part prt;
                             while(reader.readNextStartElement())
                             {
                                 debugger("Name (3b):" << reader.name());
                                 errorChk();
-                                if(reader.name() == "t" || reader.name() == "posTick")
+                                if(reader.name().toString() == "t" || reader.name().toString() == "posTick")
                                     prt.tick = readULL();
-                                else if(reader.name() == "playTime")
+                                else if(reader.name().toString() == "playTime")
                                     prt.playTime = readULL();
-                                else if(reader.name() == "note")
+                                else if(reader.name().toString() == "note")
                                 {
                                     Note nt;
                                     while(reader.readNextStartElement())
                                     {
                                         debugger("Name (4):" << reader.name());
                                         errorChk();
-                                        if(reader.name() == "n" || reader.name() == "noteNum")
+                                        if(reader.name().toString() == "n" || reader.name().toString() == "noteNum")
                                             nt.note_number = readUI();
-                                        else if(reader.name() == "t" || reader.name() == "posTick")
+                                        else if(reader.name().toString() == "t" || reader.name().toString() == "posTick")
                                             nt.tick = readULL();
-                                        else if(reader.name() == "dur" || reader.name() == "durTick")
+                                        else if(reader.name().toString() == "dur" || reader.name().toString() == "durTick")
                                             nt.duration = readULL();
-                                        else if(reader.name() == "y" || reader.name() == "lyric")
+                                        else if(reader.name().toString() == "y" || reader.name().toString() == "lyric")
                                             nt.lyric = reader.readElementText();
-                                        else if(reader.name() == "p" || reader.name() == "phnms")
+                                        else if(reader.name().toString() == "p" || reader.name().toString() == "phnms")
                                             nt.phonemes = reader.readElementText();
                                         else reader.skipCurrentElement();
                                     }
@@ -230,7 +230,7 @@ void midiseq::DscSequence :: applyCommands(QPlainTextEdit *dscpte, VSQX_Settings
     logger::log("Adding DSC commands...\n");
 
     QStringList commandlist;
-    commandlist=dscpte->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=dscpte->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
 
     if(settings.delete_existing)
     {

@@ -95,7 +95,7 @@ void LipSync_v1_0::getLyrics(QFile &vtt, QVector<lyric> &lyrics, lipsync_setting
 
 void LipSync_v1_0::lipsyncFromVtt(QPlainTextEdit *dscpte, QFile &vtt, lipsync_settings &settings)
 {
-    QStringList lyriccommandlist=dscpte->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "").filter("LYRIC(");
+    QStringList lyriccommandlist=dscpte->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "").filter("LYRIC(");
 
     QVector<lyric> lyrics;
     getLyrics(vtt, lyrics, settings);
@@ -104,7 +104,7 @@ void LipSync_v1_0::lipsyncFromVtt(QPlainTextEdit *dscpte, QFile &vtt, lipsync_se
     fillPhonemeList(lyrics, phonemes, settings);
 
     QStringList commandlist;
-    commandlist=dscpte->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=dscpte->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
 
     if(settings.delete_existing)
     {

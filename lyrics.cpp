@@ -13,7 +13,7 @@ int getLyricLine(QStringList &lyrics, QString &lyric)
 void fromVtt(QFile &file, QPlainTextEdit *textedit, QPlainTextEdit *pvdb, int pvnum)
 {
     QStringList commandlist;
-    commandlist=textedit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
     for(int i=0; i<commandlist.length(); i++)
     {
         if(commandlist.at(i).simplified().startsWith("LYRIC("))

@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         DSO.readAll(input, qds, textEdit, uiEditWidgetsStub(), QDataStream::LittleEndian);
         input.close();
         QStringList commandlist;
-        commandlist=textEdit->document()->toPlainText().split(';', QString::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+        commandlist=textEdit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
         QFile output(argv[2]);
         output.open(QIODevice::WriteOnly);
         output.resize(0);
