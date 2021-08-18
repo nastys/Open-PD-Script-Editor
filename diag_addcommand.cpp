@@ -7,6 +7,14 @@ diag_addcommand::diag_addcommand(QWidget *parent, DivaScriptOpcode* newDSO) :
 {
     ui->setupUi(this);
     DSO=newDSO;
+
+#ifdef Q_OS_MACOS
+    KDMacTouchBar *touchBar = new KDMacTouchBar;
+
+    QAction *ENDAction = new QAction(tr("END()"));
+    touchBar->addAction(ENDAction);
+    connect(ENDAction, &QAction::triggered, this, &diag_addcommand::tb_END);
+#endif
 }
 
 diag_addcommand::~diag_addcommand()
@@ -16,9 +24,16 @@ diag_addcommand::~diag_addcommand()
     //if(DSO->gameStr().isEmpty()||DSO->gameStr().isNull()) ui->pushButton->setEnabled(false);
 }
 
+void diag_addcommand::tb_END()
+{
+    ui->lineEdit_command->setText("END()");
+    on_buttonBox_accepted();
+    accept();
+}
+
 void diag_addcommand::on_buttonBox_accepted()
 {
-    *command=ui->lineEdit_command->text();
+    *command=ui->lineEdit_command->text().remove(';');
     *time=ui->spinBox_time->value();
 }
 

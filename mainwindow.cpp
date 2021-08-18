@@ -8,7 +8,7 @@
 #include "diag_addcommand.h"
 #include "diag_format.h"
 #include "diag_pvslot.h"
-#include "diag_find.h"
+#include "diag_find2.h"
 #include "diag_time.h"
 #include "diag_merge.h"
 #include "pdtime.h"
@@ -43,6 +43,14 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+#ifdef Q_OS_MACOS
+    wrapAction = new QAction(tr("Wrap"));
+    wrapAction->setCheckable(true);
+
+    touchBar = new KDMacTouchBar(this);
+    touchBar_main();
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -50,6 +58,82 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::touchBar_main()
+{
+#ifdef Q_OS_MACOS
+    touchBar->clear();
+
+    QIcon openIcon(QStringLiteral(":/icons/icons8/color/icons/icons8/color/icons8-apri-cartella-96.png"));
+    QAction *openAction = new QAction(openIcon, tr(""));
+    touchBar->addAction(openAction);
+    connect(openAction, &QAction::triggered, this, &MainWindow::on_actionOpen_DSC_triggered);
+
+    QIcon saveIcon(QStringLiteral(":/icons/icons8/color/icons/icons8/color/icons8-salva-96.png"));
+    QAction *saveAction = new QAction(saveIcon, tr(""));
+    touchBar->addAction(saveAction);
+    connect(saveAction, &QAction::triggered, this, &MainWindow::on_actionSave_DSC_triggered);
+
+    QIcon undoIcon(QStringLiteral(":/icons/icons8/color/icons/icons8/color/icons8-annulla-96.png"));
+    QAction *undoAction = new QAction(undoIcon, tr(""));
+    touchBar->addAction(undoAction);
+    connect(undoAction, &QAction::triggered, this, &MainWindow::on_actionUndo_triggered);
+
+    QIcon redoIcon(QStringLiteral(":/icons/icons8/color/icons/icons8/color/icons8-ripeti-96.png"));
+    QAction *redoAction = new QAction(redoIcon, tr(""));
+    touchBar->addAction(redoAction);
+    connect(redoAction, &QAction::triggered, this, &MainWindow::on_actionRedo_triggered);
+
+    QIcon findIcon(QStringLiteral(":/icons/icons8/color/icons/icons8/color/icons8-trova-e-sostituisci-96.png"));
+    QAction *findAction = new QAction(findIcon, tr(""));
+    touchBar->addAction(findAction);
+    connect(findAction, &QAction::triggered, this, &MainWindow::on_actionFind_and_replace_triggered);
+
+    QIcon addIcon(QStringLiteral(":/icons/icons8/color/icons/icons8/color/icons8-aggiungi-96.png"));
+    QAction *addAction = new QAction(addIcon, tr(""));
+    touchBar->addAction(addAction);
+    connect(addAction, &QAction::triggered, this, &MainWindow::on_actionAdd_command_triggered);
+
+    QIcon removeIcon(QStringLiteral(":/icons/icons8/color/icons/icons8/color/icons8-rimuovi-96.png"));
+    QAction *removeAction = new QAction(removeIcon, tr(""));
+    removeAction->setEnabled(false);
+    touchBar->addAction(removeAction);
+    connect(removeAction, &QAction::triggered, this, &MainWindow::on_actionRemove_command_triggered);
+
+    touchBar->addSeparator();
+
+    QAction *toolsAction = new QAction(tr("Tools"));
+    touchBar->addAction(toolsAction);
+    connect(toolsAction, &QAction::triggered, this, &MainWindow::touchBar_tools);
+#endif
+}
+
+void MainWindow::touchBar_tools()
+{
+#ifdef Q_OS_MACOS
+    touchBar->clear();
+
+    QAction *mainAction = new QAction(tr("Back"));
+    touchBar->addAction(mainAction);
+    connect(mainAction, &QAction::triggered, this, &MainWindow::touchBar_main);
+
+    touchBar->addSeparator();
+    touchBar->addSeparator();
+
+    QAction *timeToolAction = new QAction(tr("Time"));
+    touchBar->addAction(timeToolAction);
+    connect(timeToolAction, &QAction::triggered, this, &MainWindow::on_actionTime_triggered);
+
+    touchBar->addSeparator();
+
+    touchBar->addAction(wrapAction);
+    connect(wrapAction, &QAction::triggered, this, &MainWindow::toggleWrap);
+#endif
+}
+
+void MainWindow::toggleWrap()
+{
+    ui->action_Wrap->toggle();
+}
 
 void MainWindow::on_actionOpen_DSC_triggered()
 {
@@ -1045,6 +1129,9 @@ void MainWindow::on_actionUndo_triggered()
 void MainWindow::on_action_Wrap_toggled(bool arg1)
 {
     ui->textEdit->setLineWrapMode(arg1 ? QPlainTextEdit::LineWrapMode::WidgetWidth : QPlainTextEdit::LineWrapMode::NoWrap);
+#ifdef Q_OS_MACOS
+    wrapAction->setChecked(arg1);
+#endif
 }
 
 void MainWindow::on_action_Dark_mode_toggled(bool arg1)
@@ -1117,7 +1204,7 @@ void MainWindow::setPvSlot()
 
 void MainWindow::on_actionFind_and_replace_triggered()
 {
-    diag_find * diag = new diag_find(this, ui->textEdit);
+    diag_find2 * diag = new diag_find2(nullptr, this, ui->textEdit);
     diag->show();
 }
 
@@ -1257,3 +1344,9 @@ void MainWindow::on_actionClea_r_log_triggered()
 {
     ui->textEdit_Log->clear();
 }
+
+void MainWindow::on_actionRemove_command_triggered()
+{
+
+}
+

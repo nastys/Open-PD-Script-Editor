@@ -26,6 +26,7 @@ private slots:
 private:
     Ui::diag_addcommand *ui;
     DivaScriptOpcode* DSO;
+    void tb_END();
 };
 
 #endif // DIAG_ADDCOMMAND_H

@@ -57,7 +57,7 @@
    <item row="2" column="0" colspan="2">
     <widget class="QPushButton" name="pushButton_Close">
      <property name="text">
-      <string>閉じる</string>
+      <string>Close</string>
      </property>
     </widget>
    </item>

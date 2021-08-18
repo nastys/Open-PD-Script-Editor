@@ -11,6 +11,10 @@
 #include "EditWidgets.h"
 #include "DSC.h"
 
+#ifdef Q_OS_MACOS
+#include "KDMacTouchBar/kdmactouchbar.h"
+#endif
+
 class DivaScriptOpcode;
 
 QT_BEGIN_NAMESPACE
@@ -118,11 +122,20 @@ private slots:
 
     void on_actionClea_r_log_triggered();
 
+    void on_actionRemove_command_triggered();
+
 private:
     Ui::MainWindow *ui;
+#ifdef Q_OS_MACOS
+    KDMacTouchBar *touchBar;
+    QAction *wrapAction;
+#endif
     void replaceID(QString command);
     void closeEvent(QCloseEvent *event);
     void loadPvDbEntry();
+    void toggleWrap();
+    void touchBar_main();
+    void touchBar_tools();
 };
 
 #endif // MAINWINDOW_H

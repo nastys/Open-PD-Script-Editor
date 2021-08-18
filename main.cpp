@@ -9,6 +9,8 @@
 #include <QPlainTextEdit>
 #include <QDebug>
 
+#include "KDMacTouchBar/kdmactouchbar.h"
+
 EditWidgets uiEditWidgetsStub()
 {
     EditWidgets editWidgets;
@@ -33,6 +35,11 @@ int main(int argc, char *argv[])
     logger::initlogfile();
 
     QApplication a(argc, argv);
+
+#ifdef Q_OS_MACOS
+    KDMacTouchBar::setAutomaticallyCreateMessageBoxTouchBar(true);
+#endif
+
     if(argc>=3)
     {
         QTextEdit dummyLogEdit;

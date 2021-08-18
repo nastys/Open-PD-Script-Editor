@@ -24,6 +24,9 @@ private slots:
 
 private:
     Ui::diag_time *ui;
+    void set30S();
+    void set1M();
+    void set2M();
 };
 
 #endif // DIAG_TIME_H

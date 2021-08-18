@@ -22,7 +22,7 @@ SOURCES += \
     command.cpp \
     diag_addcommand.cpp \
     diag_addcommand2.cpp \
-    diag_find.cpp \
+    diag_find2.cpp \
     diag_format.cpp \
     diag_lipsync.cpp \
     diag_lipsync_vsqx.cpp \
@@ -47,7 +47,7 @@ HEADERS += \
     debug.h \
     diag_addcommand.h \
     diag_addcommand2.h \
-    diag_find.h \
+    diag_find2.h \
     diag_format.h \
     diag_lipsync.h \
     diag_lipsync_vsqx.h \
@@ -64,10 +64,19 @@ HEADERS += \
     pdtime.h \
     qstring_helper.h
 
+macx {
+SOURCES += \
+    KDMacTouchBar/kdmactouchbar.mm \
+
+HEADERS += \
+    KDMacTouchBar/kdmactouchbar.h \
+    KDMacTouchBar/kdmactouchbar_global.h \
+}
+
 FORMS += \
     diag_addcommand.ui \
     diag_addcommand2.ui \
-    diag_find.ui \
+    diag_find2.ui \
     diag_format.ui \
     diag_lipsync.ui \
     diag_lipsync_vsqx.ui \
@@ -93,3 +102,11 @@ QMAKE_CXXFLAGS_RELEASE *= -O3
 QMAKE_LFLAGS_RELEASE -= -O1
 QMAKE_LFLAGS_RELEASE -= -O2
 QMAKE_LFLAGS_RELEASE *= -O3
+
+SUBDIRS += \
+    KDMacTouchBar/src.pro
+
+DISTFILES += \
+    KDMacTouchBar/CMakeLists.txt \
+    KDMacTouchBar/LICENSE.LGPL.txt \
+    KDMacTouchBar/README.md
