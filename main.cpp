@@ -1,7 +1,7 @@
-#include "mainwindow.h"
+#include "mainwindow/mainwindow.h"
 #include "DSC.h"
-#include "EditWidgets.h"
-#include "logger.h"
+#include "helper/EditWidgets.h"
+#include "helper/logger.h"
 
 #include <QApplication>
 #include <QFile>

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "pdtime.h"
+#include "helper/pdtime.h"
 
 namespace Ui {
 class diag_time;

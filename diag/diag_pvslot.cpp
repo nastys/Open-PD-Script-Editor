@@ -1,6 +1,6 @@
 #include "diag_pvslot.h"
 #include "ui_diag_pvslot.h"
-#include "debug.h"
+#include "helper/debug.h"
 
 bool usedb=false;
 

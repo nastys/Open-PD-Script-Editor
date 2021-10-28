@@ -1,6 +1,6 @@
 #include "diag_addcommand2.h"
 #include "ui_diag_addcommand2.h"
-#include "debug.h"
+#include "helper/debug.h"
 #include <QTextEdit>
 
 diag_addcommand2::diag_addcommand2(QWidget *parent, DivaScriptOpcode* newDSO) :

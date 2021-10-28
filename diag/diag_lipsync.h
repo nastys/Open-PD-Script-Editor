@@ -1,7 +1,7 @@
 #ifndef DIAG_LIPSYNC_H
 #define DIAG_LIPSYNC_H
 
-#include "lipsync_settings.h"
+#include "lipsync/lipsync_settings.h"
 #include <QDialog>
 
 namespace Ui {

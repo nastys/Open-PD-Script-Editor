@@ -3,6 +3,8 @@
 #include <QProcess>
 #include <QVector>
 #include <QTextDocumentFragment>
+#include <QMessageBox>
+#include <QFile>
 
 using namespace mouthphonemes_v1_0;
 
@@ -12,8 +14,17 @@ void LipSync_v1_0::lyricToPhoneme(QString &inLyric, QString &outPhonemes, QStrin
     process.setProgram("espeak");
     process.setArguments({"-q", "-x", "-v", voice, "\""+inLyric+"\""});
     process.start();
-    process.waitForFinished();
-    outPhonemes=process.readAllStandardOutput().simplified();
+    bool started = process.waitForStarted();
+    if (started)
+    {
+        process.waitForFinished();
+        outPhonemes=process.readAllStandardOutput().simplified();
+    }
+    else
+    {
+        outPhonemes="";
+        QMessageBox::critical(nullptr, "Error", "Could not start espeak.\nIs it installed and in PATH or the program folder?");
+    }
 }
 
 char LipSync_v1_0::phonemeToMouthId(QChar phoneme, lipsync_settings &settings)

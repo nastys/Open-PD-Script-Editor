@@ -2,7 +2,7 @@
 #define DIAG_LIPSYNC_VSQX_H
 
 #include <QDialog>
-#include <lipsync_settings.h>
+#include "lipsync/lipsync_settings.h"
 
 namespace Ui {
 class diag_lipsync_vsqx;

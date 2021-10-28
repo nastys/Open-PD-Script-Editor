@@ -59,6 +59,29 @@
         <string>Script</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0" colspan="2">
+         <widget class="QPlainTextEdit" name="textEdit">
+          <property name="lineWrapMode">
+           <enum>QPlainTextEdit::NoWrap</enum>
+          </property>
+          <property name="plainText">
+           <string>PV_BRANCH_MODE(0);
+TIME(0);
+MUSIC_PLAY();
+BAR_TIME_SET(120, 3);
+TIME(6000000);
+PV_END();
+END();</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pushButton_List">
+          <property name="text">
+           <string>List...</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QWidget" name="widget" native="true">
           <property name="enabled">
@@ -116,57 +139,6 @@
             </widget>
            </item>
           </layout>
-         </widget>
-        </item>
-        <item row="0" column="2" rowspan="2">
-         <widget class="QFrame" name="frame_paramEdit">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="acceptDrops">
-           <bool>true</bool>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="pushButton_List">
-          <property name="text">
-           <string>List...</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QPlainTextEdit" name="textEdit">
-          <property name="lineWrapMode">
-           <enum>QPlainTextEdit::NoWrap</enum>
-          </property>
-          <property name="plainText">
-           <string>PV_BRANCH_MODE(0);
-TIME(0);
-MUSIC_PLAY();
-BAR_TIME_SET(120, 3);
-TIME(6000000);
-PV_END();
-END();</string>
-          </property>
          </widget>
         </item>
        </layout>
@@ -470,7 +442,7 @@ END();</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -642,11 +614,6 @@ END();</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionPSP_to_DT">
-   <property name="text">
-    <string>PSP to &amp;DT...</string>
    </property>
   </action>
   <action name="actionImport_VTT">

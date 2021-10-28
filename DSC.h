@@ -12,8 +12,8 @@
 #include <QJsonObject>
 #include <QTextEdit>
 #include <QListWidget>
-#include "mainwindow.h"
-#include "debug.h"
+#include "mainwindow/mainwindow.h"
+#include "helper/debug.h"
 
 class DivaScriptOpcode
 {

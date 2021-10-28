@@ -1,8 +1,8 @@
 #include <QXmlStreamReader>
 #include "lipsync_midiseq.h"
 #include "command.h"
-#include "logger.h"
-#include "debug.h"
+#include "helper/logger.h"
+#include "helper/debug.h"
 
 #define readULL reader.readElementText().toULongLong
 #define readUI reader.readElementText().toUInt

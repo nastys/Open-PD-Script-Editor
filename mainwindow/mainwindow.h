@@ -8,7 +8,7 @@
 #include <QDropEvent>
 #include <QCloseEvent>
 
-#include "EditWidgets.h"
+#include "helper/EditWidgets.h"
 #include "DSC.h"
 
 #ifdef Q_OS_MACOS
@@ -45,8 +45,6 @@ private slots:
     bool doSave(QString &filepath);
 
     void on_actionExit_triggered();
-
-    void on_actionPSP_to_DT_triggered();
 
     void on_actionImport_VTT_triggered();
 

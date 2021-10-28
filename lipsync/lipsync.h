@@ -1,7 +1,7 @@
 #ifndef LIPSYNC_H
 #define LIPSYNC_H
 
-#include "lipsync_settings.h"
+#include "lipsync/lipsync_settings.h"
 #include <QPlainTextEdit>
 
 struct phoneme

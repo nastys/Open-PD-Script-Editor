@@ -1,5 +1,5 @@
 #include "command.h"
-#include "pdtime.h"
+#include "helper/pdtime.h"
 
 int getTimeFromTimeCommand(QString command)
 {

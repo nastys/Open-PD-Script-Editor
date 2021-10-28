@@ -20,49 +20,51 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     DSC.cpp \
     command.cpp \
-    diag_addcommand.cpp \
-    diag_addcommand2.cpp \
-    diag_find2.cpp \
-    diag_format.cpp \
-    diag_lipsync.cpp \
-    diag_lipsync_vsqx.cpp \
-    diag_merge.cpp \
-    diag_merge2.cpp \
-    diag_pvslot.cpp \
-    diag_time.cpp \
-    lipsync_midiseq.cpp \
-    lipsync_v1_0.cpp \
-    logger.cpp \
-    lyrics.cpp \
+    diag/diag_addcommand.cpp \
+    diag/diag_addcommand2.cpp \
+    diag/diag_find2.cpp \
+    diag/diag_format.cpp \
+    diag/diag_lipsync.cpp \
+    diag/diag_lipsync_vsqx.cpp \
+    diag/diag_merge.cpp \
+    diag/diag_merge2.cpp \
+    diag/diag_pvslot.cpp \
+    diag/diag_time.cpp \
+    lipsync/lipsync_midiseq.cpp \
+    lipsync/lipsync_v1_0.cpp \
+    helper/logger.cpp \
+    helper/lyrics.cpp \
     main.cpp \
-    mainwindow.cpp \
-    pdtime.cpp \
-    qstring_helper.cpp
+    mainwindow/mainwindow.cpp \
+    mainwindow/mainwindow_convert.cpp \
+    mainwindow/mainwindow_touchbar.cpp \
+    helper/pdtime.cpp \
+    helper/qstring_helper.cpp
 
 HEADERS += \
-    DoubleDigitQSpinBox.h \
+    helper/DoubleDigitQSpinBox.h \
     DSC.h \
-    EditWidgets.h \
+    helper/EditWidgets.h \
     command.h \
-    debug.h \
-    diag_addcommand.h \
-    diag_addcommand2.h \
-    diag_find2.h \
-    diag_format.h \
-    diag_lipsync.h \
-    diag_lipsync_vsqx.h \
-    diag_merge.h \
-    diag_merge2.h \
-    diag_pvslot.h \
-    diag_time.h \
-    lipsync.h \
-    lipsync_midiseq.h \
-    lipsync_settings.h \
-    logger.h \
-    lyrics.h \
-    mainwindow.h \
-    pdtime.h \
-    qstring_helper.h
+    helper/debug.h \
+    diag/diag_addcommand.h \
+    diag/diag_addcommand2.h \
+    diag/diag_find2.h \
+    diag/diag_format.h \
+    diag/diag_lipsync.h \
+    diag/diag_lipsync_vsqx.h \
+    diag/diag_merge.h \
+    diag/diag_merge2.h \
+    diag/diag_pvslot.h \
+    diag/diag_time.h \
+    lipsync/lipsync.h \
+    lipsync/lipsync_midiseq.h \
+    lipsync/lipsync_settings.h \
+    helper/logger.h \
+    helper/lyrics.h \
+    mainwindow/mainwindow.h \
+    helper/pdtime.h \
+    helper/qstring_helper.h
 
 macx {
 SOURCES += \
@@ -74,17 +76,17 @@ HEADERS += \
 }
 
 FORMS += \
-    diag_addcommand.ui \
-    diag_addcommand2.ui \
-    diag_find2.ui \
-    diag_format.ui \
-    diag_lipsync.ui \
-    diag_lipsync_vsqx.ui \
-    diag_merge.ui \
-    diag_merge2.ui \
-    diag_pvslot.ui \
-    diag_time.ui \
-    mainwindow.ui
+    diag/diag_addcommand.ui \
+    diag/diag_addcommand2.ui \
+    diag/diag_find2.ui \
+    diag/diag_format.ui \
+    diag/diag_lipsync.ui \
+    diag/diag_lipsync_vsqx.ui \
+    diag/diag_merge.ui \
+    diag/diag_merge2.ui \
+    diag/diag_pvslot.ui \
+    diag/diag_time.ui \
+    mainwindow/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

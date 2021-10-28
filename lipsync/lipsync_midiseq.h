@@ -3,7 +3,7 @@
 #include <QVector>
 #include <QFile>
 #include <QPlainTextEdit>
-#include <lipsync_settings.h>
+#include "lipsync_settings.h"
 
 namespace midiseq
 {
