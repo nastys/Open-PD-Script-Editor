@@ -10,6 +10,7 @@
 
 #include "helper/EditWidgets.h"
 #include "DSC.h"
+#include "command.h"
 
 #ifdef Q_OS_MACOS
 #include "KDMacTouchBar/kdmactouchbar.h"

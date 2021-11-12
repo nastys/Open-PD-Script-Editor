@@ -616,7 +616,11 @@ void MainWindow::loadPvDbEntry()
     // TODO more than just lyrics
 
     ui->plainTextEdit_db->clear();
-    const QStringList databases({"mdata_pv_db.txt", "pv_db.txt"});
+    QFileInfo currentFileInfo(currentFilePath);
+    QString currentFileDir = currentFileInfo.dir().absolutePath();
+    const QStringList databases({currentFileDir+"/../mdata_pv_db.txt", currentFileDir+"/../pv_db.txt",
+                                 currentFileDir+"/mdata_pv_db.txt", currentFileDir+"/pv_db.txt",
+                                 "mdata_pv_db.txt", "pv_db.txt"});
     for(QString database : databases)
     {
         QFile file(database);
@@ -629,7 +633,11 @@ void MainWindow::loadPvDbEntry()
             ui->plainTextEdit_db->appendPlainText(line);
         }
 
-        if(!ui->plainTextEdit_db->document()->isEmpty()) break;
+        if(!ui->plainTextEdit_db->document()->isEmpty())
+        {
+            //ui->textEdit_Log->append("Using pv_db: " + currentFileDir + "\n");
+            break;
+        }
     }
 }
 
@@ -676,30 +684,3 @@ void MainWindow::on_actionRemove_command_triggered()
 {
 
 }
-
-
-void MainWindow::on_actionNormalize_TIME_triggered()
-{
-    QStringList list = ui->textEdit->document()->toPlainText().split('\n');
-    int time_diff = 0;
-    bool time_diff_extracted = false;
-    for(int i=0; i<list.length(); i++)
-    {
-        if(list.at(i).startsWith("TIME(", Qt::CaseSensitive))
-        {
-            int time_current = getTimeFromTimeCommand(list.at(i).chopped(1));
-            if(!time_diff_extracted)
-            {
-                time_diff = time_current;
-                if(time_diff>=0) return;
-                time_diff_extracted = true;
-            }
-
-            time_current -= time_diff;
-            list[i] = "TIME("+QString::number(time_current, 10)+");";
-        }
-    }
-    ui->textEdit->clear();
-    for(QString &line : list) ui->textEdit->appendPlainText(line);
-}
-

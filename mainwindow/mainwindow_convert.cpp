@@ -300,3 +300,28 @@ void MainWindow::on_actionBAR_TIME_SET_TARGET_FLYING_TIME_triggered()
         ui->textEdit->insertPlainText(finalcommand);
     }
 }
+
+void MainWindow::on_actionNormalize_TIME_triggered()
+{
+    QStringList list = ui->textEdit->document()->toPlainText().split('\n');
+    int time_diff = 0;
+    bool time_diff_extracted = false;
+    for(int i=0; i<list.length(); i++)
+    {
+        if(list.at(i).startsWith("TIME(", Qt::CaseSensitive))
+        {
+            int time_current = getTimeFromTimeCommand(list.at(i).chopped(1));
+            if(!time_diff_extracted)
+            {
+                time_diff = time_current;
+                if(time_diff>=0) return;
+                time_diff_extracted = true;
+            }
+
+            time_current -= time_diff;
+            list[i] = "TIME("+QString::number(time_current, 10)+");";
+        }
+    }
+    ui->textEdit->clear();
+    for(QString &line : list) ui->textEdit->appendPlainText(line);
+}
