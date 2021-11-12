@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QFile>
-#include "helper/DoubleDigitQSpinBox.h"
+#include "DoubleDigitQSpinBox.h"
 
 namespace Ui {
 class diag_pvslot;

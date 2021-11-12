@@ -42,7 +42,7 @@ SOURCES += \
     helper/qstring_helper.cpp
 
 HEADERS += \
-    helper/DoubleDigitQSpinBox.h \
+    DoubleDigitQSpinBox.h \
     DSC.h \
     helper/EditWidgets.h \
     command.h \
