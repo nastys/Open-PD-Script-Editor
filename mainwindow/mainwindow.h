@@ -122,6 +122,8 @@ private slots:
 
     void on_actionRemove_command_triggered();
 
+    void on_actionNormalize_TIME_triggered();
+
 private:
     Ui::MainWindow *ui;
 #ifdef Q_OS_MACOS

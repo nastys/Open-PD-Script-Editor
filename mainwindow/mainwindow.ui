@@ -17,7 +17,7 @@
    <string>Open PD Script Editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="res.qrc">
+   <iconset resource="../res.qrc">
     <normaloff>:/2d/PokeSlow.png</normaloff>:/2d/PokeSlow.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -477,6 +477,8 @@ END();</string>
     <addaction name="actionBAR_TIME_SET_TARGET_FLYING_TIME"/>
     <addaction name="separator"/>
     <addaction name="actionPDA_2_00_to_PDA_1_01"/>
+    <addaction name="separator"/>
+    <addaction name="actionNormalize_TIME"/>
    </widget>
    <widget class="QMenu" name="menu_Lyrics">
     <property name="title">
@@ -594,7 +596,7 @@ END();</string>
   </action>
   <action name="actionOpen_DSC">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-apri-cartella-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-apri-cartella-48.png</iconset>
    </property>
    <property name="text">
@@ -606,7 +608,7 @@ END();</string>
   </action>
   <action name="actionSave_DSC">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-48.png</iconset>
    </property>
    <property name="text">
@@ -690,7 +692,7 @@ END();</string>
   </action>
   <action name="actionSet_PV_slot">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-elenco-numerato-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-elenco-numerato-48.png</iconset>
    </property>
    <property name="text">
@@ -705,7 +707,7 @@ END();</string>
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-annulla-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-annulla-48.png</iconset>
    </property>
    <property name="text">
@@ -717,7 +719,7 @@ END();</string>
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-ripeti-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-ripeti-48.png</iconset>
    </property>
    <property name="text">
@@ -729,7 +731,7 @@ END();</string>
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-taglia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-taglia-48.png</iconset>
    </property>
    <property name="text">
@@ -741,7 +743,7 @@ END();</string>
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-copia-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-copia-48.png</iconset>
    </property>
    <property name="text">
@@ -753,7 +755,7 @@ END();</string>
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-incolla-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-incolla-48.png</iconset>
    </property>
    <property name="text">
@@ -765,7 +767,7 @@ END();</string>
   </action>
   <action name="actionFind_and_replace">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-trova-e-sostituisci-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-trova-e-sostituisci-48.png</iconset>
    </property>
    <property name="text">
@@ -780,7 +782,7 @@ END();</string>
   </action>
   <action name="actionAdd_command">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-aggiungi-48.png</iconset>
    </property>
    <property name="text">
@@ -798,7 +800,7 @@ END();</string>
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-rimuovi-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-rimuovi-48.png</iconset>
    </property>
    <property name="text">
@@ -823,7 +825,7 @@ END();</string>
   </action>
   <action name="actionSave_DSC_as">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-con-nome-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-salva-con-nome-48.png</iconset>
    </property>
    <property name="text">
@@ -862,7 +864,7 @@ END();</string>
   </action>
   <action name="action_New_DSC">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-creare-nuovo-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-creare-nuovo-48.png</iconset>
    </property>
    <property name="text">
@@ -874,7 +876,7 @@ END();</string>
   </action>
   <action name="actionChang_e_format">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</normaloff>:/icons/icons8/color/icons/icons8/color/icons8-file-binario-48.png</iconset>
    </property>
    <property name="text">
@@ -934,9 +936,14 @@ END();</string>
     <string>Clea&amp;r log</string>
    </property>
   </action>
+  <action name="actionNormalize_TIME">
+   <property name="text">
+    <string>Normalize TIME</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../res.qrc"/>
  </resources>
  <connections/>
 </ui>
