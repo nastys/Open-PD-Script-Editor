@@ -1045,26 +1045,41 @@ void mergeDsc(QStringList &mergelist, QPlainTextEdit *dest, QPlainTextEdit *impo
     QStringList commandList_import = import->document()->toPlainText().split('\n');
     QStringList commandList_dest = dest->document()->toPlainText().split('\n');
 
+    mergelist.append("TIME");
+    mergelist.append("PV_BRANCH_MODE");
+
     for(int i=0; i<commandList_import.length(); i++)
     {
         // Get input command
         QString cmd_import = commandList_import.at(i).simplified();
 
-        // Skip PV_END, END, PV_BRANCH_MODE, TIME, etc
+        // Skip PV_END, END, etc
+        // todo don't actually skip them, store them
         QStringList cmd_import_split = cmd_import.split('(');
         if(cmd_import_split.length()<1) continue;
         if(cmd_import.isEmpty()||!mergelist.contains(cmd_import_split.at(0))) continue; // TODO substr??
 
         // Input time
-        int time_in = getTimeFromTimeCommand(commandList_import.at(findTimeOfCommand(commandList_import, i)));
-        if(time_in<0) continue;
+        static int last_time = -INT_MAX;
+        static int new_time = 0;
+        if(cmd_import.startsWith("TIME("))
+        {
+            new_time = getTimeFromTimeCommand(cmd_import);
+            if(new_time < last_time) break; // malformed DSC
+            last_time = new_time;
+            continue;
+        }
 
         // Input branch
-        int branch_in = findBranchOfCommand(commandList_import, i);
-        if(branch_in<0) branch_in = 0;
+        static int branch_in = 0;
+        if(cmd_import.startsWith("PV_BRANCH_MODE("))
+        {
+            branch_in = cmd_import.split('(').at(1).split(')').at(0).toInt();
+            continue;
+        }
 
         // Insert command
-        insertCommand(commandList_dest, time_in, cmd_import, branch_in, ";");
+        insertCommand(commandList_dest, new_time, cmd_import, branch_in, ";");
     }
 
     isLoading = true;

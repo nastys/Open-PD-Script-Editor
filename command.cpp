@@ -3,7 +3,7 @@
 
 int getTimeFromTimeCommand(QString command)
 {
-    return command.split('(').at(1).simplified().remove(')').toInt();
+    return command.split('(').at(1).simplified().split(')').at(0).toInt();
 }
 
 int vttTimeToDivaTime(QString &time)
@@ -47,23 +47,22 @@ bool insertBranch(QStringList &commandList, int line, int branch, QString suffix
 bool insertCommand(QStringList &commandList, int time, QString command, int branch, QString suffix)
 {
     int lastTimeCommand=-1;
-    int lastTimeCommandLine=-1;
 
     for(int i=0; i<commandList.length(); i++)
     {
         const QString currentCommand=commandList.at(i).simplified();
         if(currentCommand.startsWith("TIME("))
         {
-            int thisTimeCommand=getTimeFromTimeCommand(currentCommand);
-            const int thisTimeCommandLine=i;
+            lastTimeCommand = getTimeFromTimeCommand(currentCommand);
         }
-        else if(i==commandList.length()-1) // insert TIME + command before PV_END()'s TIME
+        if(lastTimeCommand == time || i==commandList.length()-1) // insert TIME + command before PV_END()'s TIME
         {
             int pvEndTime = findTimeOfCommand(commandList, "PV_END()"+suffix);
             if(pvEndTime == -1) pvEndTime = findTimeOfCommand(commandList, "END()"+suffix);
             if(pvEndTime == -1) pvEndTime = commandList.length()-1;
             commandList.insert(pvEndTime-1, command);
-            commandList.insert(pvEndTime-1, "TIME("+QString::number(time)+")");
+            if(lastTimeCommand < time)
+                commandList.insert(pvEndTime-1, "TIME("+QString::number(time)+");");
             return insertBranch(commandList, pvEndTime-1, branch, suffix);
         }
     }
@@ -168,6 +167,7 @@ int findBranchOfCommand(QStringList &commandList, int line)
             lastBranch = i;
         if(i==line)
         {
+            if(lastBranch < 0) return 0;
             QStringList split = commandList.at(lastBranch).simplified().split(')');
             if(split.length()>0)
             {

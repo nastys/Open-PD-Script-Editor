@@ -310,7 +310,7 @@ void MainWindow::on_actionNormalize_TIME_triggered()
     {
         if(list.at(i).startsWith("TIME(", Qt::CaseSensitive))
         {
-            int time_current = getTimeFromTimeCommand(list.at(i).chopped(1));
+            int time_current = getTimeFromTimeCommand(list.at(i));
             if(!time_diff_extracted)
             {
                 time_diff = time_current;
