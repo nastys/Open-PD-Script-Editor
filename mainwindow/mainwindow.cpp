@@ -37,6 +37,7 @@ static int dscfmt=4, dscver=335874337;
 static QString currentFilePath="";
 static bool preModified;
 static bool errorState=false;
+static bool dontOptimizeLyrics=false;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -311,7 +312,7 @@ void MainWindow::on_actionImport_VTT_triggered()
     if(ifilepath.isEmpty()||ifilepath.isNull()) return;
     QFile ifile(ifilepath);
     ifile.open(QIODevice::ReadOnly);
-    fromVtt(ifile, ui->textEdit, ui->plainTextEdit_db, pvslot);
+    fromVtt(ifile, ui->textEdit, ui->plainTextEdit_db, pvslot, dontOptimizeLyrics);
     ifile.close();
 }
 
@@ -684,3 +685,9 @@ void MainWindow::on_actionRemove_command_triggered()
 {
 
 }
+
+void MainWindow::on_actionDon_t_optimize_lyrics_triggered()
+{
+    dontOptimizeLyrics = ui->actionDon_t_optimize_lyrics->isChecked();
+}
+

@@ -10,7 +10,7 @@ int getLyricLine(QStringList &lyrics, QString &lyric)
     return lyrics.size()-1;
 }
 
-void fromVtt(QFile &file, QPlainTextEdit *textedit, QPlainTextEdit *pvdb, int pvnum)
+void fromVtt(QFile &file, QPlainTextEdit *textedit, QPlainTextEdit *pvdb, int pvnum, bool dontOptimize)
 {
     QStringList commandlist;
     commandlist=textedit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
@@ -39,7 +39,7 @@ void fromVtt(QFile &file, QPlainTextEdit *textedit, QPlainTextEdit *pvdb, int pv
             int end_time=vttTimeToDivaTime(etime);
 
             int lyricn=lyricpvdb.indexOf(lyricline);
-            if(lyricn==-1)
+            if(lyricn==-1 || dontOptimize)
             {
                     lyricpvdb.append(lyricline);
                     lyricn=lyricpvdb.length();
@@ -59,8 +59,5 @@ void fromVtt(QFile &file, QPlainTextEdit *textedit, QPlainTextEdit *pvdb, int pv
     for(int h=0; h<maxinserted; h++) pvdb->appendPlainText("pv_"+QString("%1.lyric.%2="+lyricpvdb.at(h)).arg(pvnum, 3, 10, QChar('0')).arg(h+1, 3, 10, QChar('0')));
     textedit->document()->clear();
     for(int i=0; i<commandlist.length(); i++)
-        if(commandlist.at(i).isEmpty())
-            textedit->insertPlainText(commandlist.at(i));
-        else
-            textedit->insertPlainText(commandlist.at(i)+';');
+        if(!commandlist.at(i).isEmpty()) textedit->insertPlainText(commandlist.at(i)+";\n");
 }

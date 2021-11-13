@@ -46,23 +46,32 @@ bool insertBranch(QStringList &commandList, int line, int branch, QString suffix
 
 bool insertCommand(QStringList &commandList, int time, QString command, int branch, QString suffix)
 {
-    int lastTimeCommand=-1;
-
     for(int i=0; i<commandList.length(); i++)
     {
         const QString currentCommand=commandList.at(i).simplified();
         if(currentCommand.startsWith("TIME("))
         {
-            lastTimeCommand = getTimeFromTimeCommand(currentCommand);
+            int thisTimeCommand=getTimeFromTimeCommand(currentCommand);
+            const int thisTimeCommandLine=i;
+            if(thisTimeCommand==time)
+            {
+                commandList.insert(thisTimeCommandLine+1, command);
+                return insertBranch(commandList, thisTimeCommandLine, branch, suffix);
+            }
+            else if(thisTimeCommand>time)
+            {
+                commandList.insert(thisTimeCommandLine-1, command);
+                commandList.insert(thisTimeCommandLine-1, "TIME("+QString::number(time)+')'+suffix);
+                return insertBranch(commandList, thisTimeCommandLine, branch, suffix);
+            }
         }
-        if(lastTimeCommand == time || i==commandList.length()-1) // insert TIME + command before PV_END()'s TIME
+        else if(i==commandList.length()-1) // insert TIME + command before PV_END()'s TIME
         {
             int pvEndTime = findTimeOfCommand(commandList, "PV_END()"+suffix);
             if(pvEndTime == -1) pvEndTime = findTimeOfCommand(commandList, "END()"+suffix);
             if(pvEndTime == -1) pvEndTime = commandList.length()-1;
             commandList.insert(pvEndTime-1, command);
-            if(lastTimeCommand < time)
-                commandList.insert(pvEndTime-1, "TIME("+QString::number(time)+");");
+            commandList.insert(pvEndTime-1, "TIME("+QString::number(time)+')'+suffix);
             return insertBranch(commandList, pvEndTime-1, branch, suffix);
         }
     }

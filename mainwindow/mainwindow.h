@@ -125,6 +125,8 @@ private slots:
 
     void on_actionNormalize_TIME_triggered();
 
+    void on_actionDon_t_optimize_lyrics_triggered();
+
 private:
     Ui::MainWindow *ui;
 #ifdef Q_OS_MACOS

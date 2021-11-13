@@ -487,6 +487,7 @@ END();</string>
     <addaction name="separator"/>
     <addaction name="actionImport_VTT"/>
     <addaction name="actionExport_L_RC"/>
+    <addaction name="actionDon_t_optimize_lyrics"/>
     <addaction name="separator"/>
     <addaction name="actionLip_sync"/>
     <addaction name="actionLip_sync_VSQX"/>
@@ -938,7 +939,15 @@ END();</string>
   </action>
   <action name="actionNormalize_TIME">
    <property name="text">
-    <string>Normalize TIME</string>
+    <string>Normali&amp;ze TIME</string>
+   </property>
+  </action>
+  <action name="actionDon_t_optimize_lyrics">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Don&amp;'t optimize lyrics</string>
    </property>
   </action>
  </widget>
