@@ -49,7 +49,7 @@ bool insertCommand(QStringList &commandList, int time, QString command, int bran
     for(int i=0; i<commandList.length(); i++)
     {
         const QString currentCommand=commandList.at(i).simplified();
-        if(currentCommand.startsWith("TIME("))
+        if(currentCommand.startsWith("TIME(") && i<commandList.length()-1)
         {
             int thisTimeCommand=getTimeFromTimeCommand(currentCommand);
             const int thisTimeCommandLine=i;
