@@ -314,7 +314,7 @@ void MainWindow::on_actionNormalize_TIME_triggered()
             if(!time_diff_extracted)
             {
                 time_diff = time_current;
-                if(time_diff>=0) return;
+                if(time_diff==0) return;
                 time_diff_extracted = true;
             }
 
