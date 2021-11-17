@@ -387,15 +387,18 @@ void MainWindow::on_textEdit_cursorPositionChanged()
         block = block.previous();
     }
 
-    QScrollArea *scrollarea = new QScrollArea();
-    QWidget *frame = new QWidget(scrollarea);
-    QVBoxLayout *layout = new QVBoxLayout(frame);
-    scrollarea->setWidgetResizable(true);
-    scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
-    scrollarea->setFrameStyle(QFrame::Plain);
-    scrollarea->setWidget(frame);
     ui->statusBar->showMessage("Line "+QString::number(line+1));
-    QString currline=ui->textEdit->document()->findBlockByLineNumber(line).text();
+
+    // Update time
+    QStringList commandlist;
+    commandlist=ui->textEdit->document()->toPlainText().split(';', Qt::SkipEmptyParts).replaceInStrings("\n", "").replaceInStrings(" ", "");
+    int timecmd = findTimeOfCommand(*ui->textEdit, line);
+    if(timecmd<0) timecmd = 0;
+    QString timestr=commandlist.at(timecmd).mid(5, commandlist.at(timecmd).length()-6);
+    ui->lineEdit_time->setText(pdtime_string(pdtime_split(timestr.toInt())));
+
+    // Update branch
+    ui->label_Branch->setText("B"+QString(findBranchOfCommand(*ui->textEdit, line)));
 }
 
 void MainWindow::on_actionAdd_command_triggered()
@@ -690,4 +693,3 @@ void MainWindow::on_actionDon_t_optimize_lyrics_triggered()
 {
     dontOptimizeLyrics = ui->actionDon_t_optimize_lyrics->isChecked();
 }
-
